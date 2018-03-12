@@ -1,6 +1,6 @@
 # Friend Connect
 
-# About this project
+### About this project
 
 My goal for this project is to make an app that is similar to Facebook. It will include a:
 
