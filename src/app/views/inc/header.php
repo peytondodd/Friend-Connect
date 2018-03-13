@@ -8,3 +8,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/main.css">
   </head>
   <body>
+    <?php require APPROOT . "/views/inc/navbar.php"; ?>
+    <div class="container">
+
+    
