@@ -76,6 +76,7 @@ gulp.task("watch", function(){
   gulp.watch("src/public/css/*.css", ["copyCss"]);
   // JS files
   gulp.watch("src/public/js/modules/*.js", ["scripts"]);
+  gulp.watch("src/public/js/*.js", ["scripts"]);
 
   //APP SECTION
   //PHP files copy
@@ -85,6 +86,8 @@ gulp.task("watch", function(){
   gulp.watch("src/app/libraries/*.php", ["copyPhp"]);
   gulp.watch("src/app/models/*.php", ["copyPhp"]);
   gulp.watch("src/app/views/*.php", ["copyPhp"]);
+  gulp.watch("src/app/views/**/*.php", ["copyPhp"]);
+  gulp.watch("src/app/*.php", ["copyPhp"]);
   //.htaccess files copy
   gulp.watch("src/app/.htaccess", ["copyHtaccess"]);
   gulp.watch("src/app/public/.htaccess", ["copyHtaccess"]);
@@ -97,6 +100,8 @@ gulp.task("default", [
   "compileSass",
   "copyCss",
   "scripts",
+  "copyPhp",
+  "copyHtaccess",
   "message",
   "watch"
 ]);
