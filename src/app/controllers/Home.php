@@ -17,12 +17,12 @@
           $data = [
             "first_name" => trim($_POST["first_name"]),
             "last_name" => trim($_POST["last_name"]),
-            "email" => trim($_POST["email"]),
+            "register_email" => trim($_POST["register_email"]),
             "password" => trim($_POST["password"]),
             "confirm_password" => trim($_POST["confirm_password"]),
             "first_name_err" => "",
             "last_name_err" => "",
-            "email_err" => "",
+            "register_email_err" => "",
             "password_err" => "",
             "confirm_password_err" => ""
           ];
@@ -37,12 +37,12 @@
           }
 
           // validate email
-          if (empty($data["email"])) {
-            $data["email_err"] = "You will need your email to log in.";
+          if (empty($data["register_email"])) {
+            $data["register_email_err"] = "You will need your email to log in.";
           } else {
             // if email exists, alert owner
-            if ($this->userModel->findUserByEmail($data["email"])) {
-              $data["email_err"] = "Email is taken.";
+            if ($this->userModel->findUserByEmail($data["register_email"])) {
+              $data["register_email_err"] = "Email is taken.";
             }
 
           }
@@ -71,7 +71,7 @@
 
           // Check validations - no errors
           if (empty($data["first_name_err"]) && empty($data["last_name_err"]) &&
-          empty($data["email_err"]) && empty($data["password_err"]) &&
+          empty($data["register_email_err"]) && empty($data["password_err"]) &&
           empty($data["confirm_password_err"])) {
             // form validated
             echo "form validated";
@@ -102,7 +102,7 @@
           $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
           $data = [
-          "login_email" => trim($_POST["email"]),
+          "login_email" => trim($_POST["login_email"]),
           "password" => trim($_POST["password"]),
           "login_email_err" => "",
           "password_err" => "",
@@ -133,7 +133,9 @@
             } else {
               echo "Log in details does not exist or is wrong.";
               $data["login_err"] = "Log in details does not exist or is wrong.";
-              $this->view("home/index", $data);
+
+              $_SESSION["login_email"] = $data["login_email"];
+              redirect("login");
             }
           } else {
             echo "empty fields";
@@ -147,7 +149,8 @@
       $data = [
         "first_name" => "",
         "last_name" => "",
-        "email" => "",
+        "register_email" => "",
+        "login_email" => "",
         "first_name_err" => "",
         "last_name_err" => "",
         "email_err" => "",
