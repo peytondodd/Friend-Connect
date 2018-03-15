@@ -40,7 +40,6 @@
       }
     }
 
-
     // FIND USER BY EMAIL
     public function findUserByEmail($email) {
       // create query
@@ -52,7 +51,8 @@
 
       // check row
       if ($this->db->rowCount() > 0) {
-        return true;
+        //return true;
+        return $row;
       } else {
         return false;
       }

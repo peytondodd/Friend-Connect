@@ -9,7 +9,7 @@
 
 class Core {
   // default
-  protected $currentController = "Home";
+  protected $currentController = "Index";
   protected $currentMethod = "index";
   protected $params = [];
 
@@ -17,13 +17,19 @@ class Core {
     // get url
     $url = $this->getURL();
 
+    // if user is logged in, default = HOME
+    if (isLoggedIn()) {
+      $this->currentController = "Home";
+    }
+
+    $url = route_helper($url); // from url_helper.php
+
     // First url value - controller
     if (file_exists("../app/controllers/" . ucwords($url[0]) . ".php")) {
       // if Controller file exist, set as currentController
       $this->currentController = ucwords($url[0]);
       unset($url[0]);
     }
-
     // Require and instantiate controller
     require_once "../app/controllers/" . $this->currentController . ".php";
     $this->currentController = new $this->currentController;

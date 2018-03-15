@@ -1,11 +1,20 @@
+<?php
 
+  if (isset($_SESSION["registerData"])) {
+    $data["first_name"] = $_SESSION["registerData"]["first_name"];
+    $data["last_name"] = $_SESSION["registerData"]["last_name"];
+    $data["register_email"] = $_SESSION["registerData"]["register_email"];
+    //unset($_SESSION["registerData"]);
+  }
+
+?>
 <?php require APPROOT . "/views/inc/header.php"; ?>
 <h1>Friend Connect</h1>
 <p>Connect with your friends</p>
 <h3 class="text-center">Register</h3>
 <div class="row">
   <div class="col-md-6 mx-auto">
-    <form class="" action="<?php echo URLROOT; ?>/" method="post">
+    <form class="" action="<?php echo URLROOT; ?>/register" method="post">
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="firstName">First name: </label>
@@ -29,18 +38,18 @@
         <input class="form-control" type="password" name="confirm_password" placeholder="Confirm password">
       </div>
 
-      <input class="btn btn-success" type="submit" name="register" value="Register">
+      <input class="btn btn-success" type="submit" name="register_index" value="Register">
     </form>
   </div>
 </div>
 
-<h3 class="text-center">Login</h3>
+<h3 class="text-center">Log in</h3>
 <div class="row">
   <div class="col-md-6 mx-auto">
-    <form class="" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+    <form class="" action="<?php echo URLROOT; ?>/login" method="post">
       <div class="form-group">
         <label for="email">Email: </label>
-        <input class="form-control" type="text" name="login_email" value="<?php echo isset($data['login_email']) ? $data['login_email'] : ''; ?>">
+        <input class="form-control" type="email" name="login_email" value="<?php echo isset($data['login_email']) ? $data['login_email'] : ''; ?>">
       </div>
       <div class="form-group">
         <label for="password">Password: </label>
