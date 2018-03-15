@@ -30,7 +30,7 @@
       $url[1] = "logout";
       return $url;
     }
-
+    return $url;
   }
 
 

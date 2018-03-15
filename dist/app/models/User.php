@@ -40,6 +40,18 @@
       }
     }
 
+    // GET USER BY ID
+    public function findUserById($id) {
+      $this->db->query("SELECT * FROM users WHERE id = :id");
+      $this->db->bind(":id", $id);
+      $row = $this->db->single();
+      if ($this->db->rowCount() > 0) {
+        return $row;
+      } else {
+        return false;
+      }
+    }
+
     // FIND USER BY EMAIL
     public function findUserByEmail($email) {
       // create query
