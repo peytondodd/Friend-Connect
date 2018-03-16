@@ -86,6 +86,7 @@
           // Register user to Database
           if ($this->userModel->register($data)) {
             // posted in database- SUCCESS
+            $this->userModel->createUserInfo($data["register_email"]);
             redirect("register/success");
           } else {
             echo "database error";
@@ -135,7 +136,7 @@
       $data["registered_email"] = $_SESSION["registerData"]["register_email"];
       $data["registered_password"] = $_SESSION["registerData"]["password"];
 
-      $this->view("register/success", $data);
+      $this->view("users/success", $data);
 
       //unset($_SESSION["registered_name"]);
       //unset($_SESSION["registered_email"]);
