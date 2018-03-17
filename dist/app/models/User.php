@@ -6,6 +6,23 @@
       $this->db = new Database;
     }
 
+    // LOG USER IN
+    public function login($email, $password) {
+      if (!$this->findUserByEmail($email)) {
+        return false;
+      } else { // email found
+        $this->db->query("SELECT * FROM users WHERE email = :email");
+        $this->db->bind(":email", $email);
+        $row = $this->db->single();
+        $hashed_password = $row->password;
+        if (password_verify($password, $hashed_password)) {
+          return $row;
+        } else {
+          return false;
+        }
+      }
+    }
+
     // REGISTER USER
     public function register($data) {
       // Create query
@@ -96,23 +113,6 @@
 
     }
 
-    // LOG USER IN
-    public function login($email, $password) {
-      if (!$this->findUserByEmail($email)) {
-        return false;
-      } else { // email found
-        $this->db->query("SELECT * FROM users WHERE email = :email");
-        $this->db->bind(":email", $email);
-        $row = $this->db->single();
-        $hashed_password = $row->password;
-        if (password_verify($password, $hashed_password)) {
-          return $row;
-        } else {
-          return false;
-        }
-      }
-    }
-
     // GET USER BY ID
     public function findUserById($id) {
       $this->db->query("SELECT * FROM users WHERE id = :id");
@@ -143,7 +143,25 @@
       }
     }
 
+    // GET ALL USERS
+    public function getAllUsers() {
+      $this->db->query("SELECT * FROM users INNER JOIN user_info ON user_info.user_id = users.id");
+      $rows = $this->db->resultSet();
 
+      // remove passwords
+      foreach ($rows as $row) {
+        unset($row->password);
+      }
+
+      return $rows;
+    }
+
+
+
+    //GET ALL USER_INFO
+    public function getAllUser_Info() {
+
+    }
 
   }
 
