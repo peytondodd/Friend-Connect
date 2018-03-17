@@ -3,9 +3,23 @@
 <h1>Welcome to <?php echo $data["first_name"] . "'s profile."; ?></h1>
 
 <?php if ($data["profile_img"] == 1) : ?>
-  <img src="/images/<?php echo $data['id']; ?>/profile.<?php echo $data['id']; ?>.png" alt="profile image">
+
+  <?php
+    $ext = array("jpeg", "jpg", "png");
+    $found = false;
+    $i = 0;
+    do {
+      if (file_exists("images/".$data['id']."/profile.".$data['id'].".".$ext[$i])) {
+        $found = true;
+      } else {
+        $i++;
+      }
+    } while (!$found)
+  ?>
+
+  <img src="/images/<?php echo $data['id']; ?>/profile.<?php echo $data['id'].".".$ext[$i]; ?>" alt="profile image">
 <?php elseif ($data["profile_img"] == 0) : ?>
-  <img src="/images/default-profile.png" alt="profile image">
+  <img src="/images/default-profile.jpeg" alt="profile image">
 <?php endif; ?>
 
 <?php if ($data["status"] == 0) : ?>
