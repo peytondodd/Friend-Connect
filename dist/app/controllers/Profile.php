@@ -14,52 +14,33 @@
 
     public function user($id) {
       if ($this->userModel->findUserById($id)) {
-        $user = $this->userModel->findUserById($id);
-        $data = [
-          "first_name" => $user->first_name
-        ];
-        $this->view("profile/profile", $data);
+        if ($this->userModel->findUserInfoById($id)) {
+
+          $user = $this->userModel->findUserById($id);
+          $userInfo = $this->userModel->findUserInfoById($id);
+
+          $data = [
+            "id" => $user->id,
+            "first_name" => $user->first_name,
+            "last_name" => $user->last_name,
+            "status" => $userInfo->status,
+            "profile_img" => $userInfo->profile_img,
+            "birthday" => $userInfo->birthday,
+            "gender" => $userInfo->gender,
+            "education" => $userInfo->education,
+            "work" => $userInfo->work,
+            "location" => $userInfo->location,
+            "description" => $userInfo->description
+          ];
+          $this->view("profile/profile", $data);
+        } else {
+          echo "user not found details";
+        }
+
       } else {
         echo "user not found";
       }
 
-      if (isset($_POST["upload"])) {
-        // echo "hello";
-        // if (isset($_FILES["fileupload"])){
-        //   $fileUpload = $_FILES["fileupload"];
-        //   print_r ($fileUpload);
-        // }
-        $fileupload = $_FILES["fileupload"];
-        //print_r $fileupload;
-        $fileName = $_FILES["fileupload"]["name"];
-        $fileTmpName = $_FILES["fileupload"]["tmp_name"];
-        $fileSize = $_FILES["fileupload"]["size"];
-        $fileError = $_FILES["fileupload"]["error"];
-        $fileType= $_FILES["fileupload"]["type"];
-
-        $fileExt = explode(".", $fileName);
-        $fileActualExt = strtolower(end($fileExt));
-
-        $allowed = array("jpeg", "jpg", "png");
-
-        if (in_array($fileActualExt, $allowed)) {
-          if ($fileError === 0) {
-            if ($fileSize < 500000) { // 50mb
-              $fileNameNew = uniqid("", true).".".$fileActualExt;
-              $fileDestination = "./".$fileNameNew;
-              move_uploaded_file($fileTmpName, $fileDestination);
-              echo "Success";
-            } else {
-              echo "file is too big";
-            }
-          } else {
-            echo "there was an error uploading";
-          }
-        } else {
-          echo "Wrong file type";
-        }
-
-      }
 
     }
 

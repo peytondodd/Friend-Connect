@@ -197,8 +197,12 @@
 
           if ($userLoggedIn) {
             echo "LOGGED IN";
-            unset($_SESSION["registerData"]);
-            $this->createUserSession($userLoggedIn);
+            if (isset($_SESSION["register_data"])) {
+              unset($_SESSION["registerData"]);
+            }
+
+            createUserSession($userLoggedIn);
+            $this->userModel->updateUserStatus(1); // 1 = online
             redirect("");
 
           } else {
@@ -239,6 +243,8 @@
 
     public function logout() {
       echo "hi";
+      $this->userModel->updateUserStatus(0); // 0 = offline
+      // *** updateUserStatus must be put before unset($_SESSION["user_id"]) as it uses it.
       unset($_SESSION["user_id"]);
       unset($_SESSION["user_first_name"]);
       unset($_SESSION["user_last_name"]);
@@ -247,13 +253,7 @@
       redirect("");
     }
 
-    function createUserSession($user) {
-      $_SESSION["user_id"] = $user->id;
-      $_SESSION["user_first_name"] = $user->first_name;
-      $_SESSION["user_last_name"] = $user->last_name;
-      $_SESSION["user_email"] = $user->email;
-      //redirect("posts");
-    }
+
 
   }
 

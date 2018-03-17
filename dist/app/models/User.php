@@ -86,6 +86,16 @@
       }
     }
 
+    // UPDATE USER STATUS
+    public function updateUserStatus($status) {
+      $this->db->query("UPDATE user_info SET status = :status WHERE user_id = :user_id");
+      $this->db->bind(":user_id", $_SESSION["user_id"]);
+      $this->db->bind(":status", $status);
+
+      $this->db->execute();
+
+    }
+
     // LOG USER IN
     public function login($email, $password) {
       if (!$this->findUserByEmail($email)) {
