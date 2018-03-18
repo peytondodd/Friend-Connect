@@ -27,7 +27,7 @@
       <ul class="navbar-nav ml-auto">
           <?php if (isLoggedIn()) : ?>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo URLROOT; ?>/profile/user/<?php echo $_SESSION['user_id'] ?>"><?php echo ucwords($_SESSION["user_first_name"]) . " " . ucwords($_SESSION["user_last_name"]) ?></a>
+              <a class="nav-link" href="<?php echo URLROOT; ?>/profiles/user/<?php echo $_SESSION['user_id'] ?>"><?php echo ucwords($_SESSION["user_first_name"]) . " " . ucwords($_SESSION["user_last_name"]) ?></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="<?php echo URLROOT; ?>">Home</a>
@@ -37,7 +37,7 @@
 
                </a>
                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                 <a class="dropdown-item" href="<?php echo URLROOT; ?>/profile/user/<?php echo $_SESSION['user_id'] ?>">Profile</a>
+                 <a class="dropdown-item" href="<?php echo URLROOT; ?>/profiles/user/<?php echo $_SESSION['user_id'] ?>">Profile</a>
                  <a class="dropdown-item" href="#">Account Settings</a>
                  <a class="dropdown-item" href="#">About</a>
                  <div class="dropdown-divider"></div>

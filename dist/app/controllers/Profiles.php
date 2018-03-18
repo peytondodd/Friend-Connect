@@ -1,6 +1,6 @@
 <?php
 
-  class Profile extends Controller {
+  class Profiles extends Controller {
     public function __construct() {
       $this->userModel = $this->model("user");
     }

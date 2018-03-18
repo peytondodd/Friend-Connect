@@ -49,4 +49,11 @@
 <p>Location: <?php echo $data["location"]; ?></p>
 <p>Description: <?php echo $data["description"]; ?></p>
 
+
+<?php if (!$data["id"] != $_SESSION["user_id"]) : ?>
+  <?php //if  ?>
+
+
+<?php endif; ?>
+
 <?php require APPROOT . "/views/inc/footer.php"; ?>
