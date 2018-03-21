@@ -80,6 +80,18 @@ class Friend {
     return $row;
   }
 
+  // CHECK IF WAS FRIEND BEFORE
+  public function wasFriend($currentUserId, $viewedUserId) {
+    $this->db->query("SELECT was_friend FROM friends WHERE
+                    (user_one = :user_one AND user_two = :user_two) OR
+                    (user_one = :user_two OR user_two = :user_one)");
+    $this->db->bind(":user_one", $currentUserId);
+    $this->db->bind(":user_two", $viewedUserId);
+    $row = $this->db->single();
+
+    return $row->was_friend;
+  }
+
   // CHECK FRIEND STATUS OF VIEWED USER and CURRENT USER
   public function checkFriendStatus($currentUserId, $viewedUserId) {
     $this->db->query("SELECT * FROM friends WHERE
@@ -140,6 +152,21 @@ class Friend {
     $this->db->bind(":user_one", $currentUserId);
     $this->db->bind(":user_two", $viewedUserId);
     $this->db->bind(":friend_status", 1);
+    $this->db->bind(":was_friend", 1);
+    $this->db->bind(":date_updated", date("Y-m-d H:i:s"));
+    if ($this->db->execute()) {
+        return true;
+      } else {
+        return false;
+      }
+  }
+
+  public function blockStranger($currentUserId, $viewedUserId) {
+    $this->db->query("INSERT INTO friends (user_one, user_two, friend_status, was_friend, date_updated)
+                    VALUES (:user_one, :user_two, :friend_status, :was_friend, :date_updated)");
+    $this->db->bind(":user_one", $currentUserId);
+    $this->db->bind(":user_two", $viewedUserId);
+    $this->db->bind(":friend_status", 4);
     $this->db->bind(":was_friend", 0);
     $this->db->bind(":date_updated", date("Y-m-d H:i:s"));
     if ($this->db->execute()) {
@@ -156,7 +183,7 @@ class Friend {
                         user_one = :user_one,
                         user_two = :user_two,
                         friend_status = :friend_status,
-                        was_friend = 1,
+                        was_friend = 2,
                         date_updated = :date_updated");
       //$this->db->bind(":was_friend", 1);
     } else {
@@ -164,7 +191,6 @@ class Friend {
                         user_one = :user_one,
                         user_two = :user_two,
                         friend_status = :friend_status,
-                        was_friend = 0,
                         date_updated = :date_updated");
     }
     $this->db->bind(":user_one", $currentUserId);
