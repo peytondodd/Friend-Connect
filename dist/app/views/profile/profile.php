@@ -49,11 +49,100 @@
 <p>Location: <?php echo $data["location"]; ?></p>
 <p>Description: <?php echo $data["description"]; ?></p>
 
+  <div class="btn-section">
+  <?php //echo $data["friend_status"]; ?>
+  <?php if ($data["id"] != $_SESSION["user_id"]) : ?>
 
-<?php if (!$data["id"] != $_SESSION["user_id"]) : ?>
-  <?php //if  ?>
+    <?php //["accept", "friends", "pending", "no access", "add friend", "unblock"]  ?>
+
+      <!-- <input class="friendbtn" type="submit" name="<?php //echo $data["id"]."-".$data["friend_status"]; ?>" value="<?php //echo $data["friend_status"] ?>"> -->
+      <input class="friendbtn" type="submit" name="" value="">
+  <?php endif; ?>
+
+  </div>
 
 
-<?php endif; ?>
+<script>
+
+  var btnContainer = document.querySelector(".btn-section");
+  var viewedUserId = (window.location.href).split("/");
+  viewedUserId = viewedUserId[viewedUserId.length-1];
+  var listener = viewedUserId + "-";
+  var timestamp = null;
+
+  if (document.querySelector(".friendbtn")) {
+    var friendbtn = document.querySelector(".friendbtn");
+    friendbtn.addEventListener("click", clickFriend);
+  }
+
+
+function clickFriend (event) {
+  //var query = event.target.name;
+  //var updatefriend = viewedUserId +"-"+ event.target.value;
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
+
+      }
+  };
+
+  xmlhttp.open("GET", "/friends?updatefriend=" + friendbtn.value +"&viewedUserId="+viewedUserId, true);
+  xmlhttp.send();
+}
+
+function friendUpdater(method, url) {
+  var promiseObj = new Promise (function(resolve,reject) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open(method, url, true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4) {
+        if (this.status == 200) {
+          //success
+          console.log("SUCCESS");
+          var resp = this.responseText;
+          //console.log(resp);
+          var respJson = resp;//JSON.parse(resp);
+          resolve(respJson);
+        } else {
+          console.log("FAILED");
+          reject(this.status);
+          console.log(this.status);
+        }
+      } else {
+        //console.log("still processing");
+      }
+    }
+    //console.log("request sent successfully");
+  });
+  return promiseObj;
+}
+
+
+friendUpdater("GET", "/friends?viewedUserId=" + viewedUserId+"&timestamp="+timestamp+"&oldStatus="+friendbtn.value)
+  .then(processRepoListResponse, errorHandler);
+//}, 1000);
+
+function processRepoListResponse(repoList){
+
+ //console.log(repoList);
+ var data = JSON.parse(repoList);
+ friendbtn.name = data.status;
+ friendbtn.value = data.status;
+ if (data.loop) {
+   console.log(data.loop);
+ }
+friendUpdater("GET", "/friends?viewedUserId=" + viewedUserId+"&timestamp="+timestamp+"&oldStatus="+friendbtn.value)
+ .then(processRepoListResponse, errorHandler);
+
+}
+function errorHandler(statusCode){
+ console.log("failed with status", status);
+}
+
+
+</script>
+
 
 <?php require APPROOT . "/views/inc/footer.php"; ?>

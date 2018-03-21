@@ -12,6 +12,7 @@
                   2 = accepted
                   3 = declined
                   4 = blocked
+                  5 = request cancelled
 
   * user_one and user_two, id's switch frequently depending on the activity.
   user_one becomes the initiator
@@ -68,8 +69,19 @@ class Friend {
 
   }
 
-  // FRIEND STATUS OF VIEWED USER and CURRENT USER
-  public function friendStatus($currentUserId, $viewedUserId) {
+  // get updated date
+  public function getDateUpdated($currentUserId, $viewedUserId) {
+    $this->db->query("SELECT date_updated FROM friends WHERE
+                    (user_one = :user_one AND user_two = :user_two) OR
+                    (user_one = :user_two OR user_two = :user_one)");
+    $this->db->bind(":user_one", $currentUserId);
+    $this->db->bind(":user_two", $viewedUserId);
+    $row = $this->db->single();
+    return $row;
+  }
+
+  // CHECK FRIEND STATUS OF VIEWED USER and CURRENT USER
+  public function checkFriendStatus($currentUserId, $viewedUserId) {
     $this->db->query("SELECT * FROM friends WHERE
                     (user_one = :user_one AND user_two = :user_two) OR
                     (user_one = :user_two OR user_two = :user_one)");
@@ -80,18 +92,42 @@ class Friend {
     if ($this->db->rowCount() == 0) {
       return false;
     } else {
-      if ($row->user_one == $curentUserId) {
-        $status = [
-          "initiator" => $currentUserId,
-          "friend_status" => $row->friend_status
-        ];
-        return $status;
-      } else if ($row->user_two == $currentUserID) {
-        $status = [
-          "initiator" => $viewedUserId,
-          "friend_status" => $row->friend_status
-        ];
-        return $status;
+
+      $status = $row->friend_status;
+
+      if ($row->user_one == $currentUserId) {
+        if ($status == 1) {
+          $action = "Pending";
+        } elseif ($status == 2) {
+          $action = "Friends";
+        } elseif ($status == 3) {
+          $action = "Add Friend";
+        } elseif ($status == 4) {
+          $action = "Unblock";
+        }
+        return $action;
+        // $status = [
+        //   "initiator" => $currentUserId,
+        //   "status" => $row->friend_status
+        // ];
+        // return $status;
+
+      } else if ($row->user_one == $viewedUserId) {
+        if ($status == 1) {
+          $action = "Accept";
+        } elseif ($status == 2) {
+          $action = "Friends";
+        } elseif ($status == 3) {
+          $action = "Add Friend";
+        } elseif ($status == 4) {
+          $action = "No Access";
+        }
+        return $action;
+        // $status = [
+        //   "initiator" => $viewedUserId,
+        //   "status" => $row->friend_status
+        // ];
+        // return $status;
       }
     }
 
@@ -99,11 +135,13 @@ class Friend {
 
   // ADD A FRIEND
   public function addFriend($currentUserId, $viewedUserId) {
-    $this->db->query("INSERT INTO friends (user_one, user_two, friend_status)
-                    VALUES (:user_one, :user_two, :friend_status)");
+    $this->db->query("INSERT INTO friends (user_one, user_two, friend_status, was_friend, date_updated)
+                    VALUES (:user_one, :user_two, :friend_status, :was_friend, :date_updated)");
     $this->db->bind(":user_one", $currentUserId);
     $this->db->bind(":user_two", $viewedUserId);
     $this->db->bind(":friend_status", 1);
+    $this->db->bind(":was_friend", 0);
+    $this->db->bind(":date_updated", date("Y-m-d H:i:s"));
     if ($this->db->execute()) {
         return true;
       } else {
@@ -113,13 +151,26 @@ class Friend {
 
   // ACCEPT, DECLINE, AND BLOCK A FRIEND
   public function updateFriend($currentUserId, $viewedUserId, $action) {
-    $this->db->query("UPDATE friends SET
-                      user_one = :user_one,
-                      user_two = :user_two,
-                      friend_status = :friend_status");
+    if ($action == 2) {
+      $this->db->query("UPDATE friends SET
+                        user_one = :user_one,
+                        user_two = :user_two,
+                        friend_status = :friend_status,
+                        was_friend = 1,
+                        date_updated = :date_updated");
+      //$this->db->bind(":was_friend", 1);
+    } else {
+      $this->db->query("UPDATE friends SET
+                        user_one = :user_one,
+                        user_two = :user_two,
+                        friend_status = :friend_status,
+                        was_friend = 0,
+                        date_updated = :date_updated");
+    }
     $this->db->bind(":user_one", $currentUserId);
     $this->db->bind(":user_two", $viewedUserId);
     $this->db->bind(":friend_status", $action);
+    $this->db->bind(":date_updated", date("Y-m-d H:i:s"));
     if ($this->db->execute()) {
       return true;
     } else {

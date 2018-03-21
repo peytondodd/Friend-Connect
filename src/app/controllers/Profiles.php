@@ -2,7 +2,8 @@
 
   class Profiles extends Controller {
     public function __construct() {
-      $this->userModel = $this->model("user");
+      $this->userModel = $this->model("User");
+      $this->friendModel = $this->model("Friend");
     }
 
     public function index() {
@@ -18,6 +19,19 @@
 
           $user = $this->userModel->findUserById($id);
           $userInfo = $this->userModel->findUserInfoById($id);
+          $status = "";
+
+          if ($user->id != $_SESSION["user_id"]) {
+            $friendStatus = $this->friendModel->checkFriendStatus($_SESSION["user_id"], $user->id);
+            if ($friendStatus != false) {
+              // has relationship
+              $status = $friendStatus;
+            } else {
+              // no relationship
+              $status = "add friend";
+            }
+          }
+          //["accept", "friends", "pending", "no access", "add friend", "unblock"]
 
           $data = [
             "id" => $user->id,
@@ -30,8 +44,10 @@
             "education" => $userInfo->education,
             "work" => $userInfo->work,
             "location" => $userInfo->location,
-            "description" => $userInfo->description
+            "description" => $userInfo->description,
+            "friend_status" => $status."hi"
           ];
+          sleep(2);
           $this->view("profile/profile", $data);
         } else {
           echo "user not found details";
