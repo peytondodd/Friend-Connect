@@ -16,7 +16,7 @@ gulp.task("copyMainIndex", function() {
 
 // Compile sass
 gulp.task("compileSass", function() {
-  gulp.src("src/public/css/sass/*.scss")
+  gulp.src("src/public/sass/*.scss")
     .pipe(sass().on("error", sass.logError))
     .pipe(gulp.dest("src/public/css"))
 });
@@ -72,6 +72,7 @@ gulp.task("watch", function(){
   gulp.watch("src/public/css/sass/modules/*.scss", ["compileSass"]);
   gulp.watch("src/public/css/sass/state/*.scss", ["compileSass"]);
   gulp.watch("src/public/css/sass/theme/*.scss", ["compileSass"]);
+  //gulp.watch("src/public/css/sass/*.scss", ["compileSass"]);
   // CSS copy
   gulp.watch("src/public/css/*.css", ["copyCss"]);
   // JS files

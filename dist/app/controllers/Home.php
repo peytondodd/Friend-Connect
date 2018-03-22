@@ -7,7 +7,7 @@
       //first time setup
       $userProfileSetup = $this->userModel->findUserInfoById($_SESSION["user_id"])->profile_setup;
       if ($userProfileSetup == 0) {
-        redirect("profile/setup");
+        redirect("profiles/setup");
       }
 
     }
