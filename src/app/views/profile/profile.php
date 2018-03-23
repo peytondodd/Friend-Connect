@@ -17,9 +17,9 @@
     } while (!$found)
   ?>
 
-  <img src="/images/<?php echo $data['id']; ?>/profile.<?php echo $data['id'].".".$ext[$i]; ?>" alt="profile image">
+  <img src="/user_data/<?php echo $data['id']; ?>/profile.<?php echo $data['id'].".".$ext[$i]; ?>" alt="profile image">
 <?php elseif ($data["profile_img"] == 0) : ?>
-  <img src="/images/default-profile.jpeg" alt="profile image">
+  <img src="/user_data/default-profile.jpeg" alt="profile image">
 <?php endif; ?>
 
 <?php if ($data["status"] == 0) : ?>

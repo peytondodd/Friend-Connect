@@ -1,0 +1,164 @@
+.index {
+  height: 100vh;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.register {
+  width: 320px;
+  height: 375px;
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.logo {
+  width: 50px;
+  height: auto;
+}
+.logo-container {
+  height: 50px;
+}
+.login-hide {
+  display:  none;
+}
+
+.confirm-email {
+  display: block;
+}
+.confirm-password {
+  display: block;
+}
+
+.mobile-launch {
+  display: none;
+}
+
+.register-submit {
+  width: 320px;
+}
+
+.slogan {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.slogan h3 {
+  margin-bottom: 50px;
+  color: white;
+}
+
+.gallery {
+  background: linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url("https://source.unsplash.com/random") no-repeat center;
+  background-size: cover;
+}
+
+//width
+@media (max-width: 992px) {
+  .login {
+    display: none;
+    &-hide {
+      display: inline;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .index {
+    height: auto;
+  }
+  .gallery {
+    order: 2;
+    height: 455px;
+  }
+  .slogan {
+    top: 27.5%;
+  }
+  .forms {
+    order: 1;
+    height: 455px;
+  }
+  .register {
+    top: 5%;
+  }
+  .login-hide {
+    display: inline;
+  }
+
+}
+
+@media (max-width: 576px) {
+  .logo {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
+  .logo-container{
+    height: 50px;
+  }
+
+  .login-hide {
+    display: none;
+  }
+
+  .registerform {
+    display: none;
+  }
+  .form-title, .form-desc {
+    text-align: center;
+  }
+  .mobile-launch {
+    display: block;
+    width: 295px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 40px;
+    margin: 0 auto;
+  }
+  .mobile-launch a {
+    margin: 0 10px;
+  }
+  .forms{
+    height: 100vh;
+    background: linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url("https://source.unsplash.com/random") no-repeat center;
+    background-size: cover;
+    color: white;
+  }
+  .gallery {
+    display: none;
+  }
+  .about {
+    display: none;
+  }
+}
+
+//height
+@media (max-height: 700px) {
+  .login {
+    display: none;
+  }
+  .slogan {
+    top: 20%;
+  }
+  .register {
+    position: absolute;
+    top: 5%;
+    height: 375px;
+  }
+}
+
+@media (max-height: 460px) {
+  .register {
+    //position: absolute;
+    top: 5%;
+  }
+  .index {
+    max-height: 455px;
+  }
+}

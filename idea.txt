@@ -2,7 +2,7 @@ Friend Connect
 
 HTML5, CSS3, Bootstrap 4, JQuery, PHP, MySQL, SASS, Gulp
 
-- Register/Log in
-- Search for and add, delete friends
+DONE - Register/Log in
+DONE - Search for and add, delete friends
 - make posts and add comments
-- chat with friends
+DONE - chat with friends

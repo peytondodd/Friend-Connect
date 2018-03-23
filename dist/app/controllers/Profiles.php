@@ -114,17 +114,17 @@
               if ($fileSize < 500000) { // 50mb
                 $fileNameNew = "profile.".$_SESSION["user_id"].".".$fileActualExt;
                 // Create image folder if it doesnt exist
-                if (file_exists("./images")) {
-                  if (file_exists("./images/".$_SESSION["user_id"])) {
-                    $userFolder = "./images/".$_SESSION["user_id"];
+                if (file_exists("./user_data")) {
+                  if (file_exists("./user_data/".$_SESSION["user_id"])) {
+                    $userFolder = "./user_data/".$_SESSION["user_id"];
                   } else {
-                    mkdir("./images/".$_SESSION["user_id"]);
-                    $userFolder = "./images/".$_SESSION["user_id"];
+                    mkdir("./user_data/".$_SESSION["user_id"]);
+                    $userFolder = "./user_data/".$_SESSION["user_id"];
                   }
                 } else {
-                  mkdir("./images");
-                  mkdir("./images/".$_SESSION["user_id"]);
-                  $userFolder = "./images/".$_SESSION["user_id"];
+                  mkdir("./user_data");
+                  mkdir("./user_data/".$_SESSION["user_id"]);
+                  $userFolder = "./user_data/".$_SESSION["user_id"];
                 }
 
                 $fileDestination = $userFolder. "/" .$fileNameNew;

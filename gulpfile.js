@@ -67,12 +67,12 @@ gulp.task("watch", function(){
   // Main index php
   gulp.watch("src/public/*.php", ["copyMainIndex"]);
   // Sass compiler
-  gulp.watch("src/public/css/sass/base/*.scss", ["compileSass"]);
-  gulp.watch("src/public/css/sass/layout/*.scss", ["compileSass"]);
-  gulp.watch("src/public/css/sass/modules/*.scss", ["compileSass"]);
-  gulp.watch("src/public/css/sass/state/*.scss", ["compileSass"]);
-  gulp.watch("src/public/css/sass/theme/*.scss", ["compileSass"]);
-  //gulp.watch("src/public/css/sass/*.scss", ["compileSass"]);
+  gulp.watch("src/public/sass/base/*.scss", ["compileSass"]);
+  gulp.watch("src/public/sass/layout/*.scss", ["compileSass"]);
+  gulp.watch("src/public/sass/modules/*.scss", ["compileSass"]);
+  gulp.watch("src/public/sass/state/*.scss", ["compileSass"]);
+  gulp.watch("src/public/sass/theme/*.scss", ["compileSass"]);
+  //gulp.watch("src/public/sass/*.scss", ["compileSass"]);
   // CSS copy
   gulp.watch("src/public/css/*.css", ["copyCss"]);
   // JS files
