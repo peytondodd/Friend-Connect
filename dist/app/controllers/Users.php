@@ -44,12 +44,10 @@
         // validate email
         if (empty($data["register_email"])) {
           $data["register_email_err"] = "You will need your email to log in.";
-        } else {
-          // if email exists, alert owner
-          if ($this->userModel->findUserByEmail($data["register_email"])) {
+        } elseif (!filter_var($data["register_email"], FILTER_VALIDATE_EMAIL)) {
+            $data["register_email_err"] = "Email is invalid.";
+        } elseif ($this->userModel->findUserByEmail($data["register_email"])) {
             $data["register_email_err"] = "Email is taken.";
-          }
-
         }
 
         // confirm Email
@@ -113,6 +111,7 @@
           if (isset($_POST["register_index"])) {
             $_SESSION["registerData"] = $data;
             redirect("");
+            //$this->view("users/register", $data);
           }
         }
 
@@ -208,7 +207,6 @@
           $userLoggedIn = $this->userModel->login($data["login_email"], $data["password"]);
 
           if ($userLoggedIn) {
-            echo "LOGGED IN";
             if (isset($_SESSION["register_data"])) {
               unset($_SESSION["registerData"]);
             }
@@ -220,23 +218,22 @@
           } else {
             if (isset($data["first_name"])) {
               $data["login_err"] = "Sorry ".ucwords($data["first_name"]).", your password is wrong.";
+              $data["password_err"] = "Wrong password.";
             } else {
               $data["login_err"] = "Sorry, this account does not exists.";
             }
-            echo $data["login_err"];
             $this->view("users/login",$data);
           }
         } elseif (empty($data["login_email_err"]) && !empty($data["password_err"])) {
           if (isset($data["first_name"])) {
             $data["login_err"] = "Sorry ".ucwords($data["first_name"]).", enter your password.";
           } else {
-            $data["login_err"] = "Sorry, this email does not exists.";
+            $data["login_email_err"] = "Sorry, this email does not exists.";
           }
-          echo $data["login_err"];
           $this->view("users/login",$data);
         } elseif (!empty($data["login_email_err"]) && !empty($data["password_err"])) {
-          $data["login_err"] = "Empty fields";
-          echo $data["login_err"];
+          // $data["login_err"] = "Empty fields";
+          // echo $data["login_err"];
           $this->view("users/login",$data);
         }
       } else {
@@ -254,7 +251,6 @@
 
 
     public function logout() {
-      echo "hi";
       $this->userModel->updateUserStatus(0); // 0 = offline
       // *** updateUserStatus must be put before unset($_SESSION["user_id"]) as it uses it.
       unset($_SESSION["user_id"]);

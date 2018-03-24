@@ -1,0 +1,44 @@
+.registerPage {
+  width: 320px;
+  height: 375px;
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.registerPage-logo-black {
+  width: 50px;
+  height: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+@media (max-height: 950px) {
+  .registerPage {
+    top: 25%
+  }
+}
+@media (max-height: 750px) {
+  .registerPage {
+    top: 20%
+  }
+}
+
+@media (max-height: 640px) {
+  .registerPage {
+    top: 5%;
+  }
+}
+
+@media (max-width: 400px) {
+  .registerPage {
+    width: 280px;
+  }
+  .register-submit {
+    width: 280px;
+  }
+}

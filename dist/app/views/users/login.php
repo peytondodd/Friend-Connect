@@ -8,23 +8,34 @@
 ?>
 
 <?php require APPROOT . "/views/inc/header.php"; ?>
-<h1 class="text-center">Log in</h1>
-<p class="text-center">Sign in to connect with your friends!</p>
-<div class="row">
-  <div class="col-md-6 mx-auto">
-    <form class="" action="<?php echo URLROOT; ?>/login" method="post">
+<div class="loginPage">
+  <h1 class="text-center">Log in</h1>
+  <p class="loginMessage text-center">Sign in to connect with your friends!</p>
+  <?php if (isset($data["first_name"]) && !empty($data["first_name"])) : ?>
+    <img class="loginPageProfile" src="/images/khabib.jpg" alt="user profile">
+  <?php endif; ?>
+  <p class="text-center"><strong><?php echo isset($data["first_name"]) && !empty($data["first_name"]) ? "Hi ".$data["first_name"] : "";?></strong></p>
+  <p class="text-center text-danger"><?php echo isset($data["login_err"]) && !empty($data["login_err"]) ? $data["login_err"] : "";?></p>
+  <div class="row">
+    <form class="loginPageForm" action="<?php echo URLROOT; ?>/login" method="post">
       <div class="form-group">
-        <label for="email">Email: </label>
-        <input class="form-control" type="email" name="login_email" value="<?php echo isset($data['login_email']) ? $data['login_email'] : ''; ?>">
+        <input class="form-control loginPage-email <?php echo !empty($data['login_email_err']) ? "is-invalid" : "" ?>" type="email" name="login_email" placeholder="Email" value="<?php echo isset($data['login_email']) ? $data['login_email'] : ''; ?>">
+        <div class="invalid-feedback loginPage-emailErr">
+          <?php echo $data['login_email_err']; ?>
+        </div>
       </div>
+
       <div class="form-group">
-        <label for="password">Password: </label>
-        <input class="form-control" type="password" name="password" value="">
+        <input class="form-control loginPage-password <?php echo !empty($data['password_err']) ? "is-invalid" : "" ?>" type="password" name="password" placeholder="Password" value="">
+        <div class="invalid-feedback loginPage-passwordErr">
+          <?php echo isset($data['password_err']) ? $data['password_err'] : ""; ?>
+        </div>
       </div>
+        <a href="#">Forgot your password?</a>
+        <p>Have an account? <a href="/login">Log in!</a></p>
       <input class="btn btn-success" type="submit" name="login" value="Log In">
     </form>
   </div>
 </div>
-
 
 <?php require APPROOT . "/views/inc/footer.php"; ?>

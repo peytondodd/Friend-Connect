@@ -6195,3 +6195,69 @@ a.text-dark:hover, a.text-dark:focus {
     top: 5%; }
   .index {
     max-height: 455px; } }
+
+.registerPage {
+  width: 320px;
+  height: 375px;
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 0;
+  margin: 0 auto; }
+
+.registerPage-logo-black {
+  width: 50px;
+  height: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto; }
+
+@media (max-height: 950px) {
+  .registerPage {
+    top: 25%; } }
+
+@media (max-height: 750px) {
+  .registerPage {
+    top: 20%; } }
+
+@media (max-height: 640px) {
+  .registerPage {
+    top: 5%; } }
+
+@media (max-width: 400px) {
+  .registerPage {
+    width: 280px; }
+  .register-submit {
+    width: 280px; } }
+
+.loginPage {
+  width: 320px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 25%; }
+
+.loginPageForm {
+  width: 100%; }
+
+.loginPageProfile {
+  width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  clip-path: circle(70px at center); }
+
+@media (max-width: 400px) {
+  .loginPage {
+    width: 280px; } }
+
+@media (max-height: 700px) {
+  .loginPage {
+    top: 15%; } }
+
+@media (max-height: 600px) {
+  .loginPage {
+    top: 10%;
+    height: 650px; } }

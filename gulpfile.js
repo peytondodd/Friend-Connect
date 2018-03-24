@@ -31,7 +31,9 @@ gulp.task("copyCss", function(){
 // Concat and minify JS
 gulp.task("scripts", function() {
   gulp.src([
-    "indexPage.js"
+    "indexPage.js",
+    "registerPage.js",
+    "loginPage.js"
   ], {cwd: "src/public/js/modules"})
     .pipe(concat("index.js"))
     .pipe(gulp.dest("dist/public/js"));

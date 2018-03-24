@@ -1,0 +1,40 @@
+.loginPage {
+  width: 320px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 25%;
+}
+
+.loginPageForm {
+  width: 100%;
+}
+
+.loginPageProfile {
+  width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  //border-radius: 50%;
+  clip-path: circle(70px at center);
+}
+
+@media (max-width: 400px) {
+  .loginPage {
+    width: 280px;
+  }
+}
+
+@media (max-height: 700px) {
+  .loginPage {
+    top: 15%;
+  }
+}
+
+@media (max-height: 600px) {
+  .loginPage {
+    top: 10%;
+    height: 650px;
+  }
+}
