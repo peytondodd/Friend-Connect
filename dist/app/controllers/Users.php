@@ -138,7 +138,7 @@
 
     public function success() {
       if (!isset($_SESSION["registerData"])) {
-        redirect("login");
+        //redirect("login");
       }
 
       $data["registered_name"] = ucwords($_SESSION["registerData"]["first_name"]);

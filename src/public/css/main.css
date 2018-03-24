@@ -6213,6 +6213,20 @@ a.text-dark:hover, a.text-dark:focus {
   right: 0;
   margin: 0 auto; }
 
+.smile-emoji {
+  width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto; }
+
+.registerSuccess {
+  height: 600px;
+  padding: 0 10px; }
+
+.successLogIn {
+  display: block;
+  margin: 0 auto; }
+
 @media (max-height: 950px) {
   .registerPage {
     top: 25%; } }
