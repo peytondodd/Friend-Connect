@@ -22,6 +22,7 @@
           "first_name" => trim($_POST["first_name"]),
           "last_name" => trim($_POST["last_name"]),
           "register_email" => trim($_POST["register_email"]),
+          "confirm_register_email" => trim($_POST["confirm_register_email"]),
           "password" => trim($_POST["password"]),
           "confirm_password" => trim($_POST["confirm_password"]),
           "first_name_err" => "",
@@ -51,6 +52,13 @@
 
         }
 
+        // confirm Email
+        if (empty($data["register_email_err"]) && empty($data["confirm_register_email"])) {
+          $data["confirm_register_email_err"] = "Please confirm the email.";
+        } elseif (empty($data["register_email_err"]) && $data["register_email"] != $data["confirm_register_email"]) {
+          $data["confirm_register_email_err"] = "Emails do not match.";
+        }
+
         // validate password
         if (empty($data["password"])) {
           $data["password_err"] = "Please enter a password.";
@@ -63,9 +71,9 @@
         }
 
         // validate confirm password
-        if (empty($data["confirm_password"])) {
+        if (empty($data["password_err"]) && empty($data["confirm_password"])) {
           $data["confirm_password_err"] = "Please confirm the password.";
-        } elseif ($data["password"] != $data["confirm_password"]) {
+        } elseif (empty($data["password_err"]) && $data["password"] != $data["confirm_password"]) {
           $data["confirm_password_err"] = "Passwords do not match";
         }
 
@@ -75,8 +83,8 @@
 
         // Check validations - no errors
         if (empty($data["first_name_err"]) && empty($data["last_name_err"]) &&
-        empty($data["register_email_err"]) && empty($data["password_err"]) &&
-        empty($data["confirm_password_err"])) {
+        empty($data["register_email_err"]) && empty($data["confirm_register_email_err"]) &&
+        empty($data["password_err"]) && empty($data["confirm_password_err"])) {
           // form validated -SUCCESS
           //echo "form validated";
           $_SESSION["registerData"] = $data;
@@ -113,11 +121,13 @@
           "first_name" => "",
           "last_name" => "",
           "register_email" => "",
+          "confirm_register_email" => "",
           "password" => "",
           "confirm_password" => "",
           "first_name_err" => "",
           "last_name_err" => "",
           "register_email_err" => "",
+          "confirm_register_email_err" => "",
           "password_err" => "",
           "confirm_password_err" => ""
         ];
@@ -165,8 +175,10 @@
         //after register, click to log in
         if (isset($_SESSION["registerData"]["register_email"]) &&
         isset($_SESSION["registerData"]["password"])) {
-          $data["login_email"] = $_SESSION["registerData"]["register_email"];
-          $data["password"] = $_SESSION["registerData"]["password"];
+          if ($this->userModel->findUserByEmail($_SESSION["registerData"]["register_email"])) {
+            $data["login_email"] = $_SESSION["registerData"]["register_email"];
+            $data["password"] = $_SESSION["registerData"]["password"];
+          }
           //unset($_SESSION["registerData"]);
         }
 

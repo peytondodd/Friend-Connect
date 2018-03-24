@@ -31,11 +31,13 @@ gulp.task("copyCss", function(){
 // Concat and minify JS
 gulp.task("scripts", function() {
   gulp.src([
-
+    "indexPage.js"
   ], {cwd: "src/public/js/modules"})
-    .pipe(concat("../index.js"))
+    .pipe(concat("index.js"))
+    .pipe(gulp.dest("src/public/js"));
+  gulp.src("src/public/js/index.js")
     .pipe(uglify())
-    .pipe(gulp.dest("dist/public/js"));
+    .pipe(gulp.dest("dist/public/js"))
 });
 
 //APP-php
