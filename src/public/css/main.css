@@ -6102,7 +6102,8 @@ a.text-dark:hover, a.text-dark:focus {
   bottom: 25px;
   left: 50%;
   transform: translateX(-50%);
-  height: 100px; }
+  height: 100px;
+  cursor: pointer; }
 
 .about-btn {
   width: 0;

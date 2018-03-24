@@ -34,10 +34,7 @@ gulp.task("scripts", function() {
     "indexPage.js"
   ], {cwd: "src/public/js/modules"})
     .pipe(concat("index.js"))
-    .pipe(gulp.dest("src/public/js"));
-  gulp.src("src/public/js/index.js")
-    .pipe(uglify())
-    .pipe(gulp.dest("dist/public/js"))
+    .pipe(gulp.dest("dist/public/js"));
 });
 
 //APP-php

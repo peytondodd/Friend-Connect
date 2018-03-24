@@ -145,7 +145,7 @@
       $data["registered_name"] = ucwords($_SESSION["registerData"]["first_name"]);
       $data["registered_email"] = $_SESSION["registerData"]["register_email"];
       $data["registered_password"] = $_SESSION["registerData"]["password"];
-
+      unset($_SESSION["registerData"]);
       $this->view("users/success", $data);
 
       //unset($_SESSION["registered_name"]);
