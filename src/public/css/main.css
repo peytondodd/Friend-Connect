@@ -6275,3 +6275,134 @@ a.text-dark:hover, a.text-dark:focus {
   .loginPage {
     top: 10%;
     height: 650px; } }
+
+.profileSetupPage-bg {
+  height: 100vh;
+  padding: 0 20px; }
+
+.profileSetupPage-logo {
+  width: 100px;
+  height: auto;
+  display: block;
+  margin: 0 auto 15px; }
+
+.profileSetupPage1 {
+  max-width: 1000px;
+  height: auto;
+  padding: 90px 10px 0;
+  border-radius: 25px;
+  border: 1px solid black;
+  box-shadow: 0 10px 20px black;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none; }
+
+.profileSetupPage-introBtn {
+  width: 260px;
+  margin: 0 auto 100px; }
+
+.psp1-mb {
+  margin-bottom: 40px; }
+
+@media (max-width: 1040px) {
+  .profileSetupPage1 {
+    margin: 0 20px; } }
+
+@media (max-width: 575px) {
+  .profileSetupPage-introBtn {
+    width: 120px; } }
+
+@media (max-height: 900px) {
+  .profileSetupPage1 {
+    padding: 40px 10px; }
+  .profileSetupPage-introBtn {
+    margin-bottom: 20px; } }
+
+@media (max-height: 800px) {
+  .profileSetupPage1 {
+    padding: 20px 10px; }
+  .profileSetupPage-introBtn {
+    margin-bottom: 5px; }
+  .psp1-mb {
+    margin-bottom: 30px; } }
+
+@media (max-height: 700px) {
+  .profileSetupPage1 {
+    padding: 20px 5px; }
+  .profileSetupPage-introBtn {
+    margin-bottom: 2px; }
+  .psp1-mb {
+    margin-bottom: 10px; } }
+
+.profileSetupPage2 {
+  max-width: 1000px;
+  height: auto;
+  padding: 40px 20px 20px;
+  border-radius: 25px;
+  border: 1px solid black;
+  box-shadow: 0 10px 20px black;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 50%;
+  transform: translateY(-50%); }
+  .profileSetupPage2-profileIMG {
+    width: 100%;
+    height: auto; }
+  .profileSetupPage2-profileSelector {
+    width: 100%;
+    max-height: 300px;
+    background-color: #DDD;
+    margin-bottom: 20px;
+    overflow-y: auto; }
+  .profileSetupPage2-selectorIMG {
+    width: 100%; }
+    .profileSetupPage2-selectorIMG-row {
+      margin: 0; }
+    .profileSetupPage2-selectorIMG-col {
+      border: 1px solid black;
+      padding: 10px;
+      cursor: pointer; }
+    .profileSetupPage2-selectorIMG-col:hover {
+      background-color: #28a745; }
+  .profileSetupPage2-img_input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1; }
+
+.psp2-mb {
+  margin-bottom: 40px; }
+
+@media (max-width: 1050px) {
+  .profileSetupPage2 {
+    margin: 0 20px; } }
+
+@media (max-width: 575px) {
+  .profileSetupPage2 {
+    padding: 20px 10px 10px; }
+    .profileSetupPage2-profileIMG {
+      max-width: 200px;
+      height: auto;
+      display: block;
+      margin: 0 auto; }
+    .profileSetupPage2-profileSelector {
+      height: 200px;
+      max-width: 225px;
+      margin: 0 auto; }
+  .psp2-mb {
+    margin-bottom: 5px; } }
+
+@media (max-height: 750px) {
+  .profileSetupPage-bg {
+    height: 750px; }
+  .profileSetupPage2 {
+    top: 10px;
+    transform: translateY(0); } }

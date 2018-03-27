@@ -64,8 +64,8 @@
     public function setup() {
       //already completed
       $userProfileSetup = $this->userModel->findUserInfoById($_SESSION["user_id"])->profile_setup;
-      echo $userProfileSetup;
-      echo $_SESSION["user_id"];
+      //echo $userProfileSetup;
+      //echo $_SESSION["user_id"];
       if ($userProfileSetup == 1) {
         if (isset($_SERVER["HTTP_REFERER"])) {
           header("Location: " . $_SERVER["HTTP_REFERER"]);

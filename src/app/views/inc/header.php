@@ -14,7 +14,12 @@
   <body>
     <?php
       if (isLoggedIn()) {
-        require APPROOT . "/views/inc/navbar.php";
+        //dont show on profile set
+        $userProfileSetup = $this->userModel->findUserInfoById($_SESSION["user_id"])->profile_setup;
+        if ($userProfileSetup == 1) {
+            require APPROOT . "/views/inc/navbar.php";
+        }
+        //require APPROOT . "/views/inc/navbar.php";
       }
     ?>
     <!-- <div class="container"> -->

@@ -138,13 +138,13 @@
 
     public function success() {
       if (!isset($_SESSION["registerData"])) {
-        //redirect("login");
+        redirect("login");
       }
 
       $data["registered_name"] = ucwords($_SESSION["registerData"]["first_name"]);
       $data["registered_email"] = $_SESSION["registerData"]["register_email"];
       $data["registered_password"] = $_SESSION["registerData"]["password"];
-      unset($_SESSION["registerData"]);
+      //unset($_SESSION["registerData"]);
       $this->view("users/success", $data);
 
       //unset($_SESSION["registered_name"]);
@@ -178,7 +178,7 @@
             $data["login_email"] = $_SESSION["registerData"]["register_email"];
             $data["password"] = $_SESSION["registerData"]["password"];
           }
-          //unset($_SESSION["registerData"]);
+          unset($_SESSION["registerData"]);
         }
 
         // validate empty email

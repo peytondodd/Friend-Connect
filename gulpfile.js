@@ -33,7 +33,8 @@ gulp.task("scripts", function() {
   gulp.src([
     "indexPage.js",
     "registerPage.js",
-    "loginPage.js"
+    "loginPage.js",
+    "profileSetupPage.js"
   ], {cwd: "src/public/js/modules"})
     .pipe(concat("index.js"))
     .pipe(gulp.dest("dist/public/js"));
