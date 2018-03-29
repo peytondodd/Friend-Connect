@@ -79,21 +79,22 @@
 
         $userInfo = [
           "status" => "",
-          "profile_img" => "",
+          "profile_img" => "",//
+          "profile_img_id" => "",
           "birthday" => "",
           "gender" => "",
           "education" => "",
           "work" => "",
           "location" => "",
           "description" => "",
-          "profile_setup" => "",
-          "ERR_profile_img" => "",
-          "ERR_birthday" => "",
-          "ERR_gender" => "",
-          "ERR_education" => "",
-          "ERR_work" => "",
-          "ERR_location" => "",
-          "ERR_description" => "",
+          "profile_setup" => ""//,
+          // "ERR_profile_img" => "",
+          // "ERR_birthday" => "",
+          // "ERR_gender" => "",
+          // "ERR_education" => "",
+          // "ERR_work" => "",
+          // "ERR_location" => "",
+          // "ERR_description" => "",
         ];
 
         //PROFILE IMAGE
@@ -107,7 +108,7 @@
           $fileExt = explode(".", $fileName);
           $fileActualExt = strtolower(end($fileExt));
 
-          $allowed = array("jpeg", "jpg", "png");
+          $allowed = array("jpeg", "jpg", "png", "bmp", "gif");
 
           if (in_array($fileActualExt, $allowed)) {
             if ($fileError === 0) {
@@ -130,26 +131,29 @@
                 $fileDestination = $userFolder. "/" .$fileNameNew;
                 if (move_uploaded_file($fileTmpName, $fileDestination)) {
                   $userInfo["profile_img"] = 1;
-                  echo "Success";
+                  //echo "Success";
                 } else {
                   echo "upload failed";
-                  $userInfo["ERR_profile_img"] = "upload failed";
+                  //$userInfo["ERR_profile_img"] = "upload failed";
                 }
               } else {
                 echo "file is too big";
-                $userInfo["ERR_profile_img"] = "file is too big";
+                //$userInfo["ERR_profile_img"] = "file is too big";
               }
             } else {
               echo "there was an error uploading";
-              $userInfo["ERR_profile_img"] = "there was an error uploading";
+              //$userInfo["ERR_profile_img"] = "there was an error uploading";
             }
           } else {
             echo "Wrong file type";
-            $userInfo["ERR_profile_img"] = "Wrong file type";
+            //$userInfo["ERR_profile_img"] = "Wrong file type";
           }
-        } else {
-          echo "bye";
-          $userInfo["ERR_profile_img"] = "No profile picture selected";
+        } else { // default profile
+          if (isset($_POST["defaultProfile"])) {
+            $defaultImgId = explode("-", $_POST["defaultProfile"])[2];
+            $userInfo["profile_img"] = 0;
+            $userInfo["profile_img_id"] = $defaultImgId;
+          }
         }
 
         // birthday
@@ -159,91 +163,91 @@
             $day= $_POST["day"];
             $year = $_POST["year"];
             $userInfo["birthday"] = date("Y-m-d",mktime(0,0,0,$month,$day,$year));
-          } else {
-            $userInfo["ERR_birthday"] = "Please select your birthday";
-          }
-        } else {
-          $userInfo["ERR_birthday"] = "Please select your birthday";
-        }
+          } //else {
+          //   $userInfo["ERR_birthday"] = "Please select your birthday";
+          // }
+        } //else {
+        //   $userInfo["ERR_birthday"] = "Please select your birthday";
+        // }
 
         // gender
         if (isset($_POST["gender"])) {
           $userInfo["gender"] = $_POST["gender"];
-        } else {
-          $userInfo["ERR_gender"] = "Please select your gender";
-        }
+        } //else {
+          //$userInfo["ERR_gender"] = "Please select your gender";
+        //}
 
         // education
         if (isset($_POST["education"])) {
           if (!empty($_POST["education"])) {
             if (strlen($_POST["education"]) < 255) {
               $userInfo["education"] = $_POST["education"];
-            } else {
-              $userInfo["ERR_education"] = "Education info is too long.";
-            }
-          } else {
-            $userInfo["ERR_education"] = "Please enter your education.";
-          }
-        } else {
-          $userInfo["ERR_education"] = "Please enter your education.";
-        }
+            } //else {
+              //$userInfo["ERR_education"] = "Education info is too long.";
+            //}
+          } //else {
+            //$userInfo["ERR_education"] = "Please enter your education.";
+          //}
+        } //else {
+          //$userInfo["ERR_education"] = "Please enter your education.";
+        //}
 
         // work
         if (isset($_POST["work"])) {
           if (!empty($_POST["work"])) {
             if (strlen($_POST["work"]) < 255) {
               $userInfo["work"] = $_POST["work"];
-            } else {
-              $userInfo["ERR_work"] = "Work info is too long.";
-            }
-          } else {
-            $userInfo["ERR_work"] = "Please enter your work.";
-          }
-        } else {
-          $userInfo["ERR_work"] = "Please enter your work.";
-        }
+            } //else {
+              //$userInfo["ERR_work"] = "Work info is too long.";
+            //}
+          } //else {
+            //$userInfo["ERR_work"] = "Please enter your work.";
+          //}
+        } //else {
+          //$userInfo["ERR_work"] = "Please enter your work.";
+        //}
 
         // location
         if (isset($_POST["location"])) {
           if (!empty($_POST["location"])) {
             if (strlen($_POST["location"]) < 255) {
               $userInfo["location"] = $_POST["location"];
-            } else {
-              $userInfo["ERR_location"] = "Location info is too long.";
-            }
-          } else {
-            $userInfo["ERR_location"] = "Please enter your location.";
-          }
-        } else {
-          $userInfo["ERR_location"] = "Please enter your location.";
-        }
+            } //else {
+              //$userInfo["ERR_location"] = "Location info is too long.";
+            //}
+          } //else {
+            //$userInfo["ERR_location"] = "Please enter your location.";
+          //}
+        } //else {
+          //$userInfo["ERR_location"] = "Please enter your location.";
+        //}
 
         // location
         if (isset($_POST["description"])) {
           if (!empty($_POST["description"])) {
             if (strlen($_POST["description"]) < 65535) {
               $userInfo["description"] = $_POST["description"];
-            } else {
-              $userInfo["ERR_description"] = "Description info is too long.";
-            }
-          } else {
-            $userInfo["ERR_description"] = "Please enter your description.";
-          }
-        } else {
-          $userInfo["ERR_description"] = "Please enter your description.";
-        }
+            } //else {
+              //$userInfo["ERR_description"] = "Description info is too long.";
+            //}
+          } //else {
+            //$userInfo["ERR_description"] = "Please enter your description.";
+          //}
+        } //else {
+          //$userInfo["ERR_description"] = "Please enter your description.";
+        //}
 
 
-        echo "<br>";
-        echo "<pre>";
-        print_r($userInfo);
-        //var_dump($userInfo);
-        echo "</pre>";
+        // echo "<br>";
+        // echo "<pre>";
+        // print_r($userInfo);
+        // //var_dump($userInfo);
+        // echo "</pre>";
 
-        if (empty($userInfo["ERR_profile_img"]) && empty($userInfo["ERR_birthday"]) &&
-        empty($userInfo["ERR_gender"]) && empty($userInfo["ERR_education"]) &&
-        empty($userInfo["ERR_work"]) && empty($userInfo["ERR_location"]) &&
-        empty($userInfo["ERR_description"])) {
+        // if (empty($userInfo["ERR_profile_img"]) && empty($userInfo["ERR_birthday"]) &&
+        // empty($userInfo["ERR_gender"]) && empty($userInfo["ERR_education"]) &&
+        // empty($userInfo["ERR_work"]) && empty($userInfo["ERR_location"]) &&
+        // empty($userInfo["ERR_description"])) {
 
           $userInfo["status"] = 1;
           $userInfo["profile_setup"] = 1;
@@ -253,9 +257,9 @@
             echo "Error";
           }
 
-        } else {
-          echo "profile Fail";
-        }
+        // } else {
+        //   echo "profile Fail";
+        // }
 
       } else {
 

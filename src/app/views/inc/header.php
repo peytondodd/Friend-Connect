@@ -1,3 +1,15 @@
+<?php
+  if (isLoggedIn()) {
+    $userProfileSetup = $this->userModel->findUserInfoById($_SESSION["user_id"])->profile_setup;
+    $postLogIn = 0;
+    $inSetup = 0;
+    if ($userProfileSetup == 1) {
+      $postLogIn = 1;
+    } else if ($userProfileSetup == 0) {
+      $inSetup = 1;
+    }
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,15 +23,5 @@
   crossorigin="anonymous"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
   </head>
-  <body>
-    <?php
-      if (isLoggedIn()) {
-        //dont show on profile set
-        $userProfileSetup = $this->userModel->findUserInfoById($_SESSION["user_id"])->profile_setup;
-        if ($userProfileSetup == 1) {
-            require APPROOT . "/views/inc/navbar.php";
-        }
-        //require APPROOT . "/views/inc/navbar.php";
-      }
-    ?>
-    <!-- <div class="container"> -->
+  <body <?php echo isset($inSetup) && $inSetup == 1  ? "style=overflow-x:hidden" : "";?>>
+    <?php isset($postLogIn) && $postLogIn == 1 ? require APPROOT . "/views/inc/navbar.php" : "";?>

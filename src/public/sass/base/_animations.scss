@@ -1,0 +1,196 @@
+
+// LEFT
+@keyframes fade-out-towards-left {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: .5;
+  }
+  50% {
+    opacity: .25
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-100%, -50%);
+  }
+}
+.fade-out-towards-left {
+  animation-name: fade-out-towards-left;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-out-towards-left-sm {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: .5;
+  }
+  50% {
+    opacity: .25
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+.fade-out-towards-left-sm {
+  animation-name: fade-out-towards-left-sm;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-in-towards-left {
+  0% {
+   opacity: 0;
+   transform: translate(+100%, -50%);
+  }
+  50% {
+   opacity: .25;
+  }
+  75% {
+   opacity: .5;
+  }
+  100%{
+   opacity: 1;
+   transform: translate(0, -50%);
+  }
+}
+.fade-in-towards-left {
+  animation-name: fade-in-towards-left;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-in-towards-left-sm {
+  0% {
+   opacity: 0;
+   transform: translate(+100%);
+  }
+  50% {
+   opacity: .25;
+  }
+  75% {
+   opacity: .5;
+  }
+  100%{
+   opacity: 1;
+   transform: translate(0);
+  }
+}
+
+.fade-in-towards-left-sm {
+  animation-name: fade-in-towards-left-sm;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+// RIGHT
+@keyframes fade-out-towards-right {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: .5;
+  }
+  50% {
+    opacity: .25
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(+100%, -50%);
+  }
+}
+.fade-out-towards-right {
+  animation-name: fade-out-towards-right;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-out-towards-right-sm {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: .5;
+  }
+  50% {
+    opacity: .25
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(+100%);
+  }
+}
+.fade-out-towards-right-sm {
+  animation-name: fade-out-towards-right-sm;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-in-towards-right {
+  0% {
+   opacity: 0;
+   transform: translate(-100%, -50%);
+  }
+  50% {
+   opacity: .25;
+  }
+  75% {
+   opacity: .5;
+  }
+  100%{
+   opacity: 1;
+   transform: translate(0, -50%);
+  }
+}
+.fade-in-towards-right {
+  animation-name: fade-in-towards-right;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-in-towards-right-sm {
+  0% {
+   opacity: 0;
+   transform: translate(-100%);
+  }
+  50% {
+   opacity: .25;
+  }
+  75% {
+   opacity: .5;
+  }
+  100%{
+   opacity: 1;
+   transform: translate(0);
+  }
+}
+
+.fade-in-towards-right-sm {
+  animation-name: fade-in-towards-right-sm;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}

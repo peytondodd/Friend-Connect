@@ -77,6 +77,7 @@
       $this->db->query("UPDATE user_info SET
                         status = :status,
                         profile_img = :profile_img,
+                        profile_img_id = :profile_img_id,
                         birthday = :birthday,
                         gender = :gender,
                         education = :education,
@@ -88,6 +89,7 @@
       $this->db->bind(":user_id", $_SESSION["user_id"]);
       $this->db->bind(":status", $userInfo["status"]);
       $this->db->bind(":profile_img", $userInfo["profile_img"]);
+      $this->db->bind(":profile_img_id", $userInfo["profile_img_id"]);
       $this->db->bind(":birthday", $userInfo["birthday"]);
       $this->db->bind(":gender", $userInfo["gender"]);
       $this->db->bind(":education", $userInfo["education"]);
