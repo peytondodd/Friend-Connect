@@ -6316,6 +6316,11 @@ a.text-dark:hover, a.text-dark:focus {
   .profileSetupPage-introBtn {
     width: 120px; } }
 
+@media (max-width: 320px) {
+  .profileSetupPage1 {
+    top: 20px;
+    transform: translateY(0); } }
+
 @media (max-height: 900px) {
   .profileSetupPage1 {
     padding: 40px 10px; }

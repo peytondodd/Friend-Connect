@@ -384,7 +384,11 @@ var profileSetupPage = (function() {
   psp3back.addEventListener("click", pspBack);
 
   if (page1.style.display = "block") {
-    profileSetupPage.style.height = "100vh";
+    if (window.innerHeight <= 575) {
+      profileSetupPage.style.height = "675px";
+    } else {
+      profileSetupPage.style.height = "100vh";
+    }
   }
 
   //page 2 image selectors
@@ -437,9 +441,9 @@ var profileSetupPage = (function() {
       targetPage = page2;
     }
     var fadein = window.innerHeight <= 825 ?
-                  currentPage != page2 ?
+                  // currentPage != page2 ?
+                  //   "fade-in-towards-right-sm" :
                     "fade-in-towards-right-sm" :
-                    "fade-in-towards-right" :
                 "fade-in-towards-right";
     var fadeout = window.innerHeight <= 1065 ?
                     (window.innerHeight <= 825 && currentPage == page2) || currentPage == page3 ?
@@ -458,7 +462,9 @@ var profileSetupPage = (function() {
 
     //resize background mobile
     if (targetPage == page1) {
-      profileSetupPage.style.height = "100vh";
+      if (window.innerHeight <= 575) {
+        profileSetupPage.style.height = "675px";
+      }
     } else if (targetPage == page2) {
       if (window.innerHeight <= 825) {
         profileSetupPage.style.height = "825px";
@@ -484,7 +490,7 @@ var profileSetupPage = (function() {
                       "fade-in-towards-left-sm" :
                       "fade-in-towards-left" :
                 "fade-in-towards-left";
-    var fadeout = window.innerHeight <= 825 && currentPage != page1?
+    var fadeout = window.innerHeight <= 825?
                 "fade-out-towards-left-sm" :
                 "fade-out-towards-left";
 

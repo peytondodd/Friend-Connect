@@ -25,7 +25,7 @@
 						<input class="btn btn-success mb-3" type="button" name="setUpNow" value="Set Up Now">
 					</div>
 					<div class="col-sm-6">
-						<input class="btn btn-danger" type="button" name="setUpLater" value="Set Up Later">
+						<input class="btn btn-danger" type="submit" name="submit" value="Set Up Later">
 					</div>
 				</div>
 			</div>
