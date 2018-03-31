@@ -158,12 +158,11 @@
       return $rows;
     }
 
-
-
-    //GET ALL USER_INFO
+    // GET ALL USER_INFO
     public function getAllUser_Info() {
 
     }
+
 
   }
 

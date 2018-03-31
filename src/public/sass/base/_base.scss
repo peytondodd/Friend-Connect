@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  //font-size: 62.5%; // 10/default 16px = 1rem = 10px //bootstrap ruined
+  font-size: 16px; //this is default
+}
+
+body {
+  box-sizing: border-box;
+}
+
+//Variables
+$one-rem: .625rem;

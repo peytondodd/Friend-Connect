@@ -17,10 +17,12 @@
       if ($this->userModel->findUserById($id)) {
         if ($this->userModel->findUserInfoById($id)) {
 
+          // USER INFO AND DETAILS
           $user = $this->userModel->findUserById($id);
           $userInfo = $this->userModel->findUserInfoById($id);
           $status = "";
 
+          // FRIEND STATUS
           if ($user->id != $_SESSION["user_id"]) {
             $friendStatus = $this->friendModel->checkFriendStatus($_SESSION["user_id"], $user->id);
             if ($friendStatus != false) {
@@ -33,21 +35,72 @@
           }
           //["accept", "friends", "pending", "no access", "add friend", "unblock"]
 
+          // FRIEND LIST
+          $friend_list = [];
+          $friends = $this->friendModel->friendListOfUser($id);
+          if ($friends) {
+            foreach($friends as $value) {
+              // find friend id
+              if ($value->user_one == $id) {
+                $friend_id = $value->user_two;
+              } elseif ($value->user_two == $id) {
+                $friend_id = $value->user_one;
+              }
+              // find friend info
+              $friend_name = $this->userModel->findUserById($friend_id);
+              $friend_info = $this->userModel->findUserInfoById($friend_id);
+              // gether friend data
+              $friend = new stdClass();
+              $friend->friend_id = $friend_id;
+              $friend->friend_name = ucwords($friend_name->first_name. " " .$friend_name->last_name);
+              $friend->profile_img = $this->getProfileImgSrc($friend_id, $friend_info->profile_img, $friend_info->profile_img_id);
+
+              // push into friend list array
+              $friend_list[] = $friend;
+            }
+
+            $numberOfFriends = count($friend_list);
+            $numberDisplayed = [];
+            if ($numberOfFriends <= 6) {
+              do {
+                $i = rand(0, $numberOfFriends-1);
+                if (!in_array($i, $numberDisplayed)) {
+                  $numberDisplayed[] = $i;
+                }
+              } while(count($numberDisplayed) != $numberOfFriends);
+            } else {
+              do {
+                $i = rand(0, $numberOfFriends-1);
+                if (!in_array($i, $numberDisplayed)) {
+                  $numberDisplayed[] = $i;
+                }
+              } while(count($numberDisplayed) < 6);
+            }
+            for ($i = 0; $i < count($numberDisplayed); $i++) {
+              $friend_list_short[] = $friend_list[$numberDisplayed[$i]];
+            }
+          } else {
+            $friend_list_short = false;
+          }
+
+
           $data = [
             "id" => $user->id,
             "first_name" => $user->first_name,
             "last_name" => $user->last_name,
             "status" => $userInfo->status,
-            "profile_img" => $userInfo->profile_img,
+            "profile_img" => $this->getProfileImgSrc($id, $userInfo->profile_img, $userInfo->profile_img_id),
             "birthday" => $userInfo->birthday,
             "gender" => $userInfo->gender,
             "education" => $userInfo->education,
             "work" => $userInfo->work,
             "location" => $userInfo->location,
             "description" => $userInfo->description,
-            "friend_status" => $status."hi"
+            "friend_status" => $status."hi",
+            "friend_total" => $numberOfFriends,
+            "friend_list" => $friend_list_short
           ];
-          sleep(2);
+
           $this->view("profile/profile", $data);
         } else {
           echo "user not found details";
@@ -58,6 +111,25 @@
       }
 
 
+    }
+
+    public function getProfileImgSrc($profileId, $profileImg, $profileImgId) {
+      if ($profileImg == 1) {
+          $ext = array("jpeg", "jpg", "png", "bmp", "gif");
+          $found = false;
+          $i = 0;
+          do {
+            if (file_exists("user_data/".$profileId."/profile.".$profileId.".".$ext[$i])) {
+              $found = true;
+              $ext = $ext[$i];
+            } else {
+              $i++;
+            }
+          } while (!$found && $i < 5);
+          return $profileId . "/profile." . $profileId . "." . $ext;
+      }elseif ($profileImg == 0) {
+        return "default/default-profile-" . $profileImgId . ".jpg";
+      }
     }
 
 

@@ -1,12 +1,15 @@
-//import vendors
-@import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+
+//base
+@import "base/_base.scss";
+@import "base/_animations.scss";
+@import "base/_typography.scss";
 
 //layout
 @import "layout/_indexPage.scss";
 @import "layout/_registerPage.scss";
 @import "layout/_loginPage.scss";
 @import "layout/_profileSetupPage.scss";
+@import "layout/_profilePage.scss";
 
-//base
-@import "base/_animations.scss";
-@import "base/_typography.scss";
+//import vendors
+@import "../../../node_modules/bootstrap/scss/bootstrap.scss";

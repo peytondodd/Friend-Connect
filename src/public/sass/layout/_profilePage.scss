@@ -1,0 +1,94 @@
+.profilePage {
+  &__profileImage {
+    width: 100%;
+    //padding-bottom: 100%;
+    max-height: calc(#{$one-rem} * 25.5);
+    overflow-y: hidden;
+    border: .5rem solid #DDD;
+    &--img {
+      width: 100%;
+      //height: calc(#{$one-rem} * 20);
+    }
+  }
+  &__description {
+
+  }
+  &__profileInfo {
+    //height: calc(#{$one-rem} * 40);
+    height: auto;
+    width: 100%;
+    background-color: lightgray;
+  }
+  &__userFriends {
+
+    &--img {
+      width: 100%;
+    }
+    &--name {
+      color: white;
+      position: absolute;
+      bottom: 0;
+    }
+    &--box {
+      max-height: calc(#{$one-rem} * 11.6);
+      overflow-y: hidden;
+      padding: 0 !important;
+    }
+    &--row {
+      padding: 0 calc(#{$one-rem} * 1.6);
+    }
+  }
+  &__inputPost {
+    width: 100%;
+    height: calc(#{$one-rem} * 30);
+    background-color: green;
+  }
+  &__displayPost {
+    width: 100%;
+    height: calc(#{$one-rem} * 80);
+    background-color: pink;
+  }
+
+}
+
+@media (max-width: 1199px) {
+  .profilePage {
+    &__profileImage {
+      max-height: calc(#{$one-rem} * 21);
+    }
+    &__userFriends {
+      &--box {
+        max-height: calc(#{$one-rem} * 9.6);
+      }
+    }
+  }
+
+}
+@media (max-width: 991px) {
+  .profilePage {
+    &__profileImage {
+      max-height: calc(#{$one-rem} * 15);
+    }
+    &__userFriends {
+      &--box {
+        max-height: calc(#{$one-rem} * 6.9);
+      }
+    }
+  }
+
+}
+@media (max-width: 767px) {
+  .profilePage {
+    &__profileImage {
+      //max-height: calc(#{$one-rem} * 21);
+      padding-bottom: 100%;
+    }
+    &__userFriends {
+      &--box {
+        //max-height: calc(#{$one-rem} * 16.9);
+        padding-bottom: 33.33% !important;
+      }
+    }
+  }
+
+}

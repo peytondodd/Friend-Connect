@@ -1,3 +1,660 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit; }
+
+html {
+  font-size: 16px; }
+
+body {
+  box-sizing: border-box; }
+
+@keyframes fade-out-towards-left {
+  0% {
+    opacity: 1; }
+  25% {
+    opacity: .5; }
+  50% {
+    opacity: .25; }
+  75% {
+    opacity: 0; }
+  100% {
+    opacity: 0;
+    transform: translate(-100%, -50%); } }
+
+.fade-out-towards-left {
+  animation-name: fade-out-towards-left;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards; }
+
+@keyframes fade-out-towards-left-sm {
+  0% {
+    opacity: 1; }
+  25% {
+    opacity: .5; }
+  50% {
+    opacity: .25; }
+  75% {
+    opacity: 0; }
+  100% {
+    opacity: 0;
+    transform: translateX(-100%); } }
+
+.fade-out-towards-left-sm {
+  animation-name: fade-out-towards-left-sm;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards; }
+
+@keyframes fade-in-towards-left {
+  0% {
+    opacity: 0;
+    transform: translate(100%, -50%); }
+  50% {
+    opacity: .25; }
+  75% {
+    opacity: .5; }
+  100% {
+    opacity: 1;
+    transform: translate(0, -50%); } }
+
+.fade-in-towards-left {
+  animation-name: fade-in-towards-left;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards; }
+
+@keyframes fade-in-towards-left-sm {
+  0% {
+    opacity: 0;
+    transform: translate(100%); }
+  50% {
+    opacity: .25; }
+  75% {
+    opacity: .5; }
+  100% {
+    opacity: 1;
+    transform: translate(0); } }
+
+.fade-in-towards-left-sm {
+  animation-name: fade-in-towards-left-sm;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards; }
+
+@keyframes fade-out-towards-right {
+  0% {
+    opacity: 1; }
+  25% {
+    opacity: .5; }
+  50% {
+    opacity: .25; }
+  75% {
+    opacity: 0; }
+  100% {
+    opacity: 0;
+    transform: translate(100%, -50%); } }
+
+.fade-out-towards-right {
+  animation-name: fade-out-towards-right;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards; }
+
+@keyframes fade-out-towards-right-sm {
+  0% {
+    opacity: 1; }
+  25% {
+    opacity: .5; }
+  50% {
+    opacity: .25; }
+  75% {
+    opacity: 0; }
+  100% {
+    opacity: 0;
+    transform: translateX(100%); } }
+
+.fade-out-towards-right-sm {
+  animation-name: fade-out-towards-right-sm;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards; }
+
+@keyframes fade-in-towards-right {
+  0% {
+    opacity: 0;
+    transform: translate(-100%, -50%); }
+  50% {
+    opacity: .25; }
+  75% {
+    opacity: .5; }
+  100% {
+    opacity: 1;
+    transform: translate(0, -50%); } }
+
+.fade-in-towards-right {
+  animation-name: fade-in-towards-right;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards; }
+
+@keyframes fade-in-towards-right-sm {
+  0% {
+    opacity: 0;
+    transform: translate(-100%); }
+  50% {
+    opacity: .25; }
+  75% {
+    opacity: .5; }
+  100% {
+    opacity: 1;
+    transform: translate(0); } }
+
+.fade-in-towards-right-sm {
+  animation-name: fade-in-towards-right-sm;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards; }
+
+.size-30px {
+  font-size: 30px !important; }
+
+.index {
+  height: 100vh;
+  margin-right: 0;
+  margin-left: 0; }
+
+.register {
+  width: 320px;
+  height: 375px;
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 0;
+  margin: 0 auto; }
+
+.logo-black {
+  width: 50px;
+  height: auto; }
+
+.logo-white {
+  width: 50px;
+  height: auto;
+  display: none; }
+
+.logo-container {
+  height: 50px; }
+
+.login-hide {
+  display: none;
+  transform: translateY(8px); }
+
+.confirm-email {
+  display: none; }
+
+.confirm-password {
+  display: none; }
+
+.mobile-launch {
+  display: none; }
+
+.register-submit {
+  width: 320px; }
+
+.slogan {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%); }
+
+.slogan h3 {
+  margin-bottom: 50px;
+  color: white;
+  text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; }
+
+.gallery {
+  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.8)), url("https://source.unsplash.com/random") no-repeat center;
+  background-size: cover; }
+
+.about {
+  height: 675px;
+  padding-top: 100px; }
+  .about-content {
+    width: 500px;
+    margin: 0 auto; }
+
+.login {
+  max-width: 445px;
+  margin: 0 auto; }
+
+.haveAccount {
+  transform: translateY(8px); }
+
+.about-btn-box {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100px;
+  cursor: pointer; }
+
+.about-btn {
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-top: 75px solid #28a745; }
+
+.about-btn-box:hover > .about-btn {
+  border-top: 75px solid green;
+  transform: translateY(25px);
+  transition: 1s; }
+
+@media (max-width: 992px) {
+  .login {
+    display: none; }
+    .login-hide {
+      display: inline; } }
+
+@media (max-width: 767px) {
+  .index {
+    height: auto; }
+  .gallery {
+    order: 2;
+    height: 455px; }
+  .slogan {
+    top: 27.5%; }
+  .forms {
+    order: 1;
+    height: 560px; }
+  .register {
+    top: 5%; }
+  .login-hide {
+    display: inline; }
+  .about-btn-box {
+    display: none; } }
+
+@media (max-width: 576px) {
+  .logo-box {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto; }
+  .logo-black {
+    display: none; }
+  .logo-white {
+    display: block;
+    margin: 0 auto; }
+  .logo-container {
+    height: 50px; }
+  .login-hide {
+    display: none; }
+  .registerform {
+    display: none; }
+  .form-title, .form-desc {
+    text-align: center; }
+  .mobile-launch {
+    display: block;
+    width: 295px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 40px;
+    margin: 0 auto; }
+  .mobile-launch a {
+    margin: 0 10px; }
+  .forms {
+    height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("https://source.unsplash.com/random") no-repeat center;
+    background-size: cover;
+    color: white; }
+  .gallery {
+    display: none; }
+  .about {
+    display: none; } }
+
+@media (max-height: 700px) {
+  .login {
+    display: none; }
+  .slogan {
+    top: 20%; }
+  .register {
+    position: absolute;
+    top: 5%;
+    height: 375px; } }
+
+@media (max-height: 460px) {
+  .register {
+    top: 5%; }
+  .index {
+    max-height: 455px; } }
+
+.registerPage {
+  width: 320px;
+  height: 375px;
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 0;
+  margin: 0 auto; }
+
+.registerPage-logo-black {
+  width: 50px;
+  height: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto; }
+
+.smile-emoji {
+  width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto; }
+
+.registerSuccess {
+  height: 600px;
+  padding: 0 10px; }
+
+.successLogIn {
+  display: block;
+  margin: 0 auto; }
+
+@media (max-height: 950px) {
+  .registerPage {
+    top: 25%; } }
+
+@media (max-height: 750px) {
+  .registerPage {
+    top: 20%; } }
+
+@media (max-height: 640px) {
+  .registerPage {
+    top: 5%; } }
+
+@media (max-width: 400px) {
+  .registerPage {
+    width: 280px; }
+  .register-submit {
+    width: 280px; } }
+
+.loginPage {
+  width: 320px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 25%; }
+
+.loginPageForm {
+  width: 100%; }
+
+.loginPageProfile {
+  width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  clip-path: circle(70px at center); }
+
+@media (max-width: 400px) {
+  .loginPage {
+    width: 280px; } }
+
+@media (max-height: 700px) {
+  .loginPage {
+    top: 15%; } }
+
+@media (max-height: 600px) {
+  .loginPage {
+    top: 10%;
+    height: 650px; } }
+
+.profileSetupPage-bg {
+  height: 100vh;
+  padding: 0 20px;
+  overflow: hidden; }
+
+.profileSetupPage-logo {
+  width: 100px;
+  height: auto;
+  display: block;
+  margin: 0 auto 15px; }
+
+.profileSetupPage1 {
+  max-width: 1000px;
+  height: auto;
+  padding: 90px 10px 0;
+  border-radius: 25px;
+  border: 1px solid black;
+  box-shadow: 0 10px 20px black;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 50%;
+  transform: translateY(-50%); }
+
+.profileSetupPage-introBtn {
+  width: 260px;
+  margin: 0 auto 100px; }
+
+.psp1-mb {
+  margin-bottom: 40px; }
+
+@media (max-width: 1040px) {
+  .profileSetupPage1 {
+    margin: 0 20px; } }
+
+@media (max-width: 575px) {
+  .profileSetupPage-introBtn {
+    width: 120px; } }
+
+@media (max-width: 320px) {
+  .profileSetupPage1 {
+    top: 20px;
+    transform: translateY(0); } }
+
+@media (max-height: 900px) {
+  .profileSetupPage1 {
+    padding: 40px 10px; }
+  .profileSetupPage-introBtn {
+    margin-bottom: 20px; } }
+
+@media (max-height: 800px) {
+  .profileSetupPage1 {
+    padding: 20px 10px; }
+  .profileSetupPage-introBtn {
+    margin-bottom: 5px; }
+  .psp1-mb {
+    margin-bottom: 30px; } }
+
+@media (max-height: 700px) {
+  .profileSetupPage1 {
+    padding: 20px 5px; }
+  .profileSetupPage-introBtn {
+    margin-bottom: 2px; }
+  .psp1-mb {
+    margin-bottom: 10px; } }
+
+.profileSetupPage2 {
+  max-width: 1000px;
+  height: auto;
+  padding: 40px 20px 20px;
+  border-radius: 25px;
+  border: 1px solid black;
+  box-shadow: 0 10px 20px black;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 50%;
+  transform: translateY(-50%); }
+  .profileSetupPage2-profileIMG {
+    width: 100%;
+    height: auto; }
+    .profileSetupPage2-profileIMGContainer {
+      max-height: 250px;
+      overflow: hidden; }
+  .profileSetupPage2-profileSelector {
+    width: 100%;
+    max-height: 300px;
+    background-color: #DDD;
+    margin-bottom: 20px;
+    overflow-y: auto; }
+  .profileSetupPage2-selectorIMG {
+    width: 100%; }
+    .profileSetupPage2-selectorIMG-row {
+      margin: 0; }
+    .profileSetupPage2-selectorIMG-col {
+      border: 1px solid black;
+      padding: 10px;
+      cursor: pointer; }
+    .profileSetupPage2-selectorIMG-col:hover {
+      background-color: #28a745; }
+  .profileSetupPage2-img_input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1; }
+
+.psp2-mb {
+  margin-bottom: 40px; }
+
+.psp2-back {
+  text-decoration: underline; }
+
+.psp2-back:hover {
+  cursor: pointer; }
+
+@media (max-width: 1050px) {
+  .profileSetupPage2 {
+    margin: 0 20px; } }
+
+@media (max-width: 575px) {
+  .profileSetupPage2 {
+    padding: 20px 10px 10px; }
+    .profileSetupPage2-profileIMG {
+      max-width: 200px;
+      height: auto;
+      display: block;
+      margin: 0 auto; }
+    .profileSetupPage2-profileSelector {
+      height: 200px;
+      max-width: 225px;
+      margin: 0 auto; }
+    .profileSetupPage2-profileUploader {
+      width: 226px;
+      margin: 0 auto; }
+  .psp2-mb {
+    margin-bottom: 5px; } }
+
+@media (max-height: 825px) {
+  .profileSetupPage-bg {
+    height: 825px; }
+  .profileSetupPage2 {
+    top: 20px;
+    transform: translateY(0); } }
+
+.profileSetupPage3 {
+  max-width: 1000px;
+  height: auto;
+  padding: 40px 20px 20px;
+  border-radius: 25px;
+  border: 1px solid black;
+  box-shadow: 0 10px 20px black;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 50%;
+  transform: translateY(-50%); }
+
+.psp3-back {
+  text-decoration: underline; }
+
+.psp3-back:hover {
+  cursor: pointer; }
+
+@media (max-width: 1050px) {
+  .profileSetupPage3 {
+    margin: 0 20px; } }
+
+@media (max-height: 1065px) {
+  .profileSetupPage-bg {
+    height: 1065px; }
+  .profileSetupPage3 {
+    top: 20px;
+    transform: translateY(0); } }
+
+.profileSetupPage1 {
+  display: block; }
+
+.profileSetupPage2 {
+  display: none; }
+
+.profileSetupPage3 {
+  display: none; }
+
+.profilePage__profileImage {
+  width: 100%;
+  max-height: calc(0.625rem * 25.5);
+  overflow-y: hidden;
+  border: .5rem solid #DDD; }
+  .profilePage__profileImage--img {
+    width: 100%; }
+
+.profilePage__profileInfo {
+  height: auto;
+  width: 100%;
+  background-color: lightgray; }
+
+.profilePage__userFriends--img {
+  width: 100%; }
+
+.profilePage__userFriends--name {
+  color: white;
+  position: absolute;
+  bottom: 0; }
+
+.profilePage__userFriends--box {
+  max-height: calc(0.625rem * 11.6);
+  overflow-y: hidden;
+  padding: 0 !important; }
+
+.profilePage__userFriends--row {
+  padding: 0 calc(0.625rem * 1.6); }
+
+.profilePage__inputPost {
+  width: 100%;
+  height: calc(0.625rem * 30);
+  background-color: green; }
+
+.profilePage__displayPost {
+  width: 100%;
+  height: calc(0.625rem * 80);
+  background-color: pink; }
+
+@media (max-width: 1199px) {
+  .profilePage__profileImage {
+    max-height: calc(0.625rem * 21); }
+  .profilePage__userFriends--box {
+    max-height: calc(0.625rem * 9.6); } }
+
+@media (max-width: 991px) {
+  .profilePage__profileImage {
+    max-height: calc(0.625rem * 15); }
+  .profilePage__userFriends--box {
+    max-height: calc(0.625rem * 6.9); } }
+
+@media (max-width: 767px) {
+  .profilePage__profileImage {
+    padding-bottom: 100%; }
+  .profilePage__userFriends--box {
+    padding-bottom: 33.33% !important; } }
+
 /*!
  * Bootstrap v4.0.0 (https://getbootstrap.com)
  * Copyright 2011-2018 The Bootstrap Authors
@@ -6025,592 +6682,3 @@ a.text-dark:hover, a.text-dark:focus {
   .table-bordered th,
   .table-bordered td {
     border: 1px solid #ddd !important; } }
-
-.index {
-  height: 100vh;
-  margin-right: 0;
-  margin-left: 0; }
-
-.register {
-  width: 320px;
-  height: 375px;
-  position: absolute;
-  top: 30%;
-  left: 0;
-  right: 0;
-  margin: 0 auto; }
-
-.logo-black {
-  width: 50px;
-  height: auto; }
-
-.logo-white {
-  width: 50px;
-  height: auto;
-  display: none; }
-
-.logo-container {
-  height: 50px; }
-
-.login-hide {
-  display: none;
-  transform: translateY(8px); }
-
-.confirm-email {
-  display: none; }
-
-.confirm-password {
-  display: none; }
-
-.mobile-launch {
-  display: none; }
-
-.register-submit {
-  width: 320px; }
-
-.slogan {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translateX(-50%); }
-
-.slogan h3 {
-  margin-bottom: 50px;
-  color: white;
-  text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; }
-
-.gallery {
-  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.8)), url("https://source.unsplash.com/random") no-repeat center;
-  background-size: cover; }
-
-.about {
-  height: 675px;
-  padding-top: 100px; }
-  .about-content {
-    width: 500px;
-    margin: 0 auto; }
-
-.login {
-  max-width: 445px;
-  margin: 0 auto; }
-
-.haveAccount {
-  transform: translateY(8px); }
-
-.about-btn-box {
-  position: absolute;
-  bottom: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 100px;
-  cursor: pointer; }
-
-.about-btn {
-  width: 0;
-  height: 0;
-  border-left: 50px solid transparent;
-  border-right: 50px solid transparent;
-  border-top: 75px solid #28a745; }
-
-.about-btn-box:hover > .about-btn {
-  border-top: 75px solid green;
-  transform: translateY(25px);
-  transition: 1s; }
-
-@media (max-width: 992px) {
-  .login {
-    display: none; }
-    .login-hide {
-      display: inline; } }
-
-@media (max-width: 767px) {
-  .index {
-    height: auto; }
-  .gallery {
-    order: 2;
-    height: 455px; }
-  .slogan {
-    top: 27.5%; }
-  .forms {
-    order: 1;
-    height: 560px; }
-  .register {
-    top: 5%; }
-  .login-hide {
-    display: inline; }
-  .about-btn-box {
-    display: none; } }
-
-@media (max-width: 576px) {
-  .logo-box {
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: 0 auto; }
-  .logo-black {
-    display: none; }
-  .logo-white {
-    display: block;
-    margin: 0 auto; }
-  .logo-container {
-    height: 50px; }
-  .login-hide {
-    display: none; }
-  .registerform {
-    display: none; }
-  .form-title, .form-desc {
-    text-align: center; }
-  .mobile-launch {
-    display: block;
-    width: 295px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 40px;
-    margin: 0 auto; }
-  .mobile-launch a {
-    margin: 0 10px; }
-  .forms {
-    height: 100vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("https://source.unsplash.com/random") no-repeat center;
-    background-size: cover;
-    color: white; }
-  .gallery {
-    display: none; }
-  .about {
-    display: none; } }
-
-@media (max-height: 700px) {
-  .login {
-    display: none; }
-  .slogan {
-    top: 20%; }
-  .register {
-    position: absolute;
-    top: 5%;
-    height: 375px; } }
-
-@media (max-height: 460px) {
-  .register {
-    top: 5%; }
-  .index {
-    max-height: 455px; } }
-
-.registerPage {
-  width: 320px;
-  height: 375px;
-  position: absolute;
-  top: 30%;
-  left: 0;
-  right: 0;
-  margin: 0 auto; }
-
-.registerPage-logo-black {
-  width: 50px;
-  height: auto;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto; }
-
-.smile-emoji {
-  width: 200px;
-  height: auto;
-  display: block;
-  margin: 0 auto; }
-
-.registerSuccess {
-  height: 600px;
-  padding: 0 10px; }
-
-.successLogIn {
-  display: block;
-  margin: 0 auto; }
-
-@media (max-height: 950px) {
-  .registerPage {
-    top: 25%; } }
-
-@media (max-height: 750px) {
-  .registerPage {
-    top: 20%; } }
-
-@media (max-height: 640px) {
-  .registerPage {
-    top: 5%; } }
-
-@media (max-width: 400px) {
-  .registerPage {
-    width: 280px; }
-  .register-submit {
-    width: 280px; } }
-
-.loginPage {
-  width: 320px;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  top: 25%; }
-
-.loginPageForm {
-  width: 100%; }
-
-.loginPageProfile {
-  width: 200px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  clip-path: circle(70px at center); }
-
-@media (max-width: 400px) {
-  .loginPage {
-    width: 280px; } }
-
-@media (max-height: 700px) {
-  .loginPage {
-    top: 15%; } }
-
-@media (max-height: 600px) {
-  .loginPage {
-    top: 10%;
-    height: 650px; } }
-
-.profileSetupPage-bg {
-  height: 100vh;
-  padding: 0 20px;
-  overflow: hidden; }
-
-.profileSetupPage-logo {
-  width: 100px;
-  height: auto;
-  display: block;
-  margin: 0 auto 15px; }
-
-.profileSetupPage1 {
-  max-width: 1000px;
-  height: auto;
-  padding: 90px 10px 0;
-  border-radius: 25px;
-  border: 1px solid black;
-  box-shadow: 0 10px 20px black;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  top: 50%;
-  transform: translateY(-50%); }
-
-.profileSetupPage-introBtn {
-  width: 260px;
-  margin: 0 auto 100px; }
-
-.psp1-mb {
-  margin-bottom: 40px; }
-
-@media (max-width: 1040px) {
-  .profileSetupPage1 {
-    margin: 0 20px; } }
-
-@media (max-width: 575px) {
-  .profileSetupPage-introBtn {
-    width: 120px; } }
-
-@media (max-width: 320px) {
-  .profileSetupPage1 {
-    top: 20px;
-    transform: translateY(0); } }
-
-@media (max-height: 900px) {
-  .profileSetupPage1 {
-    padding: 40px 10px; }
-  .profileSetupPage-introBtn {
-    margin-bottom: 20px; } }
-
-@media (max-height: 800px) {
-  .profileSetupPage1 {
-    padding: 20px 10px; }
-  .profileSetupPage-introBtn {
-    margin-bottom: 5px; }
-  .psp1-mb {
-    margin-bottom: 30px; } }
-
-@media (max-height: 700px) {
-  .profileSetupPage1 {
-    padding: 20px 5px; }
-  .profileSetupPage-introBtn {
-    margin-bottom: 2px; }
-  .psp1-mb {
-    margin-bottom: 10px; } }
-
-.profileSetupPage2 {
-  max-width: 1000px;
-  height: auto;
-  padding: 40px 20px 20px;
-  border-radius: 25px;
-  border: 1px solid black;
-  box-shadow: 0 10px 20px black;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  top: 50%;
-  transform: translateY(-50%); }
-  .profileSetupPage2-profileIMG {
-    width: 100%;
-    height: auto; }
-    .profileSetupPage2-profileIMGContainer {
-      max-height: 250px;
-      overflow: hidden; }
-  .profileSetupPage2-profileSelector {
-    width: 100%;
-    max-height: 300px;
-    background-color: #DDD;
-    margin-bottom: 20px;
-    overflow-y: auto; }
-  .profileSetupPage2-selectorIMG {
-    width: 100%; }
-    .profileSetupPage2-selectorIMG-row {
-      margin: 0; }
-    .profileSetupPage2-selectorIMG-col {
-      border: 1px solid black;
-      padding: 10px;
-      cursor: pointer; }
-    .profileSetupPage2-selectorIMG-col:hover {
-      background-color: #28a745; }
-  .profileSetupPage2-img_input {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1; }
-
-.psp2-mb {
-  margin-bottom: 40px; }
-
-.psp2-back {
-  text-decoration: underline; }
-
-.psp2-back:hover {
-  cursor: pointer; }
-
-@media (max-width: 1050px) {
-  .profileSetupPage2 {
-    margin: 0 20px; } }
-
-@media (max-width: 575px) {
-  .profileSetupPage2 {
-    padding: 20px 10px 10px; }
-    .profileSetupPage2-profileIMG {
-      max-width: 200px;
-      height: auto;
-      display: block;
-      margin: 0 auto; }
-    .profileSetupPage2-profileSelector {
-      height: 200px;
-      max-width: 225px;
-      margin: 0 auto; }
-    .profileSetupPage2-profileUploader {
-      width: 226px;
-      margin: 0 auto; }
-  .psp2-mb {
-    margin-bottom: 5px; } }
-
-@media (max-height: 825px) {
-  .profileSetupPage-bg {
-    height: 825px; }
-  .profileSetupPage2 {
-    top: 20px;
-    transform: translateY(0); } }
-
-.profileSetupPage3 {
-  max-width: 1000px;
-  height: auto;
-  padding: 40px 20px 20px;
-  border-radius: 25px;
-  border: 1px solid black;
-  box-shadow: 0 10px 20px black;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  top: 50%;
-  transform: translateY(-50%); }
-
-.psp3-back {
-  text-decoration: underline; }
-
-.psp3-back:hover {
-  cursor: pointer; }
-
-@media (max-width: 1050px) {
-  .profileSetupPage3 {
-    margin: 0 20px; } }
-
-@media (max-height: 1065px) {
-  .profileSetupPage-bg {
-    height: 1065px; }
-  .profileSetupPage3 {
-    top: 20px;
-    transform: translateY(0); } }
-
-.profileSetupPage1 {
-  display: block; }
-
-.profileSetupPage2 {
-  display: none; }
-
-.profileSetupPage3 {
-  display: none; }
-
-@keyframes fade-out-towards-left {
-  0% {
-    opacity: 1; }
-  25% {
-    opacity: .5; }
-  50% {
-    opacity: .25; }
-  75% {
-    opacity: 0; }
-  100% {
-    opacity: 0;
-    transform: translate(-100%, -50%); } }
-
-.fade-out-towards-left {
-  animation-name: fade-out-towards-left;
-  animation-duration: .3s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards; }
-
-@keyframes fade-out-towards-left-sm {
-  0% {
-    opacity: 1; }
-  25% {
-    opacity: .5; }
-  50% {
-    opacity: .25; }
-  75% {
-    opacity: 0; }
-  100% {
-    opacity: 0;
-    transform: translateX(-100%); } }
-
-.fade-out-towards-left-sm {
-  animation-name: fade-out-towards-left-sm;
-  animation-duration: .3s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards; }
-
-@keyframes fade-in-towards-left {
-  0% {
-    opacity: 0;
-    transform: translate(100%, -50%); }
-  50% {
-    opacity: .25; }
-  75% {
-    opacity: .5; }
-  100% {
-    opacity: 1;
-    transform: translate(0, -50%); } }
-
-.fade-in-towards-left {
-  animation-name: fade-in-towards-left;
-  animation-duration: .3s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards; }
-
-@keyframes fade-in-towards-left-sm {
-  0% {
-    opacity: 0;
-    transform: translate(100%); }
-  50% {
-    opacity: .25; }
-  75% {
-    opacity: .5; }
-  100% {
-    opacity: 1;
-    transform: translate(0); } }
-
-.fade-in-towards-left-sm {
-  animation-name: fade-in-towards-left-sm;
-  animation-duration: .3s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards; }
-
-@keyframes fade-out-towards-right {
-  0% {
-    opacity: 1; }
-  25% {
-    opacity: .5; }
-  50% {
-    opacity: .25; }
-  75% {
-    opacity: 0; }
-  100% {
-    opacity: 0;
-    transform: translate(100%, -50%); } }
-
-.fade-out-towards-right {
-  animation-name: fade-out-towards-right;
-  animation-duration: .3s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards; }
-
-@keyframes fade-out-towards-right-sm {
-  0% {
-    opacity: 1; }
-  25% {
-    opacity: .5; }
-  50% {
-    opacity: .25; }
-  75% {
-    opacity: 0; }
-  100% {
-    opacity: 0;
-    transform: translateX(100%); } }
-
-.fade-out-towards-right-sm {
-  animation-name: fade-out-towards-right-sm;
-  animation-duration: .3s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards; }
-
-@keyframes fade-in-towards-right {
-  0% {
-    opacity: 0;
-    transform: translate(-100%, -50%); }
-  50% {
-    opacity: .25; }
-  75% {
-    opacity: .5; }
-  100% {
-    opacity: 1;
-    transform: translate(0, -50%); } }
-
-.fade-in-towards-right {
-  animation-name: fade-in-towards-right;
-  animation-duration: .3s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards; }
-
-@keyframes fade-in-towards-right-sm {
-  0% {
-    opacity: 0;
-    transform: translate(-100%); }
-  50% {
-    opacity: .25; }
-  75% {
-    opacity: .5; }
-  100% {
-    opacity: 1;
-    transform: translate(0); } }
-
-.fade-in-towards-right-sm {
-  animation-name: fade-in-towards-right-sm;
-  animation-duration: .3s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards; }
-
-.size-30px {
-  font-size: 30px !important; }

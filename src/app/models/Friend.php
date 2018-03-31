@@ -47,7 +47,7 @@ class Friend {
 
     // check row
     if ($this->db->rowCount() > 0) {
-      return $row;
+      return $rows;
     } else {
       return false;
     }
@@ -62,7 +62,7 @@ class Friend {
 
     // check row
     if ($this->db->rowCount() > 0) {
-      return $row;
+      return $rows;
     } else {
       return false;
     }

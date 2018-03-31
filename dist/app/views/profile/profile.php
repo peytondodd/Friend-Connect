@@ -1,26 +1,145 @@
+<?php
+  // PROFILE IMAGE
+  $viewProfileImgSrc = $data["profile_img"];
+
+  //DESCRIPTION
+  if (strlen($data["description"]) > 100) {
+    $viewDescription = substr($data["description"], 0, 100). "... <a class='descReadMore' href=''>Read More</a>";
+  } else {
+    $viewDescription = $data["description"];
+  }
+
+  //BIRTHDAY
+  if ($data["birthday"] != 0000-00-00) {
+    $date = date_format(date_create($data["birthday"]), "M. d, Y");
+    $viewBirthday = $date;
+  } else {
+    $viewBirthday = "";
+  }
+
+  //GENDER
+  if ($data["gender"] == 1) {
+    $viewGender = "Male";
+  } else if ($data["gender"] == 2) {
+    $viewGender = "Female";
+  } else {
+    $viewGender = "";
+  }
+
+  //EDUCATION
+  $viewEducation = $data["education"];
+
+  //WORK
+  $viewWork = $data["work"];
+
+  //LOCATION
+  $viewLocation = $data["location"];
+
+  //FRIEND LIST
+  if ($data["friend_list"]) {
+    $totalFriends = $data["friend_total"];
+    $friendList = $data["friend_list"];
+    $numberOfFriends = count($friendList);
+    $friendListRow = count($friendList)/3 > 1 ? 2 : 1;
+  } else {
+    $numberOfFriends = 0;
+  }
+  // echo "<pre>";
+  // //echo $numberOfFriends;
+  // print_r($friendList);
+  // echo "</pre>";
+?>
+
 <?php require APPROOT . "/views/inc/header.php"; ?>
 
-<h1>Welcome to <?php echo $data["first_name"] . "'s profile."; ?></h1>
+<div class="container profilePage">
+  <div class="row">
+    <div class="col-md-3 mb-3">
+      <div class="profilePage__profileImage">
+        <img class="profilePage__profileImage--img" src="/user_data/<?php echo $viewProfileImgSrc; ?>" alt="profile picture">
+      </div>
+    </div>
+    <div class="col-md-9 mb-3">
+      <div class="row">
+        <div class="col-sm-6">
+          <h1><?php echo ucwords($data["first_name"]. " " .$data["last_name"]); ?></h1>
+        </div>
+        <div class="col-sm-6">
+          <input type="button" name="" value="Add Friend">
+        </div>
+      </div>
+      <div class="row">
+        <div class="profilePage__description">
+          <?php if (!empty($viewDescription)) : ?>
+            <p><?php echo $viewDescription; ?></p>
+          <?php endif; ?>
+        </div>
+      </div>
+      <div class="row">
+        <input type="button" name="" value="About">
+        <input type="button" name="" value="Photos">
+        <input type="button" name="" value="Friends">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <div class="profilePage__profileInfo">
+        <div class="profilePage__userDetails">
+          Birthday
+          <p><?php echo $viewBirthday; ?></p>
+          Gender
+          <p><?php echo $viewGender; ?></p>
+          Education
+          <p><?php echo $viewEducation; ?></p>
+          Work
+          <p><?php echo $viewWork; ?></p>
+          Location
+          <p><?php echo $viewLocation; ?></p>
+        </div>
+        <div class="profilePage__userFriends">
+          <p>Friends(<?php echo $totalFriends; ?>)</p>
+          <?php if ($numberOfFriends > 0) : ?>
+            <div class="row profilePage__userFriends--row">
+              <?php $num = 0; for ($i = 0; $i < $friendListRow; $i++) : ?>
+                <div class="row profilePage__userFriends--row">
+                  <?php for ($j = 0; $j < 3; $j++) : ?>
+                    <div class="col-4 profilePage__userFriends--box">
+                      <img class="profilePage__userFriends--img" src="/user_data/<?php echo $friendList[$num]->profile_img; ?>" alt="">
+                      <span class="profilePage__userFriends--name"><?php echo $friendList[$num]->friend_name; $num++; ?></span>
+                    </div>
+                  <?php endfor; ?>
+                </div>
+              <?php endfor; ?>
+            </div>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="row mb-3">
+        <div class="profilePage__inputPost">
 
-<?php if ($data["profile_img"] == 1) : ?>
+        </div>
+      </div>
+      <div class="row">
+        <div class="profilePage__displayPost">
 
-  <?php
-    $ext = array("jpeg", "jpg", "png");
-    $found = false;
-    $i = 0;
-    do {
-      if (file_exists("images/".$data['id']."/profile.".$data['id'].".".$ext[$i])) {
-        $found = true;
-      } else {
-        $i++;
-      }
-    } while (!$found)
-  ?>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <img src="/user_data/<?php echo $data['id']; ?>/profile.<?php echo $data['id'].".".$ext[$i]; ?>" alt="profile image">
-<?php elseif ($data["profile_img"] == 0) : ?>
-  <img src="/user_data/default-profile.jpeg" alt="profile image">
-<?php endif; ?>
+
+<script>
+  var user_descFull = "<?php echo $data["description"]; ?>";
+  var user_descShort = "<?php echo $viewDescription; ?>";
+</script>
+
+<!-- <h1>Welcome to <?php echo $data["first_name"] . "'s profile."; ?></h1>
+
+<img src="/user_data/<?php echo $profileImgSrc; ?>" alt="profile picture">
 
 <?php if ($data["status"] == 0) : ?>
   <p>Status: Offline</p>
@@ -59,10 +178,10 @@
       <input class="friendbtn" type="submit" name="" value="">
   <?php endif; ?>
 
-  </div>
+  </div> -->
 
 
-<script>
+<!-- <script>
 
   var btnContainer = document.querySelector(".btn-section");
   var viewedUserId = (window.location.href).split("/");
@@ -242,7 +361,7 @@ function failed(statusCode){
 }
 
 
-</script>
+</script> -->
 
 
 <?php require APPROOT . "/views/inc/footer.php"; ?>
