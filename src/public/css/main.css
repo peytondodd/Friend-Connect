@@ -600,11 +600,13 @@ body {
 
 .profilePage__profileImage {
   width: 100%;
-  max-height: calc(0.625rem * 25.5);
+  height: calc(0.625rem * 25.5);
   overflow-y: hidden;
   border: .5rem solid #DDD; }
   .profilePage__profileImage--img {
-    width: 100%; }
+    width: 100%;
+    height: 100%;
+    object-fit: cover; }
 
 .profilePage__profileInfo {
   height: auto;
@@ -612,17 +614,33 @@ body {
   background-color: lightgray; }
 
 .profilePage__userFriends--img {
-  width: 100%; }
+  width: 100%;
+  height: 100%;
+  object-fit: cover; }
 
 .profilePage__userFriends--name {
   color: white;
   position: absolute;
-  bottom: 0; }
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 1; }
 
 .profilePage__userFriends--box {
-  max-height: calc(0.625rem * 11.6);
+  height: calc(0.625rem * 11.6);
   overflow-y: hidden;
-  padding: 0 !important; }
+  padding: 0 !important;
+  border: 1px solid white;
+  overflow: hidden; }
+
+.profilePage__userFriends--box::after {
+  background: linear-gradient(transparent, black);
+  display: block;
+  position: relative;
+  width: 100%;
+  height: calc(0.625rem * 5.8);
+  margin-top: calc(0.625rem * -5.8);
+  content: ""; }
 
 .profilePage__userFriends--row {
   padding: 0 calc(0.625rem * 1.6); }
@@ -639,21 +657,46 @@ body {
 
 @media (max-width: 1199px) {
   .profilePage__profileImage {
-    max-height: calc(0.625rem * 21); }
+    height: calc(0.625rem * 21); }
   .profilePage__userFriends--box {
-    max-height: calc(0.625rem * 9.6); } }
+    height: calc(0.625rem * 9.6); }
+  .profilePage__userFriends--box::after {
+    height: calc(0.625rem * 4.8);
+    margin-top: calc(0.625rem * -4.8); } }
 
 @media (max-width: 991px) {
   .profilePage__profileImage {
-    max-height: calc(0.625rem * 15); }
+    height: calc(0.625rem * 15); }
   .profilePage__userFriends--box {
-    max-height: calc(0.625rem * 6.9); } }
+    height: calc(0.625rem * 6.9); }
+  .profilePage__userFriends--box::after {
+    height: calc(0.625rem * 3.45);
+    margin-top: calc(0.625rem * -3.45); } }
 
 @media (max-width: 767px) {
   .profilePage__profileImage {
-    padding-bottom: 100%; }
+    width: calc(0.625rem * 18);
+    height: calc(0.625rem * 18);
+    margin: 0 auto; }
   .profilePage__userFriends--box {
-    padding-bottom: 33.33% !important; } }
+    height: calc(0.625rem * 16.8); }
+  .profilePage__userFriends--box::after {
+    height: calc(0.625rem * 8.4);
+    margin-top: calc(0.625rem * -8.4); } }
+
+@media (max-width: 575px) {
+  .profilePage__userFriends--box {
+    height: calc(0.625rem * 14); }
+  .profilePage__userFriends--box::after {
+    height: calc(0.625rem * 7);
+    margin-top: calc(0.625rem * -7); } }
+
+@media (max-width: 400px) {
+  .profilePage__userFriends--box {
+    height: calc(0.625rem * 10); }
+  .profilePage__userFriends--box::after {
+    height: calc(0.625rem * 5);
+    margin-top: calc(0.625rem * -5); } }
 
 /*!
  * Bootstrap v4.0.0 (https://getbootstrap.com)

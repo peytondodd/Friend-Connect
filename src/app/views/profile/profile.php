@@ -104,11 +104,15 @@
               <?php $num = 0; for ($i = 0; $i < $friendListRow; $i++) : ?>
                 <div class="row profilePage__userFriends--row">
                   <?php for ($j = 0; $j < 3; $j++) : ?>
-                    <div class="col-4 profilePage__userFriends--box">
-                      <img class="profilePage__userFriends--img" src="/user_data/<?php echo $friendList[$num]->profile_img; ?>" alt="">
-                      <span class="profilePage__userFriends--name"><?php echo $friendList[$num]->friend_name; $num++; ?></span>
-                    </div>
-                  <?php endfor; ?>
+                    <?php if (isset($friendList[$num])) : ?>
+                      <div class="col-4 profilePage__userFriends--box">
+                        <a href="/profiles/user/<?php echo $friendList[$num]->friend_id; ?>">
+                        <img class="profilePage__userFriends--img" src="/user_data/<?php echo $friendList[$num]->profile_img; ?>" alt="">
+                        <span class="profilePage__userFriends--name"><?php echo $friendList[$num]->friend_name; ?></span>
+                        </a>
+                      </div>
+                    <?php endif; ?>
+                  <?php $num++; endfor; ?>
                 </div>
               <?php endfor; ?>
             </div>
