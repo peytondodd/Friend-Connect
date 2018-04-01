@@ -14,7 +14,7 @@ var profilePage = (function() {
     //FUNCTIONS
     function descReadMore(event) {
       event.preventDefault();
-      descBox.children[0].innerHTML = user_descFull + " <a class='descShowLess' href=''>Show Less</a>";
+      descBox.children[1].innerHTML = user_descFull + " <a class='descShowLess' href=''>Show Less</a>";
       // cache and bind Show Less button
       var descShowLessBtn = descBox.querySelector(".descShowLess");
       descShowLessBtn.addEventListener("click", descShowLess);
@@ -22,10 +22,14 @@ var profilePage = (function() {
 
     function descShowLess(event) {
       event.preventDefault();
-      descBox.children[0].innerHTML = user_descShort;
+      descBox.children[1].innerHTML = user_descShort;
       var descReadMoreBtn = descBox.querySelector(".descReadMore");
       descReadMoreBtn.addEventListener("click", descReadMore);
     }
+
+
+    //css custom
+    //document.body.style.backgroundColor = "#EEE";
 
 
 

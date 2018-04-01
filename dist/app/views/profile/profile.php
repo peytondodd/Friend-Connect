@@ -3,8 +3,8 @@
   $viewProfileImgSrc = $data["profile_img"];
 
   //DESCRIPTION
-  if (strlen($data["description"]) > 100) {
-    $viewDescription = substr($data["description"], 0, 100). "... <a class='descReadMore' href=''>Read More</a>";
+  if (strlen($data["description"]) > 75) {
+    $viewDescription = substr($data["description"], 0, 75). "... <a class='descReadMore' href=''>Read More</a>";
   } else {
     $viewDescription = $data["description"];
   }
@@ -53,62 +53,105 @@
 <?php require APPROOT . "/views/inc/header.php"; ?>
 
 <div class="container profilePage">
-  <div class="row">
-    <div class="col-md-3 mb-3">
+
+  <div class="row mb-3 profilePage__header">
+  <div class="profilePage__header--box">
+    <div class="col-md-3 px-0">
       <div class="profilePage__profileImage">
         <img class="profilePage__profileImage--img" src="/user_data/<?php echo $viewProfileImgSrc; ?>" alt="profile picture">
       </div>
     </div>
-    <div class="col-md-9 mb-3">
-      <div class="row">
-        <div class="col-sm-6">
-          <h1><?php echo ucwords($data["first_name"]. " " .$data["last_name"]); ?></h1>
+
+    <div class="col-md-9 px-0 profilePage__header--nameBox">
+      <div class="profilePage__header--name">
+
+        <div class="row">
+          <div class="col-8">
+            <h1 class="profilePage__header--userName"><?php echo ucwords($data["first_name"]. " " .$data["last_name"]); ?></h1>
+          </div>
+          <div class="col-4 profilePage__header--friendBtnBox">
+            <input class="float-right btn btn-success profilePage__header--friendBtn" type="button" name="" value="Add Friend">
+          </div>
         </div>
-        <div class="col-sm-6">
-          <input type="button" name="" value="Add Friend">
+        <div class="profilePage__headerbtn">
+          <div class="btn-group">
+            <input class="btn btn-primary" type="button" name="" value="About">
+            <input class="btn btn-primary" type="button" name="" value="Photos">
+            <input class="btn btn-primary" type="button" name="" value="Friends">
+          </div>
         </div>
+
       </div>
-      <div class="row">
-        <div class="profilePage__description">
-          <?php if (!empty($viewDescription)) : ?>
-            <p><?php echo $viewDescription; ?></p>
-          <?php endif; ?>
-        </div>
-      </div>
-      <div class="row">
-        <input type="button" name="" value="About">
-        <input type="button" name="" value="Photos">
-        <input type="button" name="" value="Friends">
-      </div>
+
     </div>
   </div>
+  </div>
+
   <div class="row">
     <div class="col-md-4 mb-3">
       <div class="profilePage__profileInfo">
-        <div class="profilePage__userDetails">
-          Birthday
-          <p><?php echo $viewBirthday; ?></p>
-          Gender
-          <p><?php echo $viewGender; ?></p>
-          Education
-          <p><?php echo $viewEducation; ?></p>
-          Work
-          <p><?php echo $viewWork; ?></p>
-          Location
-          <p><?php echo $viewLocation; ?></p>
+
+        <div class="profilePage__userDetails mb-3">
+          <div class="profilePage__detailsTitle">
+            <p><a href="">About</a></p>
+          </div>
+          <div class="profilePage__userInfo">
+            <p>
+              <span class="text-muted">Birthday </span>
+              <strong><?php echo $viewBirthday; ?></strong>
+            </p>
+          </div>
+          <div class="profilePage__userInfo">
+            <p>
+              <span class="text-muted">Gender </span>
+              <strong><?php echo $viewGender; ?></strong>
+            </p>
+          </div>
+          <div class="profilePage__userInfo">
+            <p>
+              <span class="text-muted">Education </span>
+              <strong><?php echo $viewEducation; ?></strong>
+            </p>
+          </div>
+          <div class="profilePage__userInfo">
+            <p>
+              <span class="text-muted">Work </span>
+              <strong><?php echo $viewWork; ?></strong>
+            </p>
+          </div>
+          <div class="profilePage__userInfo">
+            <p>
+              <span class="text-muted">Location </span>
+              <strong><?php echo $viewLocation; ?></strong>
+            </p>
+          </div>
+          <div class="profilePage__userInfo">
+            <p class="profilePage__description">
+              <span class="text-muted">Description </span>
+                <?php if (!empty($viewDescription)) : ?>
+                  <strong><?php echo $viewDescription; ?></strong>
+                <?php endif; ?>
+            </p>
+          </div>
+
         </div>
+
         <div class="profilePage__userFriends">
-          <p>Friends(<?php echo $totalFriends; ?>)</p>
+          <div class="profilePage__userFriends--title">
+            <p class="mb-0"><a href="">Friends(<?php echo $totalFriends; ?>)</a></p>
+          </div>
           <?php if ($numberOfFriends > 0) : ?>
             <div class="row profilePage__userFriends--row">
               <?php $num = 0; for ($i = 0; $i < $friendListRow; $i++) : ?>
                 <div class="row profilePage__userFriends--row">
                   <?php for ($j = 0; $j < 3; $j++) : ?>
                     <?php if (isset($friendList[$num])) : ?>
-                      <div class="col-4 profilePage__userFriends--box">
+                      <div class="col-4 profilePage__userFriends--container">
                         <a href="/profiles/user/<?php echo $friendList[$num]->friend_id; ?>">
-                        <img class="profilePage__userFriends--img" src="/user_data/<?php echo $friendList[$num]->profile_img; ?>" alt="">
-                        <span class="profilePage__userFriends--name"><?php echo $friendList[$num]->friend_name; ?></span>
+                          <div class="profilePage__userFriends--box">
+                            <img class="profilePage__userFriends--img" src="/user_data/<?php echo $friendList[$num]->profile_img; ?>" alt="">
+                            <span class="profilePage__userFriends--name"><?php echo $friendList[$num]->friend_name; ?></span>
+                          </div>
                         </a>
                       </div>
                     <?php endif; ?>
@@ -122,13 +165,17 @@
     </div>
     <div class="col-md-8">
       <div class="row mb-3">
+        <div class="col">
         <div class="profilePage__inputPost">
 
         </div>
+        </div>
       </div>
       <div class="row">
+        <div class="col">
         <div class="profilePage__displayPost">
 
+        </div>
         </div>
       </div>
     </div>
