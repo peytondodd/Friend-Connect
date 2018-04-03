@@ -116,11 +116,7 @@
       padding: 0 calc(#{$one-rem} * .8);
     }
   }
-  &__inputPost {
-    width: 100%;
-    height: calc(#{$one-rem} * 30);
-    background-color: green;
-  }
+
   &__displayPost {
     width: 100%;
     height: calc(#{$one-rem} * 80);

@@ -11,5 +11,8 @@
 @import "layout/_profileSetupPage.scss";
 @import "layout/_profilePage.scss";
 
+//modules
+@import "modules/_createPost.scss";
+
 //import vendors
 @import "../../../node_modules/bootstrap/scss/bootstrap.scss";

@@ -1,3 +1,50 @@
+//Fade In
+@keyframes fade-in-object {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: .25;
+  }
+  50% {
+    opacity: .5
+  }
+  75% {
+    opacity: .75;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.fade-in-object {
+  animation-name: fade-in-object;
+  animation-duration: .5s;
+  animation-fill-mode: forwards;
+}
+
+//Fade Out
+@keyframes fade-out-object {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: .75;
+  }
+  50% {
+    opacity: .5
+  }
+  75% {
+    opacity: .25;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.fade-in-object {
+  animation-name: fade-out-object;
+  animation-duration: .5s;
+  animation-fill-mode: forwards;
+}
 
 // LEFT
 @keyframes fade-out-towards-left {

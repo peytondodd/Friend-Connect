@@ -166,9 +166,28 @@
     <div class="col-md-8">
       <div class="row mb-3">
         <div class="col">
-        <div class="profilePage__inputPost">
-
-        </div>
+          <div class="createPost">
+            <div class="createPost__title">
+              <p class="mb-0">Create a post</p>
+            </div>
+            <div class="row">
+              <!-- <div class="col-2"> -->
+                <div class="createPost__iconBox">
+                  <img class="createPost__icon" src="/user_data/<?php echo $viewProfileImgSrc; ?>" alt="profile picture">
+                </div>
+                <span class="createPost__name"><?php echo ucwords($data["first_name"]. " " .$data["last_name"]); ?></span>
+              <!-- </div> -->
+              <!-- <div class="col"> -->
+                <div class="createPost__inputBox">
+                  <textarea class="createPost__input" name="name" placeholder="Share your thoughts with your friends..."></textarea>
+                </div>
+                <div class="createPost__textWidthCount"></div>
+              <!-- </div> -->
+            </div>
+            <div class="createPost__postBtnBox">
+              <input class="btn btn-success createPost__postBtn" type="button" name="button" value="Post">
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">

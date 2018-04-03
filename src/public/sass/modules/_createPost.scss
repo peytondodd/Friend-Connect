@@ -1,0 +1,118 @@
+.createPost {
+  width: 100%;
+  //height: calc(#{$one-rem} * 30);
+  background-color: white;
+  border: 1px solid #CCC;
+  &__title {
+    padding: calc(#{$one-rem} / 2) $one-rem;
+    background-color: #CCC;
+  }
+  &__name {
+    display: none;
+    //display: inline-block;
+    margin: calc(#{$one-rem}*2.4) $one-rem 0;
+  }
+  &__input {
+    width: 100%;
+    min-height: calc(#{$one-rem} * 5);
+    resize: none;
+    padding: $one-rem;
+    //overflow: hidden;
+  }
+  &__inputBox {
+    width: 100%;
+    margin: $one-rem calc(#{$one-rem} * 1.6) 0;//$one-rem;
+    transition: width .5s, margin .5s ;
+  }
+  &__textWidthCount {
+    visibility: hidden;
+    z-index: -100;
+    padding: 0 $one-rem;
+  }
+  &__inputBox:focus-within {
+    width: 81%;
+    margin-left: 19%;
+  }
+  &__icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  &__iconBox {
+    width: calc(#{$one-rem} * 11);
+    height: calc(#{$one-rem} * 10);
+    padding-left: $one-rem;
+    padding-right: 0;
+    margin-top: $one-rem;
+    position: absolute;
+    //top: 0;
+    left: calc(#{$one-rem} * 1.6);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .5s;
+  }
+  &__postBtnBox {
+    margin: 0 calc(#{$one-rem} * 1.6) $one-rem;
+  }
+  &__postBtnBox::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  &__postBtn {
+    float: right;
+  }
+}
+
+
+@media (max-width: 1199px) {
+  .createPost {
+    &__inputBox:focus-within{
+      width: 78%;
+      margin-left: 22%;
+    }
+  }
+}
+
+@media (max-width: 991px) {
+  .createPost {
+    &__iconBox {
+      width: calc(#{$one-rem} * 9);
+      height: calc(#{$one-rem} * 8);
+    }
+    &__inputBox:focus-within{
+      width: 75%;
+      margin-left: 25%;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .createPost {
+    &__iconBox {
+      width: calc(#{$one-rem} * 9);
+      height: calc(#{$one-rem} * 8);
+    }
+    &__inputBox:focus-within{
+      width: 77%;
+      margin-left: 23%;
+    }
+  }
+}
+@media (max-width: 575px) {
+  .createPost {
+    &__iconBox {
+      width: calc(#{$one-rem} * 6);
+      height: calc(#{$one-rem} * 5);
+      margin-left: $one-rem;
+    }
+    &__inputBox {
+      transition: none;
+    }
+    &__inputBox:focus-within{
+      width: 100%;
+      margin: $one-rem calc(#{$one-rem} * 1.6) 0;
+    }
+  }
+}
