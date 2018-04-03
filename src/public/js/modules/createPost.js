@@ -14,6 +14,7 @@ var createPost = (function() {
     input.addEventListener("focus", inputFocus);
     input.addEventListener("focusout", inputFocusOut);
     input.addEventListener("keydown", inputType);
+    window.addEventListener("resize", responsive);
 
 
     function inputFocus() {
@@ -21,7 +22,7 @@ var createPost = (function() {
       iconBox.style.opacity = "1";
 
       if (window.innerWidth < 576) {
-        iconBox.style.display = "block";
+        //iconBox.style.display = "block";
         //iconBox.style.paddingLeft = "0";
         iconBox.style.position = "static";
         postName.style.display = "inline-block";
@@ -63,6 +64,15 @@ var createPost = (function() {
 
     }
 
+    function responsive() {
+      if (window.innerWidth > 575) {
+        iconBox.style.position = "absolute";
+        postName.style.display = "none";
+      } else if (window.innerWidth < 576) {
+        iconBox.style.position = "static";
+        postName.style.display = "inline-block";
+      }
+    }
 
 
   }

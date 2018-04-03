@@ -93,6 +93,10 @@
     &__iconBox {
       width: calc(#{$one-rem} * 9);
       height: calc(#{$one-rem} * 8);
+      position: absolute;
+    }
+    &__name {
+      display: none;
     }
     &__inputBox:focus-within{
       width: 77%;

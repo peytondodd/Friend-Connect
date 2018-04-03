@@ -839,7 +839,10 @@ body {
 @media (max-width: 767px) {
   .createPost__iconBox {
     width: calc(0.625rem * 9);
-    height: calc(0.625rem * 8); }
+    height: calc(0.625rem * 8);
+    position: absolute; }
+  .createPost__name {
+    display: none; }
   .createPost__inputBox:focus-within {
     width: 77%;
     margin-left: 23%; } }
