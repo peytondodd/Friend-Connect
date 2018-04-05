@@ -4,6 +4,7 @@
     public function __construct() {
       $this->userModel = $this->model("User");
       $this->friendModel = $this->model("Friend");
+      $this->postModel = $this->model("Post");
     }
 
     public function index() {
@@ -83,6 +84,21 @@
             $friend_list_short = false;
           }
 
+          // USER POSTS
+          $userPosts = $this->postModel->getPost($id);
+
+          function dateCompare($a, $b) {
+            if ($a->created_at == $b->created_at) {
+              return 0;
+            }
+            return ($a->created_at > $b->created_at) ? -1 : 1;
+            //latest date to earliest date
+          }
+          usort($userPosts, "dateCompare");
+
+          // echo "<pre>";
+          // print_r($userPosts);
+          // echo "</pre>";
 
           $data = [
             "id" => $user->id,
@@ -98,7 +114,8 @@
             "description" => $userInfo->description,
             "friend_status" => $status."hi",
             "friend_total" => $numberOfFriends,
-            "friend_list" => $friend_list_short
+            "friend_list" => $friend_list_short,
+            "user_post" => $userPosts
           ];
 
           $this->view("profile/profile", $data);

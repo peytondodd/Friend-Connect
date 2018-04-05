@@ -12,7 +12,7 @@ public function createPost($userId, $content) {
                     VALUES (:user_id, :content)");
   $this->db->bind(":user_id", $userId);
   $this->db->bind(":content", $content);
-  
+
   if ($this->db->execute()) {
       return true;
   } else {
@@ -20,6 +20,19 @@ public function createPost($userId, $content) {
   }
 }
 
+//get posts of user
+public function getPost($userId) {
+  $this->db->query("SELECT * FROM posts
+                    WHERE user_id = :user_id");
+  $this->db->bind(":user_id", $userId);
+  $row = $this->db->resultSet();
+
+  if ($this->db->rowCount() > 0) {
+    return $row;
+  } else {
+    return false;
+  }
+}
 
 
 

@@ -1,0 +1,40 @@
+.viewPost {
+  width: 100%;
+  margin-bottom: calc(#{$one-rem}*1.6);
+  &__postBox {
+    background-color: white;
+    border: 1px solid #CCC;
+  }
+  &__postUserIconBox {
+    width: calc(#{$one-rem} * 8);
+    height: calc(#{$one-rem} * 8);
+    margin: $one-rem;
+
+  }
+  &__postUserIcon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  &__name {
+    display: inline-block;
+    transform: translateY(calc(#{$one-rem * 2.5}));
+    //font-weight: bold;
+  }
+  &__date {
+    display: inline-block;
+    transform: translate(calc(#{$one-rem * -9.9}), calc(#{$one-rem * 4.5}));
+    opacity: .5;
+  }
+  &__content {
+    padding: $one-rem;
+  }
+  &__likeCommentShare {
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+  }
+  &__likeCommentShare div a{
+    border-radius: 0;
+  }
+}

@@ -720,11 +720,6 @@ body {
   .profilePage__userFriends--row {
     padding: 0 calc(0.625rem * .8); }
 
-.profilePage__displayPost {
-  width: 100%;
-  height: calc(0.625rem * 80);
-  background-color: pink; }
-
 @media (max-width: 1199px) {
   .profilePage__profileImage {
     height: calc(0.625rem * 21); }
@@ -854,6 +849,36 @@ body {
   .createPost__inputBox:focus-within {
     width: 100%;
     margin: 0.625rem calc(0.625rem * 1.6) 0; } }
+
+.viewPost {
+  width: 100%;
+  margin-bottom: calc(0.625rem*1.6); }
+  .viewPost__postBox {
+    background-color: white;
+    border: 1px solid #CCC; }
+  .viewPost__postUserIconBox {
+    width: calc(0.625rem * 8);
+    height: calc(0.625rem * 8);
+    margin: 0.625rem; }
+  .viewPost__postUserIcon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%; }
+  .viewPost__name {
+    display: inline-block;
+    transform: translateY(calc(1.5625rem)); }
+  .viewPost__date {
+    display: inline-block;
+    transform: translate(calc(-6.1875rem), calc(2.8125rem));
+    opacity: .5; }
+  .viewPost__content {
+    padding: 0.625rem; }
+  .viewPost__likeCommentShare {
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC; }
+  .viewPost__likeCommentShare div a {
+    border-radius: 0; }
 
 /*!
  * Bootstrap v4.0.0 (https://getbootstrap.com)

@@ -47,8 +47,9 @@ var createPost = (function() {
     function inputTypeDown(event) {
       //console.log(event);
       // big fonts aesthetics
-      event.target.style.fontSize = "25px";
-      //textWidth.style.fontSize = "25px";
+      if (event.target.value.length > 0) {
+        event.target.style.fontSize = "25px";
+      }
       if (event.target.value.length > 50) {
         event.target.style.fontSize = "20px";
         //textWidth.style.fontSize = "20px";
@@ -114,8 +115,6 @@ var createPost = (function() {
       submitPost.send("createPostContent="+input.value);
 
     }
-
-
 
   }
 

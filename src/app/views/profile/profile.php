@@ -44,10 +44,10 @@
   } else {
     $numberOfFriends = 0;
   }
-  // echo "<pre>";
-  // //echo $numberOfFriends;
-  // print_r($friendList);
-  // echo "</pre>";
+
+  //USER Posts
+  $viewPost = $data["user_post"];
+
 ?>
 
 <?php require APPROOT . "/views/inc/header.php"; ?>
@@ -191,10 +191,36 @@
         </div>
       </div>
       <div class="row">
-        <div class="col">
-        <div class="profilePage__displayPost">
+        <div class="col profilePage__displayPost">
 
-        </div>
+          <?php for($i = 0; $i < count($viewPost); $i++) : ?>
+            <div class="viewPost">
+              <div class="viewPost__postBox">
+                <div class="row mx-0">
+                  <div class="viewPost__postUserIconBox">
+                    <img class="viewPost__postUserIcon" src="/user_data/<?php echo $viewProfileImgSrc; ?>" alt="profile picture">
+                  </div>
+                  <a class="viewPost__name" href="#"><?php echo ucwords($data["first_name"]. " " .$data["last_name"]); ?></a>
+                  <span class="viewPost__date"><?php echo $viewPost[$i]->created_at; ?></span>
+                </div>
+                <div class="row mx-0">
+                  <div class="viewPost__content">
+                    <?php echo $viewPost[$i]->content; ?>
+                  </div>
+                </div>
+                <div class="row mx-0 viewPost__likeCommentShare">
+                  <div class="row mx-0">
+                    <div class="btn-group">
+                      <a class="btn btn-default" href="">Like</a>
+                      <a class="btn btn-default" href="">Comment</a>
+                      <a class="btn btn-default" href="">Share</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <?php endfor; ?>
+
         </div>
       </div>
     </div>
@@ -203,9 +229,12 @@
 
 
 <script>
-  //var user_id = "<?php echo $_SESSION["user_id"]; ?>";
+
   var user_descFull = "<?php echo $data["description"]; ?>";
   var user_descShort = "<?php echo $viewDescription; ?>";
+  var postCount = <?php echo count($viewPost); ?>;
+  var postName = "<?php echo ucwords($data["first_name"]. " " .$data["last_name"]); ?>";
+  var postIconSrc = "/user_data/<?php echo $viewProfileImgSrc; ?>";
 </script>
 
 <!-- <h1>Welcome to <?php echo $data["first_name"] . "'s profile."; ?></h1>

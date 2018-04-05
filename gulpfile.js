@@ -36,7 +36,8 @@ gulp.task("scripts", function() {
     "layout/loginPage.js",
     "layout/profileSetupPage.js",
     "layout/profilePage.js",
-    "modules/createPost.js"
+    "modules/createPost.js",
+    "modules/getPost.js"
   ], {cwd: "src/public/js/"})
     .pipe(concat("index.js"))
     .pipe(gulp.dest("dist/public/js"));
