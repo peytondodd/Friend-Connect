@@ -179,12 +179,12 @@
               <!-- </div> -->
               <!-- <div class="col"> -->
                 <div class="createPost__inputBox">
-                  <textarea class="createPost__input" name="name" placeholder="Share your thoughts with your friends..."></textarea>
+                  <textarea class="createPost__input" name="name" rows="3" placeholder="Share your thoughts with your friends..."></textarea>
                 </div>
-                <div class="createPost__textWidthCount"></div>
               <!-- </div> -->
             </div>
             <div class="createPost__postBtnBox">
+              <span><span class="createPost__charCounter">0</span>/2000</span>
               <input class="btn btn-success createPost__postBtn" type="button" name="button" value="Post">
             </div>
           </div>
@@ -203,6 +203,7 @@
 
 
 <script>
+  //var user_id = "<?php echo $_SESSION["user_id"]; ?>";
   var user_descFull = "<?php echo $data["description"]; ?>";
   var user_descShort = "<?php echo $viewDescription; ?>";
 </script>

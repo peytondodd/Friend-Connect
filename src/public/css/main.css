@@ -784,17 +784,14 @@ body {
     margin: calc(0.625rem*2.4) 0.625rem 0; }
   .createPost__input {
     width: 100%;
-    min-height: calc(0.625rem * 5);
+    height: auto;
     resize: none;
-    padding: 0.625rem; }
+    padding: 0.625rem;
+    overflow: hidden; }
   .createPost__inputBox {
     width: 100%;
     margin: 0.625rem calc(0.625rem * 1.6) 0;
     transition: width .5s, margin .5s; }
-  .createPost__textWidthCount {
-    visibility: hidden;
-    z-index: -100;
-    padding: 0 0.625rem; }
   .createPost__inputBox:focus-within {
     width: 81%;
     margin-left: 19%; }

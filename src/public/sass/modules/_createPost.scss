@@ -14,21 +14,18 @@
   }
   &__input {
     width: 100%;
-    min-height: calc(#{$one-rem} * 5);
+    //min-height: calc(#{$one-rem} * 5);
+    height: auto;
     resize: none;
     padding: $one-rem;
-    //overflow: hidden;
+    overflow: hidden;
   }
   &__inputBox {
     width: 100%;
     margin: $one-rem calc(#{$one-rem} * 1.6) 0;//$one-rem;
     transition: width .5s, margin .5s ;
   }
-  &__textWidthCount {
-    visibility: hidden;
-    z-index: -100;
-    padding: 0 $one-rem;
-  }
+
   &__inputBox:focus-within {
     width: 81%;
     margin-left: 19%;
@@ -64,7 +61,14 @@
     float: right;
   }
 }
-
+// .test {
+//   //width: 100%;
+//   //min-height: calc(#{$one-rem} * 5);
+//   //height: auto;
+//   //resize: none;
+//   //padding: $one-rem;
+//   overflow: hidden;
+// }
 
 @media (max-width: 1199px) {
   .createPost {

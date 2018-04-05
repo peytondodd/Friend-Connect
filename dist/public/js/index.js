@@ -572,11 +572,15 @@ var createPost = (function() {
     var iconBox = createAPost.querySelector(".createPost__iconBox");
     var postName = createAPost.querySelector(".createPost__name");
     var textWidth = createAPost.querySelector(".createPost__textWidthCount");
+    var postBtn = createAPost.querySelector(".createPost__postBtn");
+    var charCounter = createAPost.querySelector(".createPost__charCounter");
 
     input.addEventListener("focus", inputFocus);
     input.addEventListener("focusout", inputFocusOut);
-    input.addEventListener("keydown", inputType);
+    input.addEventListener("keydown", inputTypeDown);
+    input.addEventListener("keyup", inputTypeUp);
     window.addEventListener("resize", responsive);
+    postBtn.addEventListener("click", submitPost);
 
 
     function inputFocus() {
@@ -600,29 +604,41 @@ var createPost = (function() {
         iconBox.style.position = "absolute";
         postName.style.display = "none";
       }
-
     }
 
-    function inputType(event) {
+    function inputTypeDown(event) {
       //console.log(event);
+      // big fonts aesthetics
       event.target.style.fontSize = "25px";
       //textWidth.style.fontSize = "25px";
       if (event.target.value.length > 50) {
         event.target.style.fontSize = "20px";
         //textWidth.style.fontSize = "20px";
       }
-      if (event.target.value.length > 100) {
+      if (event.target.value.length > 100 || event.keyCode == 8) {
         event.target.style.fontSize = "16px";
         //textWidth.style.fontSize = "16px";
       }
 
-      if (textWidth.offsetWidth > event.target.offsetWidth-10) {
-        event.target.rows++;
-        textWidth.innerHTML = "";
+      //resize text area
+      this.style.height = "";
+      this.style.height = this.scrollHeight + 15 + "px";
+
+      //max length
+      if (event.target.value.length > 1999) {
+        if (event.keyCode != 8) {
+          event.preventDefault();
+        }
       }
-      if (event.keyCode >= 32 ) {
-      textWidth.innerHTML += event.key;
-      }
+    }
+
+    function inputTypeUp(event) {
+      var temp = event.target.value;
+      event.target.value = "";
+      event.target.value = temp.substring(0, 2000);
+
+      charCounter.innerHTML = event.target.value.length;
+
 
     }
 
@@ -635,6 +651,32 @@ var createPost = (function() {
         postName.style.display = "inline-block";
       }
     }
+
+
+    function submitPost() {
+      var submitPost = new XMLHttpRequest();
+      submitPost.onreadystatechange = function() {
+        if (this.readyState == 4) {
+          if (this.status == 200) {
+            //success
+            //console.log(this.responseText);
+            //console.log("success");
+            input.value = "";
+            input.style.fontSize = "16px";
+            input.style.height = "94px";
+            charCounter.innerHTML = "0";
+          } else {
+            //failed
+          }
+        }
+
+      };
+      submitPost.open("POST", "/posts/create",true);
+      submitPost.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      submitPost.send("createPostContent="+input.value);
+
+    }
+
 
 
   }
