@@ -879,6 +879,44 @@ body {
     border-bottom: 1px solid #CCC; }
   .viewPost__likeCommentShare div a {
     border-radius: 0; }
+  .viewPost__showLikes span {
+    font-size: calc(0.625rem * 1.4); }
+  .viewPost__showLikes .viewPost__likeCount {
+    padding-left: 0.625rem; }
+  .viewPost__hideComments span {
+    font-size: calc(0.625rem * 1.4);
+    padding-left: 0.625rem; }
+  .viewPost__commentIconBox {
+    display: inline-block;
+    width: calc(0.625rem * 5);
+    height: calc(0.625rem * 5);
+    margin-top: calc(0.625rem/2); }
+  .viewPost__commentIcon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%; }
+  .viewPost__commentContent {
+    display: inline-block;
+    width: calc(100% - (0.625rem * 8) + 0.625rem);
+    vertical-align: top;
+    padding-left: calc(0.625rem/2);
+    word-break: break-all; }
+  .viewPost__commentContainer {
+    margin-bottom: 0.625rem;
+    width: 100%;
+    padding: 0 0.625rem; }
+  .viewPost__createComment {
+    width: 100%;
+    padding: 0 0.625rem 0.625rem; }
+  .viewPost__createContainer {
+    width: 100%; }
+  .viewPost__inputComment {
+    width: 100%;
+    padding: 0 0.625rem; }
+  .viewPost__hideComments, .viewPost__viewOlderComments {
+    text-align: center;
+    width: 100%; }
 
 /*!
  * Bootstrap v4.0.0 (https://getbootstrap.com)

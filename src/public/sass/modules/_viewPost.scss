@@ -37,4 +37,58 @@
   &__likeCommentShare div a{
     border-radius: 0;
   }
+  &__showLikes span {
+    font-size: calc(#{$one-rem} * 1.4);
+  }
+  &__showLikes .viewPost__likeCount{
+    padding-left: $one-rem;
+  }
+  &__hideComments span {
+    font-size: calc(#{$one-rem} * 1.4);
+    padding-left: $one-rem;
+  }
+
+  &__commentIconBox {
+    display: inline-block;
+    width: calc(#{$one-rem} * 5);
+    height: calc(#{$one-rem} * 5);
+    margin-top: calc(#{$one-rem}/2);
+    // width: 100%;
+    // padding-top: 100%;
+  }
+  &__commentIcon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  &__commentContent {
+    display: inline-block;
+    width: calc(100% - (#{$one-rem} * 8) + #{$one-rem});
+    vertical-align: top;
+    padding-left: calc(#{$one-rem}/2);
+    word-break: break-all;
+  }
+  &__commentContainer {
+    margin-bottom: $one-rem;
+    width: 100%;
+    padding: 0 $one-rem;
+  }
+
+  &__createComment {
+    width: 100%;
+    padding: 0 $one-rem $one-rem;
+  }
+  &__createContainer {
+    width:100%;
+  }
+  &__inputComment {
+    width: 100%;
+    padding: 0 $one-rem;
+  }
+  &__hideComments, &__viewOlderComments {
+    text-align: center;
+    width: 100%;
+  }
+
 }

@@ -85,8 +85,7 @@
           }
 
           // USER POSTS
-          $userPosts = $this->postModel->getPost($id);
-
+          $userPosts = $this->postModel->getAllUserPost($id);
           function dateCompare($a, $b) {
             if ($a->created_at == $b->created_at) {
               return 0;
@@ -96,9 +95,61 @@
           }
           usort($userPosts, "dateCompare");
 
-          // echo "<pre>";
-          // print_r($userPosts);
-          // echo "</pre>";
+
+          // POST NAME, PROFILE ICON, LIKES AND COMMENTS
+          foreach ($userPosts as $value) {
+            // NAMES
+            $postName = $this->userModel->findUserById($value->user_id);
+            $value->name = ucwords($postName->first_name." ".$postName->last_name);
+
+            //post profile icon
+            $picPost = $this->userModel->findUserInfoById($value->user_id);
+            $value->img_src =
+            $this->getProfileImgSrc($value->user_id, $picPost->profile_img, $picPost->profile_img_id);
+
+            // LIKES
+            //gather all like counts per post
+            if ($this->postModel->getLikes($value->id)) {
+              $value->likeCount = count($this->postModel->getLikes($value->id));
+            } else {
+              $value->likeCount = 0;
+            }
+            //Did current user session like the post?
+            if ($this->postModel->currentUserLike($_SESSION["user_id"], $value->id)) {
+              $value->currentUserLike = true;
+            } else {
+              $value->currentUserLike = false;
+            }
+
+            //COMMENTS
+            $value->comments = new stdClass();
+            if ($this->postModel->getComments($value->id)) {
+              $postComment = $this->postModel->getComments($value->id);
+              usort($postComment, "dateCompare");
+
+              foreach($postComment as $comm) {
+                $commentName = $this->userModel->findUserById($comm->user_id);
+                $comm->name = ucwords($commentName->first_name." ".$commentName->last_name);
+
+                $picComm= $this->userModel->findUserInfoById($comm->user_id);
+                $comm->img_src =
+                $this->getProfileImgSrc($value->user_id, $picComm->profile_img, $picComm->profile_img_id);
+              }
+
+              $value->comments->count = count($postComment);
+              $value->comments->list = $postComment;
+            } else {
+              $value->comments->count = 0;
+              $value->comments->list = 0;
+            }
+
+          }
+
+
+
+          echo "<pre>";
+          print_r($userPosts);
+          echo "</pre>";
 
           $data = [
             "id" => $user->id,
