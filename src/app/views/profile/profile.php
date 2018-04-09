@@ -241,11 +241,11 @@
                   </div>
 
                 <?php endif; ?>
-                <!-- <div class="row">
+                <div class="row">
                   <div class="col viewPost__showComments">
                     <span>View comments (2)</span>
                   </div>
-                </div> -->
+                </div>
 
                 <!-- <div class="row mx-0">
                   <a href="" class="viewPost__hideComments">^ Hide comments</a>

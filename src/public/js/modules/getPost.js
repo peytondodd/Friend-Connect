@@ -34,15 +34,17 @@ var getPost = (function() {
       for (var i = 0; i < allPosts.length; i++) {
         //console.log(allPosts[i].children[0].children);
         if (allPosts[i].children[0].children[3]) {
+          var postId = allPosts[i].classList[1].split("-")[1];
           if (allPosts[i].children[0].children[3].children[0].className == "col viewPost__showLikes") {
-            var postId = allPosts[i].classList[1].split("-")[1];
             var likeCount = allPosts[i].children[0].children[3].children[0].children[0].innerText;
-            var postAndLike = {
-              postId: postId,
-              likeCount: likeCount
-            }
-            likeCounter.push(postAndLike);
+          } else {
+            var likeCount = 0;
           }
+          var postAndLike = {
+            postId: postId,
+            likeCount: likeCount
+          }
+          likeCounter.push(postAndLike);
         } else {
           var postAndLike = {
             postId: allPosts[i].classList[1].split("-")[1],
@@ -61,7 +63,8 @@ var getPost = (function() {
         //console.log(posts[i].children[0].children);
         var likes = posts[i].children[0];
         if (posts[i].classList[1] == "postID-"+postId) {
-          if (likes.children.length > 3) {
+          console.log(likes.children);
+          if (likes.children.length > 2) {
             //console.log(likes.children[3]);
             if (likes.children[3].children[0].className == "col viewPost__showLikes") {
               //console.log(likeCount);
@@ -73,28 +76,32 @@ var getPost = (function() {
                 } else {
                   likes.children[3].children[0].children[0].innerHTML = likeCount;
                   likes.children[3].children[0].children[1].innerHTML = " people liked this";
+                  console.log("poopie");
                 }
               } else {
                 likes.removeChild(likes.children[3]);
                 console.log("bad");
               }
-            }
-          } else {
-            if (likeCount != 0) {
-              //create new row for like counter
-              var newCounter = document.createElement("div");
-              newCounter.className = "row";
-              newCounter.innerHTML = `
-              <div class="col viewPost__showLikes">
-                  <span class="viewPost__likeCount">
-                    ${likeCount}
-                  </span>
-                  <span> person liked this</span>
-              </div>`;
-              if (likes.length > 3) {
-                likes.insertBefore(newCounter, likes[3]);
-              } else {
-                likes.appendChild(newCounter);
+            } else {
+              if (likeCount != 0) {
+                console.log("kooya");
+                //create new row for like counter
+                var newCounter = document.createElement("div");
+                newCounter.className = "row";
+                newCounter.innerHTML = `
+                <div class="col viewPost__showLikes">
+                    <span class="viewPost__likeCount">
+                      ${likeCount}
+                    </span>
+                    <span> person liked this</span>
+                </div>`;
+                if (likes.children.length > 2) {
+                  console.log("hiya");
+                  likes.insertBefore(newCounter, likes.children[3]);
+                } else {
+                  console.log("booya");
+                  likes.appendChild(newCounter);
+                }
               }
             }
           }
