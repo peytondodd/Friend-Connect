@@ -750,7 +750,7 @@ var getPost = (function() {
         var likes = posts[i].children[0];
         if (posts[i].classList[1] == "postID-"+postId) {
           console.log(likes.children);
-          if (likes.children.length > 2) {
+          if (likes.children.length > 3) {
             //console.log(likes.children[3]);
             if (likes.children[3].children[0].className == "col viewPost__showLikes") {
               //console.log(likeCount);
@@ -769,28 +769,34 @@ var getPost = (function() {
                 console.log("bad");
               }
             } else {
-              if (likeCount != 0) {
-                console.log("kooya");
-                //create new row for like counter
-                var newCounter = document.createElement("div");
-                newCounter.className = "row";
-                newCounter.innerHTML = `
-                <div class="col viewPost__showLikes">
-                    <span class="viewPost__likeCount">
-                      ${likeCount}
-                    </span>
-                    <span> person liked this</span>
-                </div>`;
-                if (likes.children.length > 2) {
-                  console.log("hiya");
-                  likes.insertBefore(newCounter, likes.children[3]);
-                } else {
-                  console.log("booya");
-                  likes.appendChild(newCounter);
-                }
-              }
+              createNewLikeCounter(likes, likeCount);
             }
+          } else {
+            createNewLikeCounter(likes, likeCount);
           }
+        }
+      }
+    }
+
+    function createNewLikeCounter(likes, likeCount) {
+      if (likeCount != 0) {
+        console.log("kooya");
+        //create new row for like counter
+        var newCounter = document.createElement("div");
+        newCounter.className = "row";
+        newCounter.innerHTML = `
+        <div class="col viewPost__showLikes">
+            <span class="viewPost__likeCount">
+              ${likeCount}
+            </span>
+            <span> person liked this</span>
+        </div>`;
+        if (likes.children.length > 3) {
+          console.log("hiya");
+          likes.insertBefore(newCounter, likes.children[3]);
+        } else {
+          console.log("booya");
+          likes.appendChild(newCounter);
         }
       }
     }
