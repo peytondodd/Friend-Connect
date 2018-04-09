@@ -65,6 +65,15 @@ class Post {
   }
 
   public function likePost($userId, $postId) {
+    // CHECK IF like already exists first
+    $like = $this->getLikes($postId);
+    if ($like) {
+      foreach ($like as $value) {
+        if ($value->user_id == $userId && $value->post_id == $postId) {
+          return true;
+        }
+      }
+    }
     $this->db->query("INSERT INTO likes (user_id, post_id, status)
                       VALUES (:user_id, :post_id, :status)");
     $this->db->bind(":user_id", $userId);
@@ -78,21 +87,19 @@ class Post {
     }
   }
 
-  public function unlikePost($userId, $postId) {
-    $this->db->query("UPDATE likes SET
-                      status = :status WHERE
+public function unlikePost($userId, $postId) {
+    $this->db->query("DELETE FROM likes WHERE
                       user_id = :user_id AND
                       post_id = :post_id");
     $this->db->bind(":user_id", $userId);
     $this->db->bind(":post_id", $postId);
-    $this->db->bind(":status", 0);
     if ($this->db->execute()) {
+      //return "user =".$userId." post=".$postId;
       return true;
     } else {
       return false;
     }
   }
-
   public function deleteLike($userId, $postId) {
     $this->db->query("DELETE FROM likes WHERE
                       user_id = :user_id AND
@@ -100,7 +107,8 @@ class Post {
     $this->db->bind(":user_id", $userId);
     $this->db->bind(":post_id", $postId);
     if ($this->db->execute()) {
-      return true;
+      return "user =".$userId." post=".$postId;
+      //return true;
     } else {
       return false;
     }

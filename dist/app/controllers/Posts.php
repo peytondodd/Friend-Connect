@@ -15,7 +15,7 @@ class Posts extends Controller {
       //echo $_REQUEST["post-content-create"];
       $content = $_REQUEST["createPostContent"];
       if (strlen($content) <= 2000) {
-        $this->postModel->createPost($_SESSION["user_id"], $content);
+        $this->postModel->createPost($_REQUEST["currentUserId"], $content);
         return;
       } else {
         // echo "bad";
@@ -67,16 +67,25 @@ class Posts extends Controller {
 
       if ($action == "Like") {
         $this->postModel->likePost($userId, $postId);
+        $isSuccess = $this->postModel->currentUserLike($userId, $postId);
+        while(!$isSuccess) {
+          $isSuccess = $this->postModel->currentUserLike($userId, $postId);
+        }
+        echo "Dislike";
         return;
       } elseif ($action == "Dislike") {
         $this->postModel->unlikePost($userId, $postId);
+        $isSuccess = $this->postModel->currentUserLike($userId, $postId);
+        while($isSuccess) {
+          $isSuccess = $this->postModel->currentUserLike($userId, $postId);
+        }
+        echo "Like";
         return;
       }
-      return;
+      //return;
     }
   }
 
-  //real time events
   public function realTimeEvents() {
     session_write_close();
 
@@ -88,6 +97,7 @@ class Posts extends Controller {
     }
     //Like or Dislike Updater INIT
     if (isset($_REQUEST["likeCount"])) {
+      $currentUserId = $_REQUEST["currentUserId"];
       $likeCount = json_decode($_REQUEST["likeCount"]);
     }
 
@@ -113,29 +123,19 @@ class Posts extends Controller {
         forEach($likeCount as $value) {
           $newCount = $this->postModel->getLikes($value->postId);
           if ($newCount) { //if likes exists
+            $totalLikes = count($newCount);
+          } else {
             $totalLikes = 0;
-            for ($i = 0; $i < count($newCount); $i++) {
-              if ($newCount[$i]->status == 1) {
-                $totalLikes++;
-              } elseif ($newCount[$i]->status == 0) { //Delete
-                $data[] = "New Like";
-                $data[] = $value->postId;
-                $data[] = 0;
-                if (count($newCount) == 1) {
-                  echo json_encode($data);
-                }
-                $this->postModel->deleteLike($_SESSION["user_id"], $value->postId);
-                return;
-              }
-            }
-            if ($totalLikes != $value->likeCount) { //Like
-              $data[] = "New Like";
-              $data[] = $value->postId;
-              $data[] = $totalLikes;
-              echo json_encode($data);
-              return;
-              $endloop = 1;
-            }
+          }
+
+          if ($totalLikes != $value->likeCount) { //Like
+            $data[] = "New Like";
+            $data[] = $value->postId;
+            $data[] = $totalLikes;
+
+            echo json_encode($data);
+            return;
+            $endloop = 1;
           }
         }
       }

@@ -19,15 +19,11 @@ var getPost = (function() {
       var likePostId = this.name;
       var likeDislike = this.innerHTML;
 
-      ajaxCall("GET", "/posts/likeOrDislike?likePostId="+likePostId+"&likeDislike="+likeDislike, true)
+      ajaxCall("GET", "/posts/likeOrDislike?likePostId="+likePostId+"&likeDislike="+likeDislike+"&currentUserId="+currentUserId, true)
         .then(likeOrDislikeSuccess, likeOrDislikeFail);
 
       function likeOrDislikeSuccess(data) {
-        if (likeDislike == "Like") {
-          event.target.innerHTML = "Dislike";
-        } else if (likeDislike == "Dislike") {
-          event.target.innerHTML = "Like";
-        }
+        event.target.innerHTML = data;
       }
       function likeOrDislikeFail(data) {}
     }
@@ -36,14 +32,17 @@ var getPost = (function() {
       var allPosts = getProfilePost.querySelectorAll(".viewPost");
       var likeCounter = [];
       for (var i = 0; i < allPosts.length; i++) {
-        if (allPosts[i].children[0].children[3].children[0].className == "col viewPost__showLikes") {
-          var postId = allPosts[i].classList[1].split("-")[1];
-          var likeCount = allPosts[i].children[0].children[3].children[0].children[0].innerText;
-          var postAndLike = {
-            postId: postId,
-            likeCount: likeCount
+        //console.log(allPosts[i].children[0].children);
+        if (allPosts[i].children[0].children[3]) {
+          if (allPosts[i].children[0].children[3].children[0].className == "col viewPost__showLikes") {
+            var postId = allPosts[i].classList[1].split("-")[1];
+            var likeCount = allPosts[i].children[0].children[3].children[0].children[0].innerText;
+            var postAndLike = {
+              postId: postId,
+              likeCount: likeCount
+            }
+            likeCounter.push(postAndLike);
           }
-          likeCounter.push(postAndLike);
         } else {
           var postAndLike = {
             postId: allPosts[i].classList[1].split("-")[1],
@@ -52,32 +51,52 @@ var getPost = (function() {
           likeCounter.push(postAndLike);
         }
       }
+      //console.log(likeCounter);
       return JSON.stringify(likeCounter);
     }
 
     function likeCountUpdater(postId, likeCount) {
       var posts = postContainer.children;
       for (var i = 0; i < posts.length; i++) {
-        var likes = posts[i].children[0].children[3].children[0].children[0];
+        //console.log(posts[i].children[0].children);
+        var likes = posts[i].children[0];
         if (posts[i].classList[1] == "postID-"+postId) {
-          if (likes && likes.className == "viewPost__likeCount") {
-            if (likeCount > 0) {
-              likes.innerHTML = likeCount;
-            } else {
-              posts[i].children[0].removeChild(posts[i].children[0].children[3]);
+          if (likes.children.length > 3) {
+            //console.log(likes.children[3]);
+            if (likes.children[3].children[0].className == "col viewPost__showLikes") {
+              //console.log(likeCount);
+              if (likeCount > 0) {
+                if (likeCount == 1){
+                  likes.children[3].children[0].children[0].innerHTML = likeCount;
+                  likes.children[3].children[0].children[1].innerHTML = " person liked this";
+                  console.log("good");
+                } else {
+                  likes.children[3].children[0].children[0].innerHTML = likeCount;
+                  likes.children[3].children[0].children[1].innerHTML = " people liked this";
+                }
+              } else {
+                likes.removeChild(likes.children[3]);
+                console.log("bad");
+              }
             }
           } else {
-            //create new row for like counter
-            var newCounter = document.createElement("div");
-            newCounter.className = "row";
-            newCounter.innerHTML = `
-            <div class="col viewPost__showLikes">
-                <span class="viewPost__likeCount">
-                  ${likeCount}
-                </span>
-                <span> person liked this</span>
-            </div>`;
-            posts[i].children[0].insertBefore(newCounter, posts[i].children[0].children[3]);
+            if (likeCount != 0) {
+              //create new row for like counter
+              var newCounter = document.createElement("div");
+              newCounter.className = "row";
+              newCounter.innerHTML = `
+              <div class="col viewPost__showLikes">
+                  <span class="viewPost__likeCount">
+                    ${likeCount}
+                  </span>
+                  <span> person liked this</span>
+              </div>`;
+              if (likes.length > 3) {
+                likes.insertBefore(newCounter, likes[3]);
+              } else {
+                likes.appendChild(newCounter);
+              }
+            }
           }
         }
       }
@@ -135,7 +154,7 @@ var getPost = (function() {
         getPostInfo.onreadystatechange = function() {
           if (this.readyState == 4) {
             if (this.status == 200) {
-              //console.log(this.responseText);
+              console.log(this.responseText);
               resolve(this.responseText);
             } else {
               reject(this.status);
@@ -163,32 +182,27 @@ var getPost = (function() {
             }
           }
         };
-
         getPostInfo.open("POST", "/posts/realTimeEvents", true);
         getPostInfo.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        getPostInfo.send(
-          currentPostInfo[0]+"&"+
-          currentPostInfo[1]+"&"+
-          currentPostInfo[2]
-        );
+        getPostInfo.send(currentPostInfo);
       });
       return promiseObj;
     }
 
     // LIVE EVENTS LIVE EVENTS LIVE EVENTS
     function postData() {
-      var userId = (window.location.href).split("/");
-      userId = userId[userId.length-1];
+      var profileUserId = (window.location.href).split("/");
+      profileUserId = profileUserId[profileUserId.length-1];
       var postCount = postContainer.children.length;
       var likeStats = currentLikeStats();
-
-      return [
-        "profilePost="+userId,
-        "profilePostCount="+postCount,
-        "likeCount="+likeStats
-      ];
+      console.log(JSON.parse(likeStats));
+      return ("profilePost="+profileUserId+"&"+
+              "profilePostCount="+postCount+"&"+
+              "currentUserId="+currentUserId+"&"+
+              "likeCount="+likeStats);
 
     }
+    //console.log(postData().length);
 
     liveAjaxCall(postData())
       .then(realTimeSuccess, realTimeFailed);
@@ -197,7 +211,7 @@ var getPost = (function() {
       if (data == "refresh poll" || data == "") {
         liveAjaxCall(postData())
           .then(realTimeSuccess, realTimeFailed);
-       } else {
+      } else {
         data = JSON.parse(data);
         //new post
         if (data[0] == "New Post") {
@@ -218,8 +232,9 @@ var getPost = (function() {
 
     function realTimeFailed(data) {
       //console.log("failed code= "+data);
-      liveAjaxCall(postData())
-        .then(realTimeSuccess, realTimeFailed);
+      // liveAjaxCall(postData())
+      //   .then(realTimeSuccess, realTimeFailed);
+      // // when i call ajax again in this failed function, cannot connect error happens/ only temporary
     }
 
 

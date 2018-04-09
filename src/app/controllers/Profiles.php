@@ -200,6 +200,11 @@
       }
     }
 
+    // public function realTimeEvents() {
+    //   sleep(5);
+    //   echo "refresh Poll";
+    //   return;
+    // }
 
     public function setup() {
       //already completed

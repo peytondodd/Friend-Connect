@@ -239,6 +239,7 @@
                       <?php endif; ?>
                     </div>
                   </div>
+
                 <?php endif; ?>
                 <!-- <div class="row">
                   <div class="col viewPost__showComments">
@@ -246,7 +247,7 @@
                   </div>
                 </div> -->
 
-                <div class="row mx-0">
+                <!-- <div class="row mx-0">
                   <a href="" class="viewPost__hideComments">^ Hide comments</a>
                   <a href="" class="viewPost__viewOlderComments">View older Comments (20)</a>
                   <div class="viewPost__commentContainer">
@@ -271,16 +272,16 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
-                <div class="row mx-0">
+                <!-- <div class="row mx-0">
                   <div class="viewPost__createComment">
                     <div class="viewPost__createContainer">
                       <textarea class="viewPost__inputComment" name="name" rows="3" placeholder="Write a comment..."></textarea>
                     </div>
                     <input class="mt-2 float-right btn btn-success" type="button" name="" value="Comment">
                   </div>
-                </div>
+                </div> -->
 
 
               </div>
@@ -301,8 +302,7 @@
   var postCount = <?php echo count($viewPost); ?>;
   var postName = "<?php echo ucwords($data["first_name"]. " " .$data["last_name"]); ?>";
   var postIconSrc = "/user_data/<?php echo $viewProfileImgSrc; ?>";
-  var userId = (window.location.href).split("/");
-  userId = userId[userId.length-1];
+  var currentUserId = <?php echo $_SESSION["user_id"]; ?>;
 
 
 </script>
