@@ -125,7 +125,7 @@
             $value->comments = new stdClass();
             if ($this->postModel->getComments($value->id)) {
               $postComment = $this->postModel->getComments($value->id);
-              usort($postComment, "dateCompare");
+              usort($postComment, "dateCompare"); // make recent comment to the top
 
               foreach($postComment as $comm) {
                 $commentName = $this->userModel->findUserById($comm->user_id);
@@ -199,12 +199,6 @@
         return "default/default-profile-" . $profileImgId . ".jpg";
       }
     }
-
-    // public function realTimeEvents() {
-    //   sleep(5);
-    //   echo "refresh Poll";
-    //   return;
-    // }
 
     public function setup() {
       //already completed

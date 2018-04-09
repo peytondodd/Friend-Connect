@@ -216,7 +216,7 @@
                       <?php else : ?>
                         <a class="btn btn-default likeOrDislikeBtn" href="" name="<?php echo $viewPost[$i]->id; ?>">Like</a>
                       <?php endif; ?>
-                      <a class="btn btn-default" href="">Comment</a>
+                      <a class="btn btn-default showCommentsBtn" href="">Comment</a>
                       <a class="btn btn-default" href="">Share</a>
                     </div>
                   </div>
@@ -239,49 +239,16 @@
                       <?php endif; ?>
                     </div>
                   </div>
-
                 <?php endif; ?>
-                <!-- <div class="row">
-                  <div class="col viewPost__showComments">
-                    <span>View comments (2)</span>
-                  </div>
-                </div> -->
 
-                <!-- <div class="row mx-0">
-                  <a href="" class="viewPost__hideComments">^ Hide comments</a>
-                  <a href="" class="viewPost__viewOlderComments">View older Comments (20)</a>
-                  <div class="viewPost__commentContainer">
-                    <div class="viewPost__commentIconBox">
-                      <img class="viewPost__commentIcon" src="/user_data/<?php echo $viewPost[$i]->img_src ?>" alt="">
-                    </div>
-                    <div class="viewPost__commentContent">
-                      <a href="">Emma Emma </a><span>alkfjalksfjlakssljfaslkfdjalkfjal;ksfjdalk;sfjdal;skfjal;skfjals;kdfjals;kdfjals;kfjasl;kfjalks;fdjals;kfjals;kdfjalskjfalskfjalksjflksjflskdjflkdsjflkjflkjsldkfjslkfjslkdfjsldkjflksdjfsldjfldskfjlskdjflkj</span>
-                      <div class="">
-                        5 hrs ago
-                      </div>
+                <?php if ($viewPost[$i]->comments->count > 0) : ?>
+                  <div class="row">
+                    <div class="col">
+                      <a href="" class="viewPost__showComments">View comments (<?php echo $viewPost[$i]->comments->count; ?>)</a>
                     </div>
                   </div>
-                  <div class="viewPost__commentContainer">
-                    <div class="viewPost__commentIconBox">
-                      <img class="viewPost__commentIcon" src="/user_data/<?php echo $viewPost[$i]->img_src ?>" alt="">
-                    </div>
-                    <div class="viewPost__commentContent">
-                      <span>Emma Emma </span><span>alkfjalksfjlakssljfaslkfdjalkfjal;ksfjdalk;sfjdal;skfjal;skfjals;kdfjals;kdfjals;kfjasl;kfjalks;fdjals;kfjals;kdfjalskjfalskfjalksjflksjflskdjflkdsjflkjflkjsldkfjslkfjslkdfjsldkjflksdjfsldjfldskfjlskdjflkj</span>
-                      <div class="">
-                        5 hrs ago
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
+                <?php endif; ?>
 
-                <!-- <div class="row mx-0">
-                  <div class="viewPost__createComment">
-                    <div class="viewPost__createContainer">
-                      <textarea class="viewPost__inputComment" name="name" rows="3" placeholder="Write a comment..."></textarea>
-                    </div>
-                    <input class="mt-2 float-right btn btn-success" type="button" name="" value="Comment">
-                  </div>
-                </div> -->
 
 
               </div>
@@ -299,11 +266,10 @@
 
   var user_descFull = "<?php echo $data["description"]; ?>";
   var user_descShort = "<?php echo $viewDescription; ?>";
-  var postCount = <?php echo count($viewPost); ?>;
   var postName = "<?php echo ucwords($data["first_name"]. " " .$data["last_name"]); ?>";
   var postIconSrc = "/user_data/<?php echo $viewProfileImgSrc; ?>";
   var currentUserId = <?php echo $_SESSION["user_id"]; ?>;
-
+  var viewPost = <?php echo json_encode($viewPost); ?>;
 
 </script>
 

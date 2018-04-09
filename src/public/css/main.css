@@ -883,6 +883,8 @@ body {
     font-size: calc(0.625rem * 1.4); }
   .viewPost__showLikes .viewPost__likeCount {
     padding-left: 0.625rem; }
+  .viewPost__showComments {
+    padding-left: 0.625rem; }
   .viewPost__hideComments span {
     font-size: calc(0.625rem * 1.4);
     padding-left: 0.625rem; }

@@ -7,17 +7,42 @@ var getPost = (function() {
     var postContainer = getProfilePost.querySelector(".profilePage__displayPost");
     var likeOrDislikeBtn = getProfilePost.querySelectorAll(".likeOrDislikeBtn");
     //var likeCount = getProfilePost.querySelector(".viewPost__likeCount");
-    //var allPosts = getProfilePost.querySelectorAll(".viewPost");
+    var allPosts = getProfilePost.querySelectorAll(".viewPost");
 
-    likeOrDislikeBtn.forEach(function(btn) {
-      btn.addEventListener("click", likeOrDislike);
+    // likeOrDislikeBtn.forEach(function(btn) {
+    //   btn.addEventListener("click", likeOrDislike);
+    // });
+
+    allPosts.forEach(function(post) {
+      post.addEventListener("click", postClickDir);
+      // post.addEventListener("change", function() {
+      //   //console.log("hya");
+      //   allPost.addEventListener("click", postClickDir);
+      // });
     });
+
+    function postClickDir(event) {
+      event.preventDefault();
+      // LIKE  AND DISLIKE CLICKS
+      if (event.target.className == "btn btn-default likeOrDislikeBtn") {
+        likeOrDislike(event);
+      }
+      // SHOW COMMENT BUTTONS
+      if (event.target.className == "btn btn-default showCommentsBtn" ||
+      event.target.className == "viewPost__showComments") {
+        showComments(event);
+      }
+      if (event.target.className == "viewPost__hideComments") {
+        hideComments(event);
+      }
+      // console.log(event.target);
+    }
 
 
     function likeOrDislike(event) {
-      event.preventDefault();
-      var likePostId = this.name;
-      var likeDislike = this.innerHTML;
+      //console.log(event.target);
+      var likePostId = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.classList[1].split("-")[1];
+      var likeDislike = event.target.innerHTML;
 
       ajaxCall("GET", "/posts/likeOrDislike?likePostId="+likePostId+"&likeDislike="+likeDislike+"&currentUserId="+currentUserId, true)
         .then(likeOrDislikeSuccess, likeOrDislikeFail);
@@ -28,6 +53,114 @@ var getPost = (function() {
       function likeOrDislikeFail(data) {}
     }
 
+    function showComments(event) {
+      var postId = event.target.parentElement.parentElement.parentElement.parentElement.className.split("-");
+      var postBox = event.target.parentElement.parentElement.parentElement;
+      if (postId[0] == "viewPost postID") {
+        //comment link
+        postId = postId[1];
+        //remove the view comments link
+        event.target.parentElement.removeChild(event.target);
+      } else {
+        //comment button
+        postId = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.className.split("-")[1];
+        postBox = event.target.parentElement.parentElement.parentElement.parentElement;
+        //remove the view comments link
+        var commentLink = event.target.parentElement.parentElement.parentElement.nextElementSibling;
+        //console.log(commentLink.children[0]);
+        if (commentLink) {
+          if (commentLink.children[0].children[0]) {
+            if (commentLink.children[0].children[0].className == "viewPost__showComments") {
+              postBox.removeChild(commentLink);
+            }
+          }
+        }
+      }
+      // check if comment button or link has already been clicked
+      var rowClassNames = [];
+      var postBoxLength = postBox.children.length;
+      for (var i = 0; i < postBoxLength; i++) {
+        rowClassNames.push(postBox.children[i].className);
+      }
+      if (rowClassNames.indexOf("row mx-0 makeCommentBox") != -1 ||
+      rowClassNames.indexOf("row mx-0 viewCommentBox") != -1) {
+        console.log("bad");
+        return;
+      } else {
+        console.log("good");
+      }
+
+      var allComments = [];
+      viewPost.forEach(function(value) {
+        if (value.id == postId) {
+          allComments = value.comments.list;
+        }
+      });
+
+      // // make enter a comment box
+      var createComment = document.createElement("div");
+      createComment.className = "row mx-0 makeCommentBox";
+      createComment.innerHTML = `
+        <div class="viewPost__createComment">
+          <div class="viewPost__createContainer">
+            <textarea class="viewPost__inputComment" rows="3" placeholder="Write a comment..."></textarea>
+          </div>
+          <input class="mt-2 float-right btn btn-success" type="button" value="Comment">
+        </div>
+      `;
+
+      if (allComments) {
+        var commentStart = 0;
+        var commentEnd = 3;
+
+        var commentBox = document.createElement("div");
+        commentBox.className = "row mx-0 viewCommentBox";
+        commentBox.innerHTML = `
+          <a href="" class="viewPost__hideComments">^ Hide comments</a>
+          <a href="" class="viewPost__viewOlderComments">View older Comments (20)</a>
+        `;
+        //comments from users
+        for (var i = commentStart; i < commentEnd; i++) {
+          var newComment = document.createElement("div");
+          newComment.className = "viewPost__commentContainer";
+          newComment.innerHTML = `
+            <div class="viewPost__commentIconBox">
+              <img class="viewPost__commentIcon" src="/user_data/${allComments[i].img_src}" alt="profile icon">
+            </div>
+            <div class="viewPost__commentContent">
+              <a href="/profiles/user/${allComments[i].user_id}">${allComments[i].name} </a>
+              <span>${allComments[i].content}</span>
+              <div class="">
+                ${allComments[i].created_at}
+              </div>
+            </div>
+          `;
+          commentBox.appendChild(newComment);
+        }
+        postBox.appendChild(commentBox);
+        postBox.appendChild(createComment);
+
+      } else {
+        // postBox.appendChild(createComment.firstChild);
+        var cancelComment = document.createElement("div");
+        cancelComment.className = "text-center cancelComment";
+        cancelComment.innerHTML = `
+          <a class="viewPost__hideComments" href="">^ Cancel comment</a>
+        `;
+        postBox.appendChild(cancelComment);
+        postBox.appendChild(createComment);
+
+      }
+
+    }
+
+    function hideComments(event) {
+      var postBox = event.target.parentElement.parentElement;
+      console.log(postBox);
+
+    }
+
+    // ajax function use
     function currentLikeStats() {
       var allPosts = getProfilePost.querySelectorAll(".viewPost");
       var likeCounter = [];
@@ -135,8 +268,8 @@ var getPost = (function() {
         <div class="row mx-0 viewPost__likeCommentShare">
           <div class="row mx-0">
             <div class="btn-group">
-              <a class="btn btn-default" href="">Like</a>
-              <a class="btn btn-default" href="">Comment</a>
+              <a class="btn btn-default likeOrDislikeBtn" href="">Like</a>
+              <a class="btn btn-default showCommentsBtn" href="">Comment</a>
               <a class="btn btn-default" href="">Share</a>
             </div>
           </div>

@@ -43,6 +43,9 @@
   &__showLikes .viewPost__likeCount{
     padding-left: $one-rem;
   }
+  &__showComments {
+    padding-left: $one-rem;
+  }
   &__hideComments span {
     font-size: calc(#{$one-rem} * 1.4);
     padding-left: $one-rem;
