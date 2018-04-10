@@ -53,6 +53,16 @@ var getPost = (function() {
       function likeOrDislikeFail(data) {}
     }
 
+    function findPostComments (postId) {
+      var comments = [];
+      viewPost.forEach(function(value) {
+        if (value.id == postId) {
+          comments = value.comments.list;
+        }
+      });
+      return comments;
+    }
+
     function showComments(event) {
       var postId = event.target.parentElement.parentElement.parentElement.parentElement.className.split("-");
       var postBox = event.target.parentElement.parentElement.parentElement;
@@ -66,8 +76,7 @@ var getPost = (function() {
         postId = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.className.split("-")[1];
         postBox = event.target.parentElement.parentElement.parentElement.parentElement;
         //remove the view comments link
-        var commentLink = event.target.parentElement.parentElement.parentElement.nextElementSibling;
-        //console.log(commentLink.children[0]);
+        var commentLink = postBox.children[postBox.children.length-1];
         if (commentLink) {
           if (commentLink.children[0].children[0]) {
             if (commentLink.children[0].children[0].className == "viewPost__showComments") {
@@ -78,8 +87,7 @@ var getPost = (function() {
       }
       // check if comment button or link has already been clicked
       var rowClassNames = [];
-      var postBoxLength = postBox.children.length;
-      for (var i = 0; i < postBoxLength; i++) {
+      for (var i = 0; i < postBox.children.length; i++) {
         rowClassNames.push(postBox.children[i].className);
       }
       if (rowClassNames.indexOf("row mx-0 makeCommentBox") != -1 ||
@@ -90,12 +98,7 @@ var getPost = (function() {
         console.log("good");
       }
 
-      var allComments = [];
-      viewPost.forEach(function(value) {
-        if (value.id == postId) {
-          allComments = value.comments.list;
-        }
-      });
+      var allComments = findPostComments(postId);
 
       // // make enter a comment box
       var createComment = document.createElement("div");
@@ -156,7 +159,48 @@ var getPost = (function() {
 
     function hideComments(event) {
       var postBox = event.target.parentElement.parentElement;
-      console.log(postBox);
+      var postId = postBox.parentNode.className.split("-")[1];
+      var rowClassNames = [];
+      for (var i = 0; i < postBox.children.length; i++) {
+        rowClassNames.push(postBox.children[i].className);
+      }
+      if (rowClassNames.indexOf("row mx-0 viewCommentBox") != -1) {
+        console.log("view Comment Box");
+        for (var i = 0; i < postBox.children.length; i++) {
+          if (postBox.children[i].className == "row mx-0 viewCommentBox") {
+            postBox.removeChild(postBox.children[i]);
+          }
+        }
+      } if (rowClassNames.indexOf("row mx-0 makeCommentBox") != -1) {
+        console.log("make Comment Box");
+        for (var i = 0; i < postBox.children.length; i++) {
+          if (postBox.children[i].className == "row mx-0 makeCommentBox") {
+            postBox.removeChild(postBox.children[i]);
+          }
+        }
+      } if (rowClassNames.indexOf("text-center cancelComment") != -1) {
+        console.log("cancel comment");
+        for (var i = 0; i < postBox.children.length; i++) {
+          if (postBox.children[i].className == "text-center cancelComment") {
+            postBox.removeChild(postBox.children[i]);
+          }
+        }
+      }
+
+      //show view Comment link
+      var comments = findPostComments(postId)
+      if (findPostComments(postId)) {
+        if (comments.length > 0) {
+          var viewComments = document.createElement("div");
+          viewComments.className = "row";
+          viewComments.innerHTML = `
+            <div class="col">
+              <a href="" class="viewPost__showComments">View comments (${comments.length})</a>
+            </div>
+          `;
+          postBox.appendChild(viewComments);
+        }
+      }
 
     }
 
