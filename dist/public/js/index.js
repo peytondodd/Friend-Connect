@@ -724,6 +724,9 @@ var getPost = (function() {
       if (event.target.name == "makeAPostComment") {
         addComment(event);
       }
+      if (event.target.className == "viewPost__viewOlderComments") {
+        olderComments(event);
+      }
       //console.log(event.target);
     }
 
@@ -790,45 +793,14 @@ var getPost = (function() {
       var allComments = findPostComments(postId);
 
       // // make enter a comment box
-      var createComment = document.createElement("div");
-      createComment.className = "row mx-0 makeCommentBox";
-      createComment.innerHTML = `
-        <div class="viewPost__createComment">
-          <div class="viewPost__createContainer">
-            <textarea class="viewPost__inputComment" rows="3" placeholder="Write a comment..."></textarea>
-          </div>
-          <input class="mt-2 float-right btn btn-success" type="button" name="makeAPostComment" value="Comment">
-        </div>
-      `;
+      var createComment = createCommentInput();
 
       if (allComments) {
         var commentStart = 0;
-        var commentEnd = 3;
+        var commentLimit = 3;
 
-        var commentBox = document.createElement("div");
-        commentBox.className = "row mx-0 viewCommentBox";
-        commentBox.innerHTML = `
-          <a href="" class="viewPost__hideComments">^ Hide comments</a>
-          <a href="" class="viewPost__viewOlderComments">View older Comments (20)</a>
-        `;
-        //comments from users
-        for (var i = commentStart; i < commentEnd; i++) {
-          var newComment = document.createElement("div");
-          newComment.className = "viewPost__commentContainer";
-          newComment.innerHTML = `
-            <div class="viewPost__commentIconBox">
-              <img class="viewPost__commentIcon" src="/user_data/${allComments[i].img_src}" alt="profile icon">
-            </div>
-            <div class="viewPost__commentContent">
-              <a href="/profiles/user/${allComments[i].user_id}">${allComments[i].name} </a>
-              <span>${allComments[i].content}</span>
-              <div class="">
-                ${allComments[i].created_at}
-              </div>
-            </div>
-          `;
-          commentBox.appendChild(newComment);
-        }
+        var commentBox = commentLoader(allComments, commentStart, commentLimit, 1);
+
         postBox.appendChild(commentBox);
         postBox.appendChild(createComment);
 
@@ -844,6 +816,20 @@ var getPost = (function() {
 
       }
 
+    }
+
+    function createCommentInput() {
+      var createComment = document.createElement("div");
+      createComment.className = "row mx-0 makeCommentBox";
+      createComment.innerHTML = `
+        <div class="viewPost__createComment">
+          <div class="viewPost__createContainer">
+            <textarea class="viewPost__inputComment" rows="3" placeholder="Write a comment..."></textarea>
+          </div>
+          <input class="mt-2 float-right btn btn-success" type="button" name="makeAPostComment" value="Comment">
+        </div>
+      `;
+      return createComment;
     }
 
     function hideComments(event) {
@@ -911,6 +897,85 @@ var getPost = (function() {
       function addCommentFail(data) {
 
       }
+    }
+
+    function olderComments(event) {
+      var postBox = event.target.parentElement.parentElement;
+      var postId = postBox.parentElement.className.split("-")[1];
+      var createComment = createCommentInput();
+      var allComments = findPostComments(postId);
+      var commentsLeft = Number(event.target.textContent.split("(")[1].split(")")[0]);
+      var commentsShown = event.target.parentElement.children.length - 2;
+      var commentLimit = 3;
+
+      if (commentsLeft - commentLimit > 0) {
+        var commentBox = commentLoader(allComments, commentsShown, commentsShown + commentLimit);
+      } else {
+        console.log(commentsShown);
+        console.log(commentsShown + commentsLeft);
+        var commentBox = commentLoader(allComments, commentsShown, commentsShown + commentsLeft);
+      }
+
+      //add new comments
+      console.log(commentBox);
+      for (var i = commentBox.children.length-1; i >= 0; i--) {
+        event.target.parentElement.insertBefore(commentBox.children[i], event.target.parentElement.children[2]);
+      }
+      //remove hide comment and view older comment(#) to be updated
+      event.target.parentElement.removeChild(event.target.parentElement.children[0]);
+      event.target.parentElement.removeChild(event.target.parentElement.children[0]);
+
+    }
+
+    function commentLoader(allComments, commentStart, commentLimit, invert = 0) {
+      var oldComments = allComments.length - commentLimit;
+      var commentBox = document.createElement("div");
+      commentBox.className = "row mx-0 viewCommentBox";
+      if (oldComments > 0) {
+        commentBox.innerHTML = `
+          <a href="" class="viewPost__hideComments">^ Hide comments</a>
+          <a href="" class="viewPost__viewOlderComments">View older Comments (${oldComments})</a>
+        `;
+      } else {
+        commentBox.innerHTML = `
+          <a href="" class="viewPost__hideComments">^ Hide comments</a>
+        `;
+      }
+      var order = [];
+      if (invert = 1) {
+        for (var i = commentLimit-1; i >= commentStart; i--) {
+          order.push(i);
+        }
+      } else {
+        for (var i = commentStart; i < commentLimit; i++) {
+          order.push(i);
+        }
+      }
+      //console.log(order);
+      console.log(allComments);
+      //comments from users
+      for (var i = 0; i < order.length; i++) {
+        if (allComments[order[i]]) {
+          var newComment = document.createElement("div");
+          newComment.className = "viewPost__commentContainer";
+          newComment.innerHTML = `
+            <div class="viewPost__commentIconBox">
+              <img class="viewPost__commentIcon" src="/user_data/${allComments[order[i]].img_src}" alt="profile icon">
+            </div>
+            <div class="viewPost__commentContent">
+              <a href="/profiles/user/${allComments[order[i]].user_id}">${allComments[order[i]].name} </a>
+              <span>${allComments[order[i]].content}</span>
+              <div class="">
+                ${allComments[order[i]].created_at}
+              </div>
+            </div>
+          `;
+          commentBox.appendChild(newComment);
+        }
+      }
+      // console.log(commentBox.children[commentBox.children.length-1]);
+      // console.log(commentBox.children.length);
+      return commentBox;
     }
 
     // ajax function use
