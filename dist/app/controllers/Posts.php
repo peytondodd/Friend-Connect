@@ -9,7 +9,7 @@ class Posts extends Controller {
 
   }
 
-  public function create() {
+  public function createPost() {
     session_write_close();
     if (isset($_REQUEST["createPostContent"])) {
       //echo $_REQUEST["post-content-create"];
@@ -26,26 +26,26 @@ class Posts extends Controller {
   }
 
   public function get() {
-    session_write_close();
-    if (isset($_REQUEST["profilePost"])) {
-      $id = $_REQUEST["profilePost"];
-      $postCount = $_REQUEST["postCount"];
-      $newPostCount = 0;
-      $pollCounter = 0;
-      do {
-        $userPosts = $this->postModel->getAllUserPost($id);
-        $newPostCount = count($userPosts);
-        usleep(500000); //.5 seconds
-        $pollCounter++;
-        if ($pollCounter > 80) { //40 sec
-          echo "refresh poll";
-          return;
-        }
-      } while ($newPostCount <= $postCount);
-
-      echo json_encode($userPosts);
-      return;
-    }
+    // session_write_close();
+    // if (isset($_REQUEST["profilePost"])) {
+    //   $id = $_REQUEST["profilePost"];
+    //   $postCount = $_REQUEST["postCount"];
+    //   $newPostCount = 0;
+    //   $pollCounter = 0;
+    //   do {
+    //     $userPosts = $this->postModel->getAllUserPost($id);
+    //     $newPostCount = count($userPosts);
+    //     usleep(500000); //.5 seconds
+    //     $pollCounter++;
+    //     if ($pollCounter > 80) { //40 sec
+    //       echo "refresh poll";
+    //       return;
+    //     }
+    //   } while ($newPostCount <= $postCount);
+    //
+    //   echo json_encode($userPosts);
+    //   return;
+    // }
 
     //$userPosts = $this->postModel->getPost($id);
   }
@@ -84,6 +84,20 @@ class Posts extends Controller {
       }
       //return;
     }
+  }
+
+  public function createComment() {
+    session_write_close();
+    if (isset($_REQUEST["commentUserId"]) && isset($_REQUEST["commentPostId"]) &&
+    isset($_REQUEST["commentContent"])) {
+      $userId = $_REQUEST["commentUserId"];
+      $postId= $_REQUEST["commentPostId"];
+      $content = $_REQUEST["commentContent"];
+      
+      $this->postModel->addComment($userId, $postId, $content);
+      return;
+    }
+    return;
   }
 
   public function realTimeEvents() {

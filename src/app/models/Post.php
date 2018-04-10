@@ -139,7 +139,7 @@ public function unlikePost($userId, $postId) {
   public function addComment($userId, $postId, $content) {
     $this->db->query("INSERT INTO comments
                     (user_id, post_id, content)
-                    WHERE (:user_id, :post_id, :content)");
+                    VALUES (:user_id, :post_id, :content)");
     $this->db->bind(":user_id", $userId);
     $this->db->bind(":post_id", $postId);
     $this->db->bind(":content", $content);

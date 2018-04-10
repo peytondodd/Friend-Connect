@@ -110,7 +110,7 @@ var createPost = (function() {
         }
 
       };
-      submitPost.open("POST", "/posts/create",true);
+      submitPost.open("POST", "/posts/createPost",true);
       submitPost.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       submitPost.send("createPostContent="+input.value+"&"+
                       "currentUserId="+currentUserId

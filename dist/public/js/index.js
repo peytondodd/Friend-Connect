@@ -672,7 +672,7 @@ var createPost = (function() {
         }
 
       };
-      submitPost.open("POST", "/posts/create",true);
+      submitPost.open("POST", "/posts/createPost",true);
       submitPost.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       submitPost.send("createPostContent="+input.value+"&"+
                       "currentUserId="+currentUserId
@@ -721,7 +721,10 @@ var getPost = (function() {
       if (event.target.className == "viewPost__hideComments") {
         hideComments(event);
       }
-      // console.log(event.target);
+      if (event.target.name == "makeAPostComment") {
+        addComment(event);
+      }
+      //console.log(event.target);
     }
 
 
@@ -794,7 +797,7 @@ var getPost = (function() {
           <div class="viewPost__createContainer">
             <textarea class="viewPost__inputComment" rows="3" placeholder="Write a comment..."></textarea>
           </div>
-          <input class="mt-2 float-right btn btn-success" type="button" value="Comment">
+          <input class="mt-2 float-right btn btn-success" type="button" name="makeAPostComment" value="Comment">
         </div>
       `;
 
@@ -887,7 +890,27 @@ var getPost = (function() {
           postBox.appendChild(viewComments);
         }
       }
+    }
 
+    function addComment(event) {
+      var inputComment = event.target.parentElement.children[0].children[0];
+      var postId = event.target.parentElement.parentElement.parentElement.parentElement.className.split("-")[1];
+      var userId = currentUserId;
+
+      if (inputComment.value != "") {
+        var commentData = ("commentUserId="+userId+"&"+
+                    "commentPostId="+postId+"&"+
+                    "commentContent="+inputComment.value);
+
+        ajaxCall("POST", "/posts/createComment", true, commentData)
+          .then(addCommentSuccess, addCommentFail);
+      }
+      function addCommentSuccess(data) {
+        inputComment.value = "";
+      }
+      function addCommentFail(data) {
+
+      }
     }
 
     // ajax function use
@@ -1024,7 +1047,7 @@ var getPost = (function() {
     }
 
     // AJAX CALL
-    function ajaxCall(method, url, sync) {
+    function ajaxCall(method, url, sync, postData=0) {
       var promiseObj = new Promise (function(resolve, reject) {
         var getPostInfo = new XMLHttpRequest();
         getPostInfo.onreadystatechange = function() {
@@ -1039,7 +1062,12 @@ var getPost = (function() {
         };
 
         getPostInfo.open(method, url, sync);
-        getPostInfo.send();
+        if (method == "GET") {
+          getPostInfo.send()
+        } else if (method == "POST") {
+          getPostInfo.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          getPostInfo.send(postData);
+        }
       });
       return promiseObj;
     }
