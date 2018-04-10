@@ -41,6 +41,10 @@ var getPost = (function() {
       if (event.target.className == "viewPost__viewOlderComments") {
         olderComments(event);
       }
+      if (event.target.className == "viewPost__deleteComment") {
+        deleteComment(event);
+      }
+
       //console.log(event.target);
     }
 
@@ -111,7 +115,7 @@ var getPost = (function() {
 
       if (allComments) {
         var commentStart = 0;
-        var commentLimit = 3;
+        var commentLimit = 5; // # of comments shown at start
 
         var commentBox = commentLoader(allComments, commentStart, commentLimit, 1);
 
@@ -213,6 +217,7 @@ var getPost = (function() {
       }
     }
 
+    // View Older Comments()
     function olderComments(event) {
       var postBox = event.target.parentElement.parentElement;
       var postId = postBox.parentElement.className.split("-")[1];
@@ -220,7 +225,7 @@ var getPost = (function() {
       var allComments = findPostComments(postId);
       var commentsLeft = Number(event.target.textContent.split("(")[1].split(")")[0]);
       var commentsShown = event.target.parentElement.children.length - 2;
-      var commentLimit = 3;
+      var commentLimit = 5; // # of comments shown after view more
 
       if (commentsLeft - commentLimit > 0) {
         var commentBox = commentLoader(allComments, commentsShown, commentsShown + commentLimit);
@@ -238,6 +243,24 @@ var getPost = (function() {
       //remove hide comment and view older comment(#) to be updated
       event.target.parentElement.removeChild(event.target.parentElement.children[0]);
       event.target.parentElement.removeChild(event.target.parentElement.children[0]);
+
+    }
+
+    function deleteComment(event) {
+      var commentId = event.target.parentElement.parentElement.parentElement.className.split("-")[1];
+      var userId = currentUserId;
+      var commentData = ("deleteCommentUserId="+userId+"&"+
+                          "deleteCommentCommentId="+commentId);
+
+      ajaxCall("POST", "/posts/deleteComment", true, commentData)
+        .then(deleteCommentSuccess, deleteCommentFail);
+
+      function deleteCommentSuccess(data) {
+        console.log(data);
+      }
+      function deleteCommentFail(data) {
+
+      }
 
     }
 
@@ -271,7 +294,7 @@ var getPost = (function() {
       for (var i = 0; i < order.length; i++) {
         if (allComments[order[i]]) {
           var newComment = document.createElement("div");
-          newComment.className = "viewPost__commentContainer";
+          newComment.className = "viewPost__commentContainer commentId-"+allComments[order[i]].id;
           newComment.innerHTML = `
             <div class="viewPost__commentIconBox">
               <img class="viewPost__commentIcon" src="/user_data/${allComments[order[i]].img_src}" alt="profile icon">
@@ -284,6 +307,14 @@ var getPost = (function() {
               </div>
             </div>
           `;
+          //add delete link to comment
+          if (currentUserId == allComments[order[i]].user_id) {
+            var deleteComment = document.createElement("div");
+            deleteComment.innerHTML = `
+              <a class="viewPost__deleteComment" href="">delete</a>
+            `;
+            newComment.children[1].appendChild(deleteComment);
+          }
           commentBox.appendChild(newComment);
         }
       }
@@ -432,7 +463,7 @@ var getPost = (function() {
         getPostInfo.onreadystatechange = function() {
           if (this.readyState == 4) {
             if (this.status == 200) {
-              console.log(this.responseText);
+              //console.log(this.responseText);
               resolve(this.responseText);
             } else {
               reject(this.status);

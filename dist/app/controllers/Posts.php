@@ -93,11 +93,28 @@ class Posts extends Controller {
       $userId = $_REQUEST["commentUserId"];
       $postId= $_REQUEST["commentPostId"];
       $content = $_REQUEST["commentContent"];
-      
+
       $this->postModel->addComment($userId, $postId, $content);
       return;
     }
     return;
+  }
+
+  public function deleteComment() {
+    if (isset($_REQUEST["deleteCommentUserId"]) &&
+    isset($_REQUEST["deleteCommentCommentId"])) {
+      $userId = $_REQUEST["deleteCommentUserId"];
+      $commentId = $_REQUEST["deleteCommentCommentId"];
+      echo "user ". $userId ." comment ".$commentId;
+
+      $deleteComment = $this->postModel->deleteComment($userId, $commentId);
+
+      while($deleteComment != true) {
+        $deleteComment = $this->postModel->deleteComment($userId, $commentId);
+      }
+
+      return;
+    }
   }
 
   public function realTimeEvents() {

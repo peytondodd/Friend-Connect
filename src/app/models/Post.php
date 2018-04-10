@@ -150,7 +150,7 @@ public function unlikePost($userId, $postId) {
     }
   }
 
-  public function deleteComment($commentId, $userId) {
+  public function deleteComment($userId, $commentId) {
     $this->db->query("DELETE FROM comments WHERE
                       id = :id AND user_id = :user_id");
     $this->db->bind(":id", $commentId);
