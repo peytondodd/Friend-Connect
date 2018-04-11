@@ -244,7 +244,7 @@
                 <?php if ($viewPost[$i]->comments->count > 0) : ?>
                   <div class="row">
                     <div class="col">
-                      <a href="" class="viewPost__showComments">View comments (<?php echo $viewPost[$i]->comments->count; ?>)</a>
+                      <a href="" class="viewPost__showComments">View comments (<span class="commentCount"><?php echo $viewPost[$i]->comments->count; ?></span>)</a>
                     </div>
                   </div>
                 <?php endif; ?>

@@ -3,6 +3,7 @@
 class Posts extends Controller {
   public function __construct() {
     $this->postModel = $this->model("Post");
+    $this->userModel = $this->model("User");
   }
 
   public function index() {
@@ -132,6 +133,11 @@ class Posts extends Controller {
       $likeCount = json_decode($_REQUEST["likeCount"]);
     }
 
+    //currentComments INIT
+    if (isset($_REQUEST["currentComments"])) {
+      $currentCommentsCount = json_decode($_REQUEST["currentComments"]);
+    }
+
     //LOOPER
     $pollCounter = 0;
     $endloop = 0;
@@ -168,6 +174,54 @@ class Posts extends Controller {
             return;
             $endloop = 1;
           }
+        }
+      }
+
+      //currentComments update
+      if (isset($_REQUEST["currentComments"])) {
+        forEach($currentCommentsCount as $value) {
+          $newComments = $this->postModel->getComments($value->postId);
+
+          if ($newComments) {
+            $newCommentsCount = count($newComments);
+          } else {
+            $newCommentsCount = 0;
+          }
+
+          if ($newCommentsCount != $value->commentsCount) {
+
+            if ($newCommentsCount > $value->commentsCount) {
+              //sort the latest comment to the top
+              usort($newComments, "dateCompare");//dateCompare from sort_helper.php
+
+              $numberOfNewComments = $newCommentsCount - $value->commentsCount;
+              $totalNewComments = [];
+              //filters the new comment
+              for ($i = 0; $i < $numberOfNewComments; $i++) {
+                $userInfo = $this->userModel->findUserInfoById($newComments[$i]->user_id);
+                $userName = $this->userModel->findUserById($newComments[$i]->user_id);
+                $newComments[$i]->img_src = getProfileImgSrc(
+                                        $newComments[$i]->user_id,
+                                        $userInfo->profile_img,
+                                        $userInfo->profile_img_id);
+                $newComments[$i]->name = ucwords($userName->first_name." ".$userName->last_name);
+                $totalNewComments[] = $newComments[$i];
+              }
+              $data[] = "New Comment";
+              $data[] = $totalNewComments;
+              echo json_encode($data);
+
+              return;
+
+            } elseif ($newCommentsCount < $value->commentsCount) {
+              $data[] = "Delete Comment";
+              $data[] = $newComments;
+              echo json_encode($data);
+              return;
+            }
+            return;
+          }
+
         }
       }
 

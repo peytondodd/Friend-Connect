@@ -64,12 +64,29 @@ var getPost = (function() {
     }
 
     function findPostComments (postId) {
-      var comments = [];
-      viewPost.forEach(function(value) {
-        if (value.id == postId) {
-          comments = value.comments.list;
-        }
-      });
+      if (postId == "ALL") {
+        var comments = [];
+        viewPost.forEach(function(value) {
+          var commentsCount = value.comments.list.length;
+          if (!commentsCount) {
+            commentsCount = 0;
+          }
+
+          var postComments = {
+            postId: value.id,
+            //comments: value.comments.list,
+            commentsCount: commentsCount
+          }
+          comments.push(postComments);
+        });
+      } else {
+        var comments = [];
+        viewPost.forEach(function(value) {
+          if (value.id == postId) {
+            comments = value.comments.list;
+          }
+        });
+      }
       return comments;
     }
 
@@ -188,7 +205,7 @@ var getPost = (function() {
           viewComments.className = "row";
           viewComments.innerHTML = `
             <div class="col">
-              <a href="" class="viewPost__showComments">View comments (${comments.length})</a>
+              <a href="" class="viewPost__showComments">View comments (<span class="commentCount">${comments.length}</span>)</a>
             </div>
           `;
           postBox.appendChild(viewComments);
@@ -256,11 +273,38 @@ var getPost = (function() {
         .then(deleteCommentSuccess, deleteCommentFail);
 
       function deleteCommentSuccess(data) {
-        console.log(data);
-      }
-      function deleteCommentFail(data) {
+        var comment = event.target.parentElement.parentElement.parentElement;//delete this
+        var commentClass = comment.className;
+        var commentId = commentClass.split("-")[1];
+        var commentParent = comment.parentElement;
+        var postId = commentParent.parentElement.parentElement.className.split("-")[1];
+        console.log(postId);
+        console.log(viewPost);
+
+        //remove dom element
+        for (var i = 0; i < commentParent.children.length; i++) {
+          if (commentParent.children[i].className == commentClass) {
+            commentParent.removeChild(comment);
+          }
+        }
+
+        //remove from viewPost
+        viewPost.forEach(function(value) {
+          if (value.id == postId) {
+            for (var i = 0; i < value.comments.count; i++) {
+              if (value.comments.list[i]) {
+                console.log("hello");
+                if (value.comments.list[i].id == commentId) {
+                  value.comments.list.splice(i, 1);
+                  //console.log(value.comments);
+                }
+              }
+            }
+          }
+        });
 
       }
+      function deleteCommentFail(data) {}
 
     }
 
@@ -411,6 +455,161 @@ var getPost = (function() {
       }
     }
 
+    function commentUpdater(newComments) {
+      //update viewPost
+      viewPost.forEach(function(value) {
+        //update ViewPost
+        for (var i = 0; i < newComments.length; i++) {
+          if (value.id == newComments[i].post_id) {
+
+            if (value.comments.list != 0) {
+              value.comments.list.unshift(newComments[i]);
+            } else {
+              value.comments.list = [];
+              value.comments.list.push(newComments[i]);
+            }
+          }
+        }
+        value.comments.count = value.comments.list.length; //needed in the delete, delete uses the count property
+
+        //update the DOM
+        var allPosts = getProfilePost.querySelectorAll(".viewPost");
+        for (var i = 0; i < allPosts.length; i++) {
+          var postId = allPosts[i].className.split("-")[1];
+          if (postId == value.id) { //post # found
+            var viewCommentBox = allPosts[i].querySelector(".viewCommentBox");
+            var makeCommentBox = allPosts[i].querySelector(".makeCommentBox");
+            var commentContainer = commentLoader(newComments, 0, newComments.length);
+
+            if (viewCommentBox) {//there are comments - view and make shown
+              if (commentContainer.children.length < 6) { // 4 comments
+                for (var j = 1; j < commentContainer.children.length; j++) {
+                  viewCommentBox.appendChild(commentContainer.children[j]);
+                }
+              } else { //more than 4 comments
+                for (var j = 2; j < commentContainer.children.length; j++) {
+                  viewCommentBox.appendChild(commentContainer.children[j]);
+                }
+              }
+
+            } else if (!viewCommentBox && makeCommentBox) {//no comments made - only make shown
+              allPosts[i].children[0].removeChild(allPosts[i].children[0].children[3]);
+              allPosts[i].children[0].insertBefore(commentContainer, allPosts[i].children[0].children[3]);
+
+            } else if (!viewCommentBox && !makeCommentBox) {//not opened - none shown
+              //show view Comment link
+              var totalComments = value.comments.list.length;
+              var counterBox = allPosts[i].querySelector(".commentCount");
+              if (counterBox) {
+                if (totalComments > 0) {
+                  counterBox.innerText = totalComments;
+                } else {
+                  allPosts[i].children[0].removeChild(allPosts[i].children[0].children[allPosts[i].children[0].children.length-1]);
+                }
+              } else {
+                if (totalComments > 0) {
+                  var viewComments = document.createElement("div");
+                  viewComments.className = "row";
+                  viewComments.innerHTML = `
+                    <div class="col">
+                      <a href="" class="viewPost__showComments">View comments (<span class="commentCount">${totalComments}</span>)</a>
+                    </div>
+                  `;
+                  allPosts[i].children[0].appendChild(viewComments);
+                }
+              }
+
+            }
+
+            // var commentCount = allPosts[i].querySelector(".commentCount");
+            // if (commentCount) {
+            //   commentCount.innerHTML =
+            // }
+          }
+        }
+      });
+      //console.log(viewPost);
+    }
+
+    function deletedCommentFromDatabase(commentList) {
+      if (commentList) {
+        var postId = commentList[0].post_id;
+
+        viewPost.forEach(function(value) {
+          if (value.id == postId) {
+            var found = [];
+            for (var i = 0; i < value.comments.list.length; i++) {
+              var exists = 0;
+              for (var j = 0; j < commentList.length; j++) {
+                if (value.comments.list[i].id == commentList[j].id) {
+                  exists = 1;
+                }
+                if (j == commentList.length - 1) {
+                  if (exists != 1) { //found the deleted comment
+                    found.push(i);
+                    found.push(value.comments.list[i]);
+                  }
+                }
+              }
+            }
+
+            console.log(found);
+            if (found[0]) {
+              // remove from viewPost
+              value.comments.list.splice(found[0], 1);
+              value.comments.count = value.comments.count - 1;
+
+              //remove from DOM
+              var allPosts = getProfilePost.querySelectorAll(".viewPost");
+              for (var i = 0; i < allPosts.length; i++) {
+                var domPostId = allPosts[i].className.split("-")[1];
+                if (domPostId == found[1].post_id) {
+                  var viewCommentBox = allPosts[i].querySelectorAll(".viewCommentBox");
+
+                  if (viewCommentBox[0]) { //view shown
+                    console.log(viewCommentBox);
+                    for (var j = 0; j < viewCommentBox[0].children.length; j++) {
+                      var viewCommentId = viewCommentBox[0].children[j].className.split("-")[1];
+                      if (viewCommentId == found[1].id) {
+                        viewCommentBox[0].removeChild(viewCommentBox[0].children[j]);
+                      }
+                    }
+                  } else { //view comments not shown
+
+                    //show view Comment link
+                    var totalComments = commentList.length;
+                    var counterBox = allPosts[i].querySelector(".commentCount");
+                    if (counterBox) {
+                      if (totalComments > 0) {
+                        counterBox.innerText = totalComments;
+                      } else {
+                        allPosts[i].children[0].removeChild(allPosts[i].children[0].children[allPosts[i].children[0].children.length-1]);
+                      }
+                    } //else {
+                    //   if (totalComments > 0) {
+                    //     var viewComments = document.createElement("div");
+                    //     viewComments.className = "row";
+                    //     viewComments.innerHTML = `
+                    //       <div class="col">
+                    //         <a href="" class="viewPost__showComments">View comments (<span class="commentCount">${totalComments}</span>)</a>
+                    //       </div>
+                    //     `;
+                    //     allPosts[i].children[0].appendChild(viewComments);
+                    //   }
+                    // }
+                  }
+
+                }
+              }
+
+            }
+
+          }
+        });
+      }
+      //console.log(commentList);
+    }
+
     function displayPost (post) {
       var newViewPost = document.createElement("div");
       newViewPost.className = "viewPost postID-"+post.id;
@@ -509,12 +708,15 @@ var getPost = (function() {
       profileUserId = profileUserId[profileUserId.length-1];
       var postCount = postContainer.children.length;
       var likeStats = currentLikeStats();
-      console.log(JSON.parse(likeStats));
+      var currentComments = JSON.stringify(findPostComments("ALL"));
+      console.log(JSON.parse(currentComments));
+
       return ("profilePost="+profileUserId+"&"+
               "profilePostCount="+postCount+"&"+
               "currentUserId="+currentUserId+"&"+
-              "likeCount="+likeStats);
-
+              "likeCount="+likeStats+"&"+
+              "currentComments="+currentComments
+      );
     }
     //console.log(postData().length);
 
@@ -537,6 +739,13 @@ var getPost = (function() {
           var postId = data[1];
           var likeCount = data[2];
           likeCountUpdater(postId, likeCount);
+        }
+        if (data[0] == "New Comment") {
+          var newComments = data[1];
+          commentUpdater(newComments);
+        }
+        if (data[0] == "Delete Comment") {
+          deletedCommentFromDatabase(data[1]);
         }
         //reload ajax
         liveAjaxCall(postData())

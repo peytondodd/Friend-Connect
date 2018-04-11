@@ -54,7 +54,7 @@
               $friend = new stdClass();
               $friend->friend_id = $friend_id;
               $friend->friend_name = ucwords($friend_name->first_name. " " .$friend_name->last_name);
-              $friend->profile_img = $this->getProfileImgSrc($friend_id, $friend_info->profile_img, $friend_info->profile_img_id);
+              $friend->profile_img = getProfileImgSrc($friend_id, $friend_info->profile_img, $friend_info->profile_img_id);
 
               // push into friend list array
               $friend_list[] = $friend;
@@ -86,14 +86,8 @@
 
           // USER POSTS
           $userPosts = $this->postModel->getAllUserPost($id);
-          function dateCompare($a, $b) {
-            if ($a->created_at == $b->created_at) {
-              return 0;
-            }
-            return ($a->created_at > $b->created_at) ? -1 : 1;
-            //latest date to earliest date
-          }
-          usort($userPosts, "dateCompare");
+
+          usort($userPosts, "dateCompare"); //dateCompare from sort_helper.php
 
 
           // POST NAME, PROFILE ICON, LIKES AND COMMENTS
@@ -105,7 +99,7 @@
             //post profile icon
             $picPost = $this->userModel->findUserInfoById($value->user_id);
             $value->img_src =
-            $this->getProfileImgSrc($value->user_id, $picPost->profile_img, $picPost->profile_img_id);
+            getProfileImgSrc($value->user_id, $picPost->profile_img, $picPost->profile_img_id);
 
             // LIKES
             //gather all like counts per post
@@ -133,7 +127,7 @@
 
                 $picComm= $this->userModel->findUserInfoById($comm->user_id);
                 $comm->img_src =
-                $this->getProfileImgSrc($value->user_id, $picComm->profile_img, $picComm->profile_img_id);
+                getProfileImgSrc($value->user_id, $picComm->profile_img, $picComm->profile_img_id);
               }
 
               $value->comments->count = count($postComment);
@@ -156,7 +150,7 @@
             "first_name" => $user->first_name,
             "last_name" => $user->last_name,
             "status" => $userInfo->status,
-            "profile_img" => $this->getProfileImgSrc($id, $userInfo->profile_img, $userInfo->profile_img_id),
+            "profile_img" => getProfileImgSrc($id, $userInfo->profile_img, $userInfo->profile_img_id),
             "birthday" => $userInfo->birthday,
             "gender" => $userInfo->gender,
             "education" => $userInfo->education,
@@ -179,25 +173,6 @@
       }
 
 
-    }
-
-    public function getProfileImgSrc($profileId, $profileImg, $profileImgId) {
-      if ($profileImg == 1) {
-          $ext = array("jpeg", "jpg", "png", "bmp", "gif");
-          $found = false;
-          $i = 0;
-          do {
-            if (file_exists("user_data/".$profileId."/profile.".$profileId.".".$ext[$i])) {
-              $found = true;
-              $ext = $ext[$i];
-            } else {
-              $i++;
-            }
-          } while (!$found && $i < 5);
-          return $profileId . "/profile." . $profileId . "." . $ext;
-      }elseif ($profileImg == 0) {
-        return "default/default-profile-" . $profileImgId . ".jpg";
-      }
     }
 
     public function setup() {
