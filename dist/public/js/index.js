@@ -1297,34 +1297,43 @@ var getPost = (function() {
     }
 
     function displayPost (post) {
-      var newViewPost = document.createElement("div");
-      newViewPost.className = "viewPost postID-"+post.id;
-      newViewPost.innerHTML = `
-      <div class='viewPost__postBox'>
-        <div class="row mx-0">
-          <div class="viewPost__postUserIconBox">
-            <img class="viewPost__postUserIcon" src=${postIconSrc} alt="profile picture">
-          </div>
-          <a class="viewPost__name" href="#">${postName}</a>
-          <span class="viewPost__date">${post.created_at}</span>
-        </div>
-        <div class="row mx-0">
-          <div class="viewPost__content">
-            ${post.content}
-          </div>
-        </div>
-        <div class="row mx-0 viewPost__likeCommentShare">
+      console.log("hey this is from displaypost");
+      console.log(post);
+      for (var i = 0; i <post.length; i++) {
+        console.log(post);
+        //update ViewPost
+        viewPost.push(post[i]);
+        //update DOM
+        var newViewPost = document.createElement("div");
+        newViewPost.className = "viewPost postID-"+post[i].id;
+        newViewPost.innerHTML = `
+        <div class='viewPost__postBox'>
           <div class="row mx-0">
-            <div class="btn-group">
-              <a class="btn btn-default likeOrDislikeBtn" href="">Like</a>
-              <a class="btn btn-default showCommentsBtn" href="">Comment</a>
-              <a class="btn btn-default" href="">Share</a>
+            <div class="viewPost__postUserIconBox">
+              <img class="viewPost__postUserIcon" src="/user_data/${post[i].img_src}" alt="profile picture">
+            </div>
+            <a class="viewPost__name" href="#">${post[i].name}</a>
+            <span class="viewPost__date">${post[i].created_at}</span>
+          </div>
+          <div class="row mx-0">
+            <div class="viewPost__content">
+              ${post[i].content}
             </div>
           </div>
-        </div>
-      </div>`;
+          <div class="row mx-0 viewPost__likeCommentShare">
+            <div class="row mx-0">
+              <div class="btn-group">
+                <a class="btn btn-default likeOrDislikeBtn" href="">Like</a>
+                <a class="btn btn-default showCommentsBtn" href="">Comment</a>
+                <a class="btn btn-default" href="">Share</a>
+              </div>
+            </div>
+          </div>
+        </div>`;
 
-      postContainer.insertBefore(newViewPost, postContainer.children[0]);
+        postContainer.insertBefore(newViewPost, postContainer.children[0]);
+        newViewPost.addEventListener("click", postClickDir);
+      }
       // convert php datetime to javascript date object
       // for (var i = 0; i < post.length; i++) {
       //   var postDate = post[i].created_at.split(" ")[0];
@@ -1418,7 +1427,12 @@ var getPost = (function() {
         //new post
         if (data[0] == "New Post") {
           postCount = data[1].length;
-          displayPost(data[1][data[1].length-1]);
+          var newPostCount = data[2];
+          var newPost = [];
+          for (var i = newPostCount; i > 0; i--) {
+            newPost.push(data[1][postCount-i]);
+          }
+          displayPost(newPost);
         }
         //new like
         if (data[0] == "New Like") {
