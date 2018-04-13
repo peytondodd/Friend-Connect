@@ -63,6 +63,10 @@
     background: #DDD;
     & p {
       margin: 0;
+      display: inline-block;
+    }
+    &--editBtn {
+      float: right;
     }
   }
   &__userInfo {
@@ -117,11 +121,60 @@
     }
   }
 
+
   // &__displayPost {
   //   width: 100%;
   //   height: calc(#{$one-rem} * 80);
   //   background-color: pink;
   // }
+  //
+
+  // PROFILE PAGE SETTINGS
+  &__settingsPage {
+    background-color: #EEE;
+  }
+
+  &__settingImageContainer {
+    //height: calc(#{$one-rem} * 30);
+    //border: 1px solid black;
+    padding: $one-rem;
+
+    &--settingImageBox {
+      width: calc(#{$one-rem} * 12.5);;
+      height: calc(#{$one-rem} * 12.5);;
+      margin: 0 auto $one-rem;
+      border: 1px solid black;
+    }
+    &--settingImage {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    &--uploaderBox {
+      margin: 0 auto;
+      width: calc(#{$one-rem} * 18);
+    }
+    &--settings_ImgInput {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
+  }
+
+  &__settingInfoContainer {
+    // height: 500px;
+    //background-color: white;
+    padding: $one-rem;
+
+    &--description {
+      resize: none;
+      width: 100%;
+      padding: $one-rem;
+    }
+  }
 
 }
 

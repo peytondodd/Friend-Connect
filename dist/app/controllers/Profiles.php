@@ -145,9 +145,9 @@
           }
 
 
-          echo "<pre>";
-          print_r($userPosts);
-          echo "</pre>";
+          // echo "<pre>";
+          // print_r($userPosts);
+          // echo "</pre>";
 
           $data = [
             "id" => $user->id,

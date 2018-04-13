@@ -82,6 +82,7 @@ gulp.task("watch", function(){
   gulp.watch("src/public/css/*.css", ["copyCss"]);
   // JS files
   gulp.watch("src/public/js/modules/*.js", ["scripts"]);
+  gulp.watch("src/public/js/layout/*.js", ["scripts"]);
   gulp.watch("src/public/js/*.js", ["scripts"]);
 
   //APP SECTION

@@ -677,7 +677,10 @@ body {
   padding: calc(0.625rem / 2) 0.625rem;
   background: #DDD; }
   .profilePage__detailsTitle p {
-    margin: 0; }
+    margin: 0;
+    display: inline-block; }
+  .profilePage__detailsTitle--editBtn {
+    float: right; }
 
 .profilePage__userInfo {
   padding: 1rem calc(0.625rem * 1.6);
@@ -719,6 +722,38 @@ body {
     padding: 0 !important; }
   .profilePage__userFriends--row {
     padding: 0 calc(0.625rem * .8); }
+
+.profilePage__settingsPage {
+  background-color: #EEE; }
+
+.profilePage__settingImageContainer {
+  padding: 0.625rem; }
+  .profilePage__settingImageContainer--settingImageBox {
+    width: calc(0.625rem * 12.5);
+    height: calc(0.625rem * 12.5);
+    margin: 0 auto 0.625rem;
+    border: 1px solid black; }
+  .profilePage__settingImageContainer--settingImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; }
+  .profilePage__settingImageContainer--uploaderBox {
+    margin: 0 auto;
+    width: calc(0.625rem * 18); }
+  .profilePage__settingImageContainer--settings_ImgInput {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1; }
+
+.profilePage__settingInfoContainer {
+  padding: 0.625rem; }
+  .profilePage__settingInfoContainer--description {
+    resize: none;
+    width: 100%;
+    padding: 0.625rem; }
 
 @media (max-width: 1199px) {
   .profilePage__profileImage {
@@ -867,11 +902,13 @@ body {
     border-radius: 50%; }
   .viewPost__name {
     display: inline-block;
-    transform: translateY(calc(1.5625rem)); }
+    transform: translateY(calc(1.5625rem));
+    height: calc(0.625rem * 2.5); }
   .viewPost__date {
     display: inline-block;
     transform: translate(calc(-6.1875rem), calc(2.8125rem));
-    opacity: .5; }
+    opacity: .5;
+    height: calc(0.625rem * 2.5); }
   .viewPost__content {
     padding: 0.625rem;
     word-break: break-all; }

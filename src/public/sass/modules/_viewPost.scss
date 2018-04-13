@@ -20,12 +20,14 @@
   &__name {
     display: inline-block;
     transform: translateY(calc(#{$one-rem * 2.5}));
+    height: calc(#{$one-rem} * 2.5);
     //font-weight: bold;
   }
   &__date {
     display: inline-block;
     transform: translate(calc(#{$one-rem * -9.9}), calc(#{$one-rem * 4.5}));
     opacity: .5;
+    height: calc(#{$one-rem} * 2.5);
   }
   &__content {
     padding: $one-rem;

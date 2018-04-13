@@ -1,4 +1,7 @@
 <?php
+  // profile ID
+  $viewId = $data["id"];
+
   // PROFILE IMAGE
   $viewProfileImgSrc = $data["profile_img"];
 
@@ -78,6 +81,9 @@
             <input class="btn btn-primary" type="button" name="" value="About">
             <input class="btn btn-primary" type="button" name="" value="Photos">
             <input class="btn btn-primary" type="button" name="" value="Friends">
+            <?php if ($_SESSION["user_id"] == $viewId) : ?>
+              <input class="btn btn-primary" type="button" name="profilePage-Settings" value="Settings">
+            <?php endif; ?>
           </div>
         </div>
 
@@ -87,7 +93,7 @@
   </div>
   </div>
 
-  <div class="row">
+  <div class="row profileBody">
     <div class="col-md-4 mb-3">
       <div class="profilePage__profileInfo">
 
@@ -270,8 +276,98 @@
       <div class="modal-content-post">
       </div>
     </div> -->
-
   </div>
+
+  <div class="profilePage__settingsPage">
+    <h4 class="text-center pt-3">Profile Settings</h4>
+
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <div class="profilePage__settingImageContainer">
+          <div class="profilePage__settingImageContainer--settingImageBox">
+            <img class="profilePage__settingImageContainer--settingImage" src="/user_data/18/profile.18.gif" alt="">
+          </div>
+
+          <div class="profilePage__settingImageContainer--uploaderBox">
+            <label class="btn btn-info" for="settings_ImgInput">Upload a new picture</label>
+            <input class="profilePage__settingImageContainer--settings_ImgInput" type="file" id="settings_ImgInput" name="settings_img_upload" value="Profile picture">
+            <p class="settingsUploadMessage text-center"><i class=""></i></p>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-md-8 mb-3">
+        <div class="profilePage__settingInfoContainer">
+          <div class="form-row">
+            <div class="form-group col-sm-6">
+              <label for="firstName">First name: </label>
+              <input class="form-control" id="firstName" type="text" placeholder="First name..." value="">
+            </div>
+            <div class="form-group col-sm-6">
+              <label for="lastName">Last name: </label>
+              <input class="form-control" id="lastName" type="text" placeholder="Last name..." value="">
+            </div>
+          </div>
+          <div class="form-group">
+    	      <label for="birthday">Birthday: </label><br>
+    	      <select class="" name="month">
+    	        <option value="0">Month</option>
+    	        <?php
+    	          for ($m = 1; $m < 13; $m++) {
+    	            echo "<option value='".$m."'>".date("F",mktime(0,0,0,$m))."</option>";
+    	          }
+    	        ?>
+    	      </select>
+    	      <select class="" name="day">
+    	        <option value="0">Day</option>
+    	        <?php
+    	          for ($d = 1; $d <= 31; $d++) {
+    	            echo "<option value='".$d."'>".$d."</option>";
+    	          }
+    	        ?>
+    	      </select>
+    	      <select class="" name="year">
+    	        <option value="0">Year</option>
+    	        <?php
+    	          $year = date("Y");
+    	          $yearEnd = $year - 100;
+    	          for ($y = $year; $y >= $yearEnd; $y--) {
+    	            echo "<option value='".$y."'>".$y."</option>";
+    	          }
+    	        ?>
+    	      </select>
+    	    </div>
+          <div class="form-group">
+            <label for="gender">Gender: </label><br>
+            <input type="radio" name="" value="1"> Male
+            <input type="radio" name="" value="2"> Female
+            <input type="radio" name="" value="0"> None
+          </div>
+          <div class="form-group">
+            <label for="education">Education: </label>
+            <input class="form-control" type="text" id="education" name="" value="" placeholder="Education...">
+          </div>
+          <div class="form-group">
+            <label for="work">Work: </label>
+            <input class="form-control" type="text" id="work" name="" value="" placeholder="Work...">
+          </div>
+          <div class="form-group">
+            <label for="location">Location: </label>
+            <input class="form-control" type="text" id="location" name="" value="" placeholder="Location...">
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="profilePage__settingInfoContainer--description" name="name" rows="8" placeholder="Description..."></textarea>
+          </div>
+          <input class="btn btn-success" type="button" name="" value="Save">
+          <input class="btn btn-danger" type="button" name="" value="Cancel">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
 </div>
 
 
