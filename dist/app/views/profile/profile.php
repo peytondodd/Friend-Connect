@@ -192,72 +192,85 @@
       </div>
       <div class="row">
         <div class="col profilePage__displayPost">
-
-          <?php for($i = 0; $i < count($viewPost); $i++) : ?>
-            <div class="viewPost postID-<?php echo $viewPost[$i]->id; ?>">
-              <div class="viewPost__postBox">
-                <div class="row mx-0">
-                  <div class="viewPost__postUserIconBox">
-                    <img class="viewPost__postUserIcon" src="/user_data/<?php echo $viewPost[$i]->img_src; ?>" alt="profile picture">
-                  </div>
-                  <a class="viewPost__name" href="#"><?php echo $viewPost[$i]->name; ?></a>
-                  <span class="viewPost__date"><?php echo $viewPost[$i]->created_at; ?></span>
-                </div>
-                <div class="row mx-0">
-                  <div class="viewPost__content">
-                    <?php echo $viewPost[$i]->content; ?>
-                  </div>
-                </div>
-                <div class="row mx-0 viewPost__likeCommentShare">
+          <?php if ($viewPost != 0) : ?>
+            <?php for($i = 0; $i < count($viewPost); $i++) : ?>
+              <div class="viewPost postID-<?php echo $viewPost[$i]->id; ?>">
+                <div class="viewPost__postBox">
                   <div class="row mx-0">
-                    <div class="btn-group">
-                      <?php if ($viewPost[$i]->currentUserLike) :?>
-                        <a class="btn btn-default likeOrDislikeBtn" href="" name="<?php echo $viewPost[$i]->id; ?>">Dislike</a>
-                      <?php else : ?>
-                        <a class="btn btn-default likeOrDislikeBtn" href="" name="<?php echo $viewPost[$i]->id; ?>">Like</a>
-                      <?php endif; ?>
-                      <a class="btn btn-default showCommentsBtn" href="">Comment</a>
-                      <a class="btn btn-default" href="">Share</a>
+                    <?php if ($_SESSION["user_id"] == $viewPost[$i]->user_id) : ?>
+                      <p class="viewPost__modLink">
+                        <a class="viewPost__editPost" href="#">Edit</a> |
+                        <a class="viewPost__deletePost" href="#">Delete</a>
+                      </p>
+
+                    <?php endif; ?>
+                    <div class="viewPost__postUserIconBox">
+                      <img class="viewPost__postUserIcon" src="/user_data/<?php echo $viewPost[$i]->img_src; ?>" alt="profile picture">
+                    </div>
+                    <a class="viewPost__name" href="#"><?php echo $viewPost[$i]->name; ?></a>
+                    <span class="viewPost__date"><?php echo $viewPost[$i]->created_at; ?></span>
+                  </div>
+                  <div class="row mx-0">
+                    <div class="viewPost__content">
+                      <?php echo $viewPost[$i]->content; ?>
                     </div>
                   </div>
+                  <div class="row mx-0 viewPost__likeCommentShare">
+                    <div class="row mx-0">
+                      <div class="btn-group">
+                        <?php if ($viewPost[$i]->currentUserLike) :?>
+                          <a class="btn btn-default likeOrDislikeBtn" href="" name="<?php echo $viewPost[$i]->id; ?>">Dislike</a>
+                        <?php else : ?>
+                          <a class="btn btn-default likeOrDislikeBtn" href="" name="<?php echo $viewPost[$i]->id; ?>">Like</a>
+                        <?php endif; ?>
+                        <a class="btn btn-default showCommentsBtn" href="">Comment</a>
+                        <a class="btn btn-default" href="">Share</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <?php if ($viewPost[$i]->likeCount > 0) : ?>
+                    <div class="row">
+                      <div class="col viewPost__showLikes">
+                        <?php if ($viewPost[$i]->likeCount == 1) : ?>
+                          <span class="viewPost__likeCount">
+                            <?php echo $viewPost[$i]->likeCount; ?>
+                          </span>
+                          <span> person liked this</span>
+                        <?php endif; ?>
+                        <?php if ($viewPost[$i]->likeCount > 1) : ?>
+                          <span class="viewPost__likeCount">
+                            <?php echo $viewPost[$i]->likeCount; ?>
+                          </span>
+                          <span> people liked this</span>
+                        <?php endif; ?>
+                      </div>
+                    </div>
+                  <?php endif; ?>
+
+                  <?php if ($viewPost[$i]->comments->count > 0) : ?>
+                    <div class="row">
+                      <div class="col">
+                        <a href="" class="viewPost__showComments">View comments (<span class="commentCount"><?php echo $viewPost[$i]->comments->count; ?></span>)</a>
+                      </div>
+                    </div>
+                  <?php endif; ?>
+
+
+
                 </div>
-
-                <?php if ($viewPost[$i]->likeCount > 0) : ?>
-                  <div class="row">
-                    <div class="col viewPost__showLikes">
-                      <?php if ($viewPost[$i]->likeCount == 1) : ?>
-                        <span class="viewPost__likeCount">
-                          <?php echo $viewPost[$i]->likeCount; ?>
-                        </span>
-                        <span> person liked this</span>
-                      <?php endif; ?>
-                      <?php if ($viewPost[$i]->likeCount > 1) : ?>
-                        <span class="viewPost__likeCount">
-                          <?php echo $viewPost[$i]->likeCount; ?>
-                        </span>
-                        <span> people liked this</span>
-                      <?php endif; ?>
-                    </div>
-                  </div>
-                <?php endif; ?>
-
-                <?php if ($viewPost[$i]->comments->count > 0) : ?>
-                  <div class="row">
-                    <div class="col">
-                      <a href="" class="viewPost__showComments">View comments (<span class="commentCount"><?php echo $viewPost[$i]->comments->count; ?></span>)</a>
-                    </div>
-                  </div>
-                <?php endif; ?>
-
-
-
               </div>
-            </div>
-          <?php endfor; ?>
-
+            <?php endfor; ?>
+          <?php endif; ?>
         </div>
       </div>
     </div>
+
+    <!-- <div class="modal-bg">
+      <div class="modal-content-post">
+      </div>
+    </div> -->
+
   </div>
 </div>
 

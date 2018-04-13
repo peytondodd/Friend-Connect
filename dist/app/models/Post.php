@@ -21,13 +21,14 @@ class Post {
   }
 
   //edit post
-  public function updatePost($userId, $postId) {
+  public function updatePost($userId, $postId, $content) {
     $this->db->query("UPDATE posts SET
                       content = :content WHERE
                       id = :id AND
                       user_id = :user_id");
     $this->db->bind(":id", $postId);
     $this->db->bind(":user_id", $userId);
+    $this->db->bind(":content", $content);
 
     if ($this->db->execute()) {
       return true;
@@ -62,6 +63,16 @@ class Post {
     } else {
       return false;
     }
+  }
+
+  //get one post
+  public function getOnePost($postId) {
+    $this->db->query("SELECT * FROM posts
+                      WHERE id = :id");
+    $this->db->bind(":id", $postId);
+    $row = $this->db->single();
+
+    return $row;
   }
 
   public function likePost($userId, $postId) {

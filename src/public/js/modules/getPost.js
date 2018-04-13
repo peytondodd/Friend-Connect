@@ -44,7 +44,16 @@ var getPost = (function() {
       if (event.target.className == "viewPost__deleteComment") {
         deleteComment(event);
       }
-
+      if (event.target.className == "viewPost__deletePost") {
+        deletePost(event);
+      }
+      if (event.target.className == "viewPost__editPost") {
+        editPost(event);
+      }
+      if (event.target.name == "viewPost__saveEdit" ||
+      event.target.name == "viewPost__cancelEdit") {
+        editPostAction(event);
+      }
       //console.log(event.target);
     }
 
@@ -64,30 +73,36 @@ var getPost = (function() {
     }
 
     function findPostComments (postId) {
-      if (postId == "ALL") {
-        var comments = [];
-        viewPost.forEach(function(value) {
-          var commentsCount = value.comments.list.length;
-          if (!commentsCount) {
-            commentsCount = 0;
-          }
+      console.log(viewPost);
+      if (viewPost) {
+        if (postId == "ALL") {
+          var comments = [];
+          viewPost.forEach(function(value) {
+            var commentsCount = value.comments.list.length;
+            if (!commentsCount) {
+              commentsCount = 0;
+            }
 
-          var postComments = {
-            postId: value.id,
-            //comments: value.comments.list,
-            commentsCount: commentsCount
-          }
-          comments.push(postComments);
-        });
+            var postComments = {
+              postId: value.id,
+              //comments: value.comments.list,
+              commentsCount: commentsCount
+            }
+            comments.push(postComments);
+          });
+        } else {
+          var comments = [];
+          viewPost.forEach(function(value) {
+            if (value.id == postId) {
+              comments = value.comments.list;
+            }
+          });
+        }
+        return comments;
       } else {
-        var comments = [];
-        viewPost.forEach(function(value) {
-          if (value.id == postId) {
-            comments = value.comments.list;
-          }
-        });
+        return 0;
       }
-      return comments;
+
     }
 
     function showComments(event) {
@@ -367,6 +382,133 @@ var getPost = (function() {
       return commentBox;
     }
 
+    function deletePost(event) {
+      var postId = event.target.parentElement.parentElement.parentElement.parentElement.className.split("-")[1];
+      var userId = currentUserId;
+      var postData = ("deletePostUserId="+userId+"&"+
+                          "deletePostId="+postId);
+
+      ajaxCall("POST", "/posts/deletePost", true, postData)
+        .then(deletePostSuccess, deletePostFail);
+
+      function deletePostSuccess(data) {
+        //remove from DOM
+        var post = event.target.parentElement.parentElement.parentElement.parentElement;
+        post.parentElement.removeChild(post);
+
+        //remove from viewPost
+        var deleteIndex;
+        for (var i = 0; i < viewPost.length; i++) {
+          if (viewPost[i].id == postId) {
+            deleteIndex = i;
+          }
+        }
+        viewPost.splice(deleteIndex, 1);
+
+      }
+      function deletePostFail(data) {
+
+      }
+
+    }
+
+    function editPost(event) {
+      //console.log(event.target.parentElement.parentElement.parentElement.children[1]);
+      var contentContainer = event.target.parentElement.parentElement.parentElement.children[1];
+      // console.log(event.target.parentElement.parentElement.parentElement.children[1].children[0].innerText);
+      var postContent = event.target.parentElement.parentElement.parentElement.children[1].children[0].innerText;
+
+      //original
+      contentContainer.children[0].style.display = "none";
+
+      //hide edit/delete btn
+      event.target.parentElement.style.display = "none";
+
+      //edit
+      var editContent = document.createElement("div");
+      editContent.className = "viewPost__editContent";
+      editContent.innerHTML = `
+        <textarea class="viewPost__editInput">${postContent}</textarea>
+        <div class="float-right">
+        <input class="btn btn-success" type="button" name="viewPost__saveEdit" value="Save">
+        <input class="btn btn-danger" type="button" name="viewPost__cancelEdit" value="Cancel">
+        </div>
+      `;
+
+      contentContainer.appendChild(editContent);
+
+      var editInput = editContent.querySelector(".viewPost__editInput");
+      editInput.style.height = "";
+      editInput.style.height = editInput.scrollHeight + 15 + "px";
+
+      editInput.addEventListener("keydown", editPostInputDown);
+      editInput.addEventListener("keyup", editPostInputUp);
+      //editContent.addEventListener("click", postClickDir);
+    }
+
+    function editPostInputDown(event) {
+      //resize
+      event.target.style.height = "";
+      event.target.style.height = event.target.scrollHeight + 15 + "px";
+
+      //max length
+      if (event.target.value.length > 1999) {
+        if (event.keyCode != 8) {
+          event.preventDefault();
+        }
+      }
+    }
+
+    function editPostInputUp(event) {
+      if (event.target.value.length > 1999) {
+        var temp = event.target.value;
+        event.target.value = "";
+        event.target.value = temp.substring(0, 2000);
+      }
+    }
+
+    function editPostAction(event) {
+      var postBox = event.target.parentElement.parentElement.parentElement.parentElement;
+
+      if (event.target.name == "viewPost__saveEdit") {
+        var userId = currentUserId;
+        var postId = postBox.parentElement.className.split("-")[1];
+        var content = event.target.parentElement.parentElement.children[0].value;
+
+        var postData = ("editPostUserId="+userId+"&"+
+                        "editPostId="+postId+"&"+
+                        "editPostContent="+content);
+
+        ajaxCall("POST", "/posts/editPost", true, postData)
+          .then(editPostSuccess, editPostFail);
+
+        function editPostSuccess(data) {
+          // show edit and delete btn
+          postBox.children[0].children[0].style.display = "block";
+          // remove the edit textarea
+          var contentRow = postBox.children[1];
+          contentRow.removeChild(contentRow.children[contentRow.children.length-1]);
+          contentRow.children[0].style.display = "block";
+          // edit viewPost
+          // viewPost.forEach(function(value) {
+          //   if (value.id == postId) {
+          //     value.content = content;
+          //   }
+          // });
+        }
+        function editPostFail(data) {}
+
+      } else if (event.target.name == "viewPost__cancelEdit") {
+        // show edit and delete btn
+        postBox.children[0].children[0].style.display = "block";
+        // remove the edit textarea
+        var contentRow = postBox.children[1];
+        contentRow.removeChild(contentRow.children[contentRow.children.length-1]);
+        contentRow.children[0].style.display = "block";
+
+      }
+    }
+
     // ajax function use
     function currentLikeStats() {
       var allPosts = getProfilePost.querySelectorAll(".viewPost");
@@ -393,8 +535,30 @@ var getPost = (function() {
           likeCounter.push(postAndLike);
         }
       }
-      //console.log(likeCounter);
-      return JSON.stringify(likeCounter);
+      if (likeCounter[0]) {
+        return JSON.stringify(likeCounter);
+      } else {
+        return 0;
+      }
+    }
+
+    function currentPostContent() {
+      if (viewPost[0]) {
+        var currentPostContent = [];
+
+        viewPost.forEach(function(value) {
+          var postContent = {
+            postId: value.id,
+            content: value.content
+          }
+          currentPostContent.push(postContent);
+        });
+
+        return JSON.stringify(currentPostContent);
+
+      } else {
+        return 0;
+      }
     }
 
     function likeCountUpdater(postId, likeCount) {
@@ -610,11 +774,83 @@ var getPost = (function() {
       //console.log(commentList);
     }
 
+    function deletePostFromDatabase(newPosts) {
+      var found = [];
+      viewPost.forEach(function(value,index) {
+        var exists = 0;
+
+        for (var i = 0; i < newPosts.length; i++) {
+          if (value.id == newPosts[i].id) {
+            exists = 1;
+          }
+          if (i == newPosts.length - 1) {
+            if (exists != 1) {
+              if (index == 0) {
+                found.push("zero");
+              } else {
+                found.push(index);
+              }
+              found.push(value);
+              console.log(found);
+            }
+          }
+        }
+      });
+
+      if (found[0]) {
+        //update viewPost
+        if (found[0] == "zero") {
+          viewPost.splice(0, 1);
+        } else {
+          viewPost.splice(found[0], 1);
+        }
+
+        //remove from dom
+        var allPosts = getProfilePost.querySelectorAll(".viewPost");
+        var postIndex;
+        for (var i = 0; i < allPosts.length; i++) {
+          var postId = allPosts[i].className.split("-")[1];
+          if (postId == found[1].id) {
+            postIndex = i;
+          }
+        }
+        allPosts[postIndex].parentElement.removeChild(allPosts[postIndex]);
+
+      }
+    }
+
+    function updatePostContent (post) {
+      if (post) {
+        //update viewPost
+        viewPost.forEach(function(value) {
+          if (value.id == post.id) {
+            if (value.content != post.content) {
+              value.content = post.content;
+            }
+          }
+        });
+
+        //update DOM
+        var allPosts = getProfilePost.querySelectorAll(".viewPost");
+        for (var i = 0; i < allPosts.length; i++) {
+          var postId = allPosts[i].className.split("-")[1];
+          if (postId == post.id) {
+            var oldContent = allPosts[i].children[0].children[1].children[0];
+
+            if (oldContent.innerText != post.content) {
+              oldContent.innerText = post.content;
+            }
+          }
+        }
+      }
+    }
+
     function displayPost (post) {
-      console.log("hey this is from displaypost");
-      console.log(post);
+      if (!viewPost || viewPost == 0) {
+        viewPost = [];
+        //console.log(viewPost);
+      }
       for (var i = 0; i <post.length; i++) {
-        console.log(post);
         //update ViewPost
         viewPost.push(post[i]);
         //update DOM
@@ -644,6 +880,16 @@ var getPost = (function() {
             </div>
           </div>
         </div>`;
+
+        if (currentUserId == post[i].user_id) {
+          var postMod = document.createElement("p");
+          postMod.className = "viewPost__modLink";
+          postMod.innerHTML = `
+            <a class="viewPost__editPost" href="#">Edit</a> |
+            <a class="viewPost__deletePost" href="#">Delete</a>
+          `;
+          newViewPost.children[0].children[0].insertBefore(postMod, newViewPost.children[0].children[0].children[0]);
+        }
 
         postContainer.insertBefore(newViewPost, postContainer.children[0]);
         newViewPost.addEventListener("click", postClickDir);
@@ -718,13 +964,14 @@ var getPost = (function() {
       var postCount = postContainer.children.length;
       var likeStats = currentLikeStats();
       var currentComments = JSON.stringify(findPostComments("ALL"));
-      console.log(JSON.parse(currentComments));
+      var postContent = currentPostContent();
 
       return ("profilePost="+profileUserId+"&"+
               "profilePostCount="+postCount+"&"+
               "currentUserId="+currentUserId+"&"+
               "likeCount="+likeStats+"&"+
-              "currentComments="+currentComments
+              "currentComments="+currentComments+"&"+
+              "currentPostContent="+postContent
       );
     }
     //console.log(postData().length);
@@ -759,7 +1006,13 @@ var getPost = (function() {
           commentUpdater(newComments);
         }
         if (data[0] == "Delete Comment") {
-          deletedCommentFromDatabase(data[1]);
+          deletedCommentFromDatabase(data[1]); // also user
+        }
+        if (data[0] == "Delete Post") {
+          deletePostFromDatabase(data[1]); // also user
+        }
+        if (data[0] == "New Post Content") {
+          updatePostContent(data[1]);
         }
         //reload ajax
         liveAjaxCall(postData())
