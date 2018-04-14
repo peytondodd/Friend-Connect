@@ -175,9 +175,174 @@
       } else {
         echo "user not found";
       }
-
-
     }
+
+
+    public function settings() {
+      if (isset($_POST["settingsSave"])) {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        echo "<pre>";
+        print_r($_FILES);
+        echo "</pre>";
+
+        $userInfo = [
+          "status" => "",
+          "profile_img" => "",//
+          "profile_img_id" => "",
+          "birthday" => "",
+          "gender" => "",
+          "education" => "",
+          "work" => "",
+          "location" => "",
+          "description" => "",
+          "profile_setup" => ""
+        ];
+
+        //name
+        if ($_POST["first_name"] != "" && $_POST["last_name"] != "") {
+          $firstName = $_POST["first_name"];
+          $lastName = $_POST["last_name"];
+        } else {
+          $tempUser = $this->userModel->findUserById($_SESSION["user_id"]);
+          $firstName = $tempUser->first_name;
+          $lastName = $tempUser->last_name;
+        }
+
+        //status
+        $userInfo["status"] = 1;
+
+        // profile picture
+        if ($_FILES["settings_img_upload"]["name"] !== "" && $_FILES["settings_img_upload"]["size"] !== 0) {
+
+          $fileName = $_FILES["settings_img_upload"]["name"];
+          $fileTmpName = $_FILES["settings_img_upload"]["tmp_name"];
+          $fileSize = $_FILES["settings_img_upload"]["size"];
+          $fileError = $_FILES["settings_img_upload"]["error"];
+
+          $fileExt = explode(".", $fileName);
+          $fileActualExt = strtolower(end($fileExt));
+
+          $allowed = array("jpeg", "jpg", "png", "bmp", "gif");
+
+          if (in_array($fileActualExt, $allowed)) {
+            if ($fileError === 0) {
+              if ($fileSize < 50000000) { // 50mb
+                $fileNameNew = "profile.".$_SESSION["user_id"].".".$fileActualExt;
+                // Create image folder if it doesnt exist
+                if (file_exists("./user_data")) {
+                  if (file_exists("./user_data/".$_SESSION["user_id"])) {
+                    $userFolder = "./user_data/".$_SESSION["user_id"];
+                  } else {
+                    mkdir("./user_data/".$_SESSION["user_id"]);
+                    $userFolder = "./user_data/".$_SESSION["user_id"];
+                  }
+                } else {
+                  mkdir("./user_data");
+                  mkdir("./user_data/".$_SESSION["user_id"]);
+                  $userFolder = "./user_data/".$_SESSION["user_id"];
+                }
+                //delete old image if exists
+                foreach($allowed as $ext) {
+                  $oldImage = "./user_data/".$_SESSION["user_id"]."/profile.".$_SESSION["user_id"].".".$ext;
+                  if (file_exists($oldImage)) {
+                    unlink($oldImage);
+                  }
+                }
+
+                $fileDestination = $userFolder. "/" .$fileNameNew;
+                if (move_uploaded_file($fileTmpName, $fileDestination)) {
+                  $userInfo["profile_img"] = 1;
+                  $userInfo["profile_img_id"] = 0;
+                  //echo "Success";
+                } else {
+                  //echo "upload failed";
+                  //$userInfo["ERR_profile_img"] = "upload failed";
+                }
+              } else {
+                //echo "file is too big";
+                //$userInfo["ERR_profile_img"] = "file is too big";
+              }
+            } else {
+              //echo "there was an error uploading";
+              //$userInfo["ERR_profile_img"] = "there was an error uploading";
+            }
+          } else {
+            //echo "Wrong file type";
+            //$userInfo["ERR_profile_img"] = "Wrong file type";
+          }
+        } else { // DO NOTHING
+          $tempinfo = $this->userModel->findUserInfoById($_POST["id"]);
+          $userInfo["profile_img"] = $tempinfo->profile_img;
+          $userInfo["profile_img_id"] = $tempinfo->profile_img_id;
+        }
+        if ($userInfo["profile_img"] == "" && $userInfo["profile_img_id"] == "") {
+          $tempinfo = $this->userModel->findUserInfoById($_POST["id"]);
+          $userInfo["profile_img"] = $tempinfo->profile_img;
+          $userInfo["profile_img_id"] = $tempinfo->profile_img_id;
+        }
+
+        // birthday
+        if (isset($_POST["month"]) && isset($_POST["day"]) && isset($_POST["year"])) {
+          if ($_POST["month"] != 0 && $_POST["day"] != 0 && $_POST["year"] != 0) {
+            $month= $_POST["month"];
+            $day= $_POST["day"];
+            $year = $_POST["year"];
+            $userInfo["birthday"] = date("Y-m-d",mktime(0,0,0,$month,$day,$year));
+          } else {
+            $userInfo["birthday"] = 0;
+          }
+        }
+
+        // gender
+        if (isset($_POST["gender"])) {
+          $userInfo["gender"] = $_POST["gender"];
+        }
+
+        // education
+        if (isset($_POST["education"])) {
+          if (strlen($_POST["education"]) < 255) {
+            $userInfo["education"] = $_POST["education"];
+          }
+        }
+
+        // work
+        if (isset($_POST["work"])) {
+          if (strlen($_POST["work"]) < 255) {
+            $userInfo["work"] = $_POST["work"];
+          }
+        }
+
+        // location
+        if (isset($_POST["location"])) {
+          if (strlen($_POST["location"]) < 255) {
+            $userInfo["location"] = $_POST["location"];
+          }
+        }
+
+        // desc
+        if (isset($_POST["description"])) {
+          if (strlen($_POST["description"]) < 65535) {
+            $userInfo["description"] = $_POST["description"];
+          }
+        }
+
+        //profile setUp
+        $userInfo["profile_setup"] = 1;
+
+        // echo "<pre>";
+        // print_r($userInfo);
+        // echo "</pre>";
+
+        if ($this->userModel->updateUserInfo($userInfo) &&
+        $this->userModel->updateName($_SESSION["user_id"], $firstName, $lastName)) {
+          redirect("profiles/user/".$_SESSION["user_id"]);
+        } else {
+          echo "Error";
+        }
+
+      }
+    }
+
 
     public function setup() {
       //already completed
@@ -340,7 +505,7 @@
           //$userInfo["ERR_location"] = "Please enter your location.";
         //}
 
-        // location
+        // desc
         if (isset($_POST["description"])) {
           if (!empty($_POST["description"])) {
             if (strlen($_POST["description"]) < 65535) {

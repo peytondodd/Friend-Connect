@@ -51,6 +51,18 @@
   //USER Posts
   $viewPost = $data["user_post"];
 
+  //USER details for javascript
+  $viewUserInfo = new stdClass();
+  $viewUserInfo->id = $data["id"];
+  $viewUserInfo->firstName = $data["first_name"];
+  $viewUserInfo->lastName = $data["last_name"];
+  $viewUserInfo->birthday = $data["birthday"];
+  $viewUserInfo->gender = $data["gender"];
+  $viewUserInfo->education = $data["education"];
+  $viewUserInfo->work = $data["work"];
+  $viewUserInfo->location = $data["location"];
+  $viewUserInfo->description = $data["description"];
+  $viewUserInfo->image = $data["profile_img"];
 ?>
 
 <?php require APPROOT . "/views/inc/header.php"; ?>
@@ -278,7 +290,10 @@
     </div> -->
   </div>
 
-  <div class="profilePage__settingsPage">
+  <form class="" action="index.html" method="post">
+
+  </form>
+  <!-- <div class="profilePage__settingsPage">
     <h4 class="text-center pt-3">Profile Settings</h4>
 
     <div class="row">
@@ -364,7 +379,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
 
 
@@ -379,7 +394,8 @@
   var postIconSrc = "/user_data/<?php echo $viewProfileImgSrc; ?>";
   var currentUserId = <?php echo $_SESSION["user_id"]; ?>;
   var viewPost = <?php echo json_encode($viewPost); ?>;
-
+  var viewUserInfo = <?php echo json_encode($viewUserInfo); ?>;
+console.log(viewUserInfo);
 </script>
 
 <!-- <h1>Welcome to <?php echo $data["first_name"] . "'s profile."; ?></h1>

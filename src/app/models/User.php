@@ -72,6 +72,23 @@
       return $row;
     }
 
+    // Update Name
+    public function updateName($userId, $firstName, $lastName) {
+      $this->db->query("UPDATE users SET
+                        first_name = :first_name,
+                        last_name = :last_name
+                        WHERE id = :id");
+      $this->db->bind(":id", $userId);
+      $this->db->bind(":first_name", $firstName);
+      $this->db->bind(":last_name", $lastName);
+
+      if ($this->db->execute()) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     // UPDATE USER INFO
     public function updateUserInfo($userInfo) {
       $this->db->query("UPDATE user_info SET

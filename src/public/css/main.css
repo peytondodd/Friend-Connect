@@ -751,9 +751,11 @@ body {
 .profilePage__settingInfoContainer {
   padding: 0.625rem; }
   .profilePage__settingInfoContainer--description {
-    resize: none;
     width: 100%;
-    padding: 0.625rem; }
+    height: auto;
+    resize: none;
+    padding: 0.625rem;
+    overflow: hidden; }
 
 @media (max-width: 1199px) {
   .profilePage__profileImage {

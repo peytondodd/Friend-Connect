@@ -165,14 +165,16 @@
   }
 
   &__settingInfoContainer {
-    // height: 500px;
+     //height: 1000px;
     //background-color: white;
     padding: $one-rem;
 
     &--description {
-      resize: none;
       width: 100%;
+      height: auto;
+      resize: none;
       padding: $one-rem;
+      overflow: hidden;
     }
   }
 
