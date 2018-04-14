@@ -39,6 +39,7 @@
           // FRIEND LIST
           $friend_list = [];
           $friends = $this->friendModel->friendListOfUser($id);
+
           if ($friends) {
             foreach($friends as $value) {
               // find friend id
@@ -81,7 +82,9 @@
               $friend_list_short[] = $friend_list[$numberDisplayed[$i]];
             }
           } else {
+            $numberOfFriends = 0;
             $friend_list_short = false;
+            $friend_list = 0;
           }
 
           // USER POSTS
@@ -164,6 +167,7 @@
             "friend_status" => $status."hi",
             "friend_total" => $numberOfFriends,
             "friend_list" => $friend_list_short,
+            "all_friends" => $friend_list,
             "user_post" => $userPosts
           ];
 
@@ -177,6 +181,10 @@
       }
     }
 
+    public function accountSettings() { // this is a stupid fix
+      $_SESSION["accountSettingsClick"] = true;
+      redirect("profiles/user/".$_SESSION["user_id"]);
+    }
 
     public function settings() {
       if (isset($_POST["settingsSave"])) {

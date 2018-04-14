@@ -38,7 +38,7 @@
                </a>
                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                  <a class="dropdown-item" href="<?php echo URLROOT; ?>/profiles/user/<?php echo $_SESSION['user_id'] ?>">Profile</a>
-                 <a class="dropdown-item" href="#">Account Settings</a>
+                 <a class="dropdown-item" href="/profiles/accountSettings">Account Settings</a>
                  <a class="dropdown-item" href="#">About</a>
                  <div class="dropdown-divider"></div>
                  <a class="dropdown-item" href="<?php echo URLROOT; ?>/logout">Logout</a>

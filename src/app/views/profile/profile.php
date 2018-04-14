@@ -16,8 +16,13 @@
   if ($data["birthday"] != 0000-00-00) {
     $date = date_format(date_create($data["birthday"]), "M. d, Y");
     $viewBirthday = $date;
+    //AGE
+    $today = new DateTime("today");
+    $bday = new DateTime($data["birthday"]);
+    $age = $today->diff($bday)->y;
   } else {
     $viewBirthday = "";
+    $age = "";
   }
 
   //GENDER
@@ -45,6 +50,7 @@
     $numberOfFriends = count($friendList);
     $friendListRow = count($friendList)/3 > 1 ? 2 : 1;
   } else {
+    $totalFriends = 0;
     $numberOfFriends = 0;
   }
 
@@ -56,6 +62,7 @@
   $viewUserInfo->id = $data["id"];
   $viewUserInfo->firstName = $data["first_name"];
   $viewUserInfo->lastName = $data["last_name"];
+  $viewUserInfo->age = $age;
   $viewUserInfo->birthday = $data["birthday"];
   $viewUserInfo->gender = $data["gender"];
   $viewUserInfo->education = $data["education"];
@@ -63,6 +70,15 @@
   $viewUserInfo->location = $data["location"];
   $viewUserInfo->description = $data["description"];
   $viewUserInfo->image = $data["profile_img"];
+
+  //clicked from nav bar for account settings
+  if (isset($_SESSION["accountSettingsClick"])) {
+    $pageAction = "Settings Page";
+    unset($_SESSION["accountSettingsClick"]);
+  } else {
+    $pageAction = "none";
+  }
+
 ?>
 
 <?php require APPROOT . "/views/inc/header.php"; ?>
@@ -73,7 +89,9 @@
   <div class="profilePage__header--box">
     <div class="col-md-3 px-0">
       <div class="profilePage__profileImage">
-        <img class="profilePage__profileImage--img" src="/user_data/<?php echo $viewProfileImgSrc; ?>" alt="profile picture">
+        <a href="/profiles/user/<?php echo $viewId; ?>">
+          <img class="profilePage__profileImage--img" src="/user_data/<?php echo $viewProfileImgSrc; ?>" alt="profile picture">
+        </a>
       </div>
     </div>
 
@@ -90,9 +108,9 @@
         </div>
         <div class="profilePage__headerbtn">
           <div class="btn-group">
-            <input class="btn btn-primary" type="button" name="" value="About">
+            <input class="btn btn-primary" type="button" name="profilePage-About" value="About">
             <input class="btn btn-primary" type="button" name="" value="Photos">
-            <input class="btn btn-primary" type="button" name="" value="Friends">
+            <input class="btn btn-primary" type="button" name="profilePage-Friends" value="Friends">
             <?php if ($_SESSION["user_id"] == $viewId) : ?>
               <input class="btn btn-primary" type="button" name="profilePage-Settings" value="Settings">
             <?php endif; ?>
@@ -117,6 +135,9 @@
             <p>
               <span class="text-muted">Birthday </span>
               <strong><?php echo $viewBirthday; ?></strong>
+              <?php if ($age != "") : ?>
+                (<?php echo $age; ?> years old)
+              <?php endif; ?>
             </p>
           </div>
           <div class="profilePage__userInfo">
@@ -290,98 +311,6 @@
     </div> -->
   </div>
 
-  <form class="" action="index.html" method="post">
-
-  </form>
-  <!-- <div class="profilePage__settingsPage">
-    <h4 class="text-center pt-3">Profile Settings</h4>
-
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <div class="profilePage__settingImageContainer">
-          <div class="profilePage__settingImageContainer--settingImageBox">
-            <img class="profilePage__settingImageContainer--settingImage" src="/user_data/18/profile.18.gif" alt="">
-          </div>
-
-          <div class="profilePage__settingImageContainer--uploaderBox">
-            <label class="btn btn-info" for="settings_ImgInput">Upload a new picture</label>
-            <input class="profilePage__settingImageContainer--settings_ImgInput" type="file" id="settings_ImgInput" name="settings_img_upload" value="Profile picture">
-            <p class="settingsUploadMessage text-center"><i class=""></i></p>
-          </div>
-
-        </div>
-      </div>
-      <div class="col-md-8 mb-3">
-        <div class="profilePage__settingInfoContainer">
-          <div class="form-row">
-            <div class="form-group col-sm-6">
-              <label for="firstName">First name: </label>
-              <input class="form-control" id="firstName" type="text" placeholder="First name..." value="">
-            </div>
-            <div class="form-group col-sm-6">
-              <label for="lastName">Last name: </label>
-              <input class="form-control" id="lastName" type="text" placeholder="Last name..." value="">
-            </div>
-          </div>
-          <div class="form-group">
-    	      <label for="birthday">Birthday: </label><br>
-    	      <select class="" name="month">
-    	        <option value="0">Month</option>
-    	        <?php
-    	          for ($m = 1; $m < 13; $m++) {
-    	            echo "<option value='".$m."'>".date("F",mktime(0,0,0,$m))."</option>";
-    	          }
-    	        ?>
-    	      </select>
-    	      <select class="" name="day">
-    	        <option value="0">Day</option>
-    	        <?php
-    	          for ($d = 1; $d <= 31; $d++) {
-    	            echo "<option value='".$d."'>".$d."</option>";
-    	          }
-    	        ?>
-    	      </select>
-    	      <select class="" name="year">
-    	        <option value="0">Year</option>
-    	        <?php
-    	          $year = date("Y");
-    	          $yearEnd = $year - 100;
-    	          for ($y = $year; $y >= $yearEnd; $y--) {
-    	            echo "<option value='".$y."'>".$y."</option>";
-    	          }
-    	        ?>
-    	      </select>
-    	    </div>
-          <div class="form-group">
-            <label for="gender">Gender: </label><br>
-            <input type="radio" name="" value="1"> Male
-            <input type="radio" name="" value="2"> Female
-            <input type="radio" name="" value="0"> None
-          </div>
-          <div class="form-group">
-            <label for="education">Education: </label>
-            <input class="form-control" type="text" id="education" name="" value="" placeholder="Education...">
-          </div>
-          <div class="form-group">
-            <label for="work">Work: </label>
-            <input class="form-control" type="text" id="work" name="" value="" placeholder="Work...">
-          </div>
-          <div class="form-group">
-            <label for="location">Location: </label>
-            <input class="form-control" type="text" id="location" name="" value="" placeholder="Location...">
-          </div>
-          <div class="form-group">
-            <label for="description">Description</label>
-            <textarea class="profilePage__settingInfoContainer--description" name="name" rows="8" placeholder="Description..."></textarea>
-          </div>
-          <input class="btn btn-success" type="button" name="" value="Save">
-          <input class="btn btn-danger" type="button" name="" value="Cancel">
-        </div>
-      </div>
-    </div>
-  </div> -->
-
-
 
 </div>
 
@@ -390,12 +319,12 @@
 
   var user_descFull = "<?php echo $data["description"]; ?>";
   var user_descShort = "<?php echo $viewDescription; ?>";
-  var postName = "<?php echo ucwords($data["first_name"]. " " .$data["last_name"]); ?>";
-  var postIconSrc = "/user_data/<?php echo $viewProfileImgSrc; ?>";
   var currentUserId = <?php echo $_SESSION["user_id"]; ?>;
   var viewPost = <?php echo json_encode($viewPost); ?>;
   var viewUserInfo = <?php echo json_encode($viewUserInfo); ?>;
-console.log(viewUserInfo);
+  var friendList = <?php echo json_encode($data["all_friends"]); ?>;
+  var pageAction = "<?php echo $pageAction; ?>";
+  console.log(friendList);
 </script>
 
 <!-- <h1>Welcome to <?php echo $data["first_name"] . "'s profile."; ?></h1>

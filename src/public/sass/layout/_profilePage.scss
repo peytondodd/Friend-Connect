@@ -178,6 +178,48 @@
     }
   }
 
+  &__AboutPage {
+    background-color: #EEE;
+
+    &--Info {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+  }
+  &__FriendsPage {
+    background-color: #EEE;
+    margin-bottom: calc(#{$one-rem}* 10);
+    &--FriendsContainer {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: calc(#{$one-rem} * 2);
+    }
+    &--FriendsBox {
+      padding: calc(#{$one-rem} * 2);
+
+    }
+    &--Friends {
+      border: 1px solid #CCC;
+      padding: $one-rem;
+    }
+    &--Friends:hover {
+      background-color: #CCC;
+    }
+    &--Search {
+      width: 100%;
+    }
+    &--FriendIcon {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    &--FriendIconBox {
+      display: inline-block;
+      width: calc(#{$one-rem} * 8);
+      height: calc(#{$one-rem} * 8);
+    }
+  }
+
 }
 
 @media (max-width: 1199px) {

@@ -757,6 +757,37 @@ body {
     padding: 0.625rem;
     overflow: hidden; }
 
+.profilePage__AboutPage {
+  background-color: #EEE; }
+  .profilePage__AboutPage--Info {
+    max-width: 500px;
+    margin: 0 auto; }
+
+.profilePage__FriendsPage {
+  background-color: #EEE;
+  margin-bottom: calc(0.625rem* 10); }
+  .profilePage__FriendsPage--FriendsContainer {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: calc(0.625rem * 2); }
+  .profilePage__FriendsPage--FriendsBox {
+    padding: calc(0.625rem * 2); }
+  .profilePage__FriendsPage--Friends {
+    border: 1px solid #CCC;
+    padding: 0.625rem; }
+  .profilePage__FriendsPage--Friends:hover {
+    background-color: #CCC; }
+  .profilePage__FriendsPage--Search {
+    width: 100%; }
+  .profilePage__FriendsPage--FriendIcon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; }
+  .profilePage__FriendsPage--FriendIconBox {
+    display: inline-block;
+    width: calc(0.625rem * 8);
+    height: calc(0.625rem * 8); }
+
 @media (max-width: 1199px) {
   .profilePage__profileImage {
     height: calc(0.625rem * 21); }

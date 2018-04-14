@@ -544,13 +544,16 @@ var profilePage = (function() {
         descShowLess(event);
       }
       if (event.target.name == "profilePage-Settings") {
-        profileSettings(event);
+        profileSettings();
       }
       if (event.target.name == "settingsCancel") {
         cancelSettingsPage(event);
       }
-      if (event.target.name == "settingsSave") {
-        saveSettingsPage(event);
+      if (event.target.name == "profilePage-About") {
+        profileAbout();
+      }
+      if (event.target.name == "profilePage-Friends") {
+        profileFriends();
       }
     }
 
@@ -560,10 +563,11 @@ var profilePage = (function() {
       }
     }
 
-    // var settings_ImgInput = profile.querySelector("#settings_ImgInput");
-    // if (settings_ImgInput) {
-    //   settings_ImgInput.addEventListener("change", settingsImageUpload);
-    // }
+    //pageACTION
+    if (pageAction == "Settings Page") {
+      profileSettings();
+    }
+
 
     function descReadMore(event) {
       event.preventDefault();
@@ -575,10 +579,55 @@ var profilePage = (function() {
       descBox.children[1].innerHTML = user_descShort;
     }
 
-    function profileSettings(event) {
+    function profileAbout() {
+      profile.children[1].style.display = "none";
+      if (profile.children.length > 2) {
+        for (var i = profile.children.length-1; i > 1; i--) {
+          profile.removeChild(profile.children[i]);
+        }
+      }
+      makeAboutPage();
+    }
+
+    function profileFriends() {
+      profile.children[1].style.display = "none";
+      if (profile.children.length > 2) {
+        for (var i = profile.children.length-1; i > 1; i--) {
+          profile.removeChild(profile.children[i]);
+        }
+      }
+      makeFriendsPage();
+      var friendSearchInput = profile.querySelector(".profilePage__FriendsPage--Search");
+      friendSearchInput.addEventListener("keyup", searchFriend);
+    }
+
+    function searchFriend(event) {
+      //console.log(event.target.value);
+      if (event.target.value != "") {
+        var newFriendList = [];
+        var expression = new RegExp(event.target.value, "i");
+        friendList.forEach(function(value) {
+          if (value.friend_name.search(expression) != -1) {
+            newFriendList.push(value);
+          }
+        });
+
+        profile.children[2].removeChild(profile.children[2].children[3]);
+        profile.children[2].appendChild(makeFriendList(newFriendList));
+      } else {
+        profile.children[2].removeChild(profile.children[2].children[3]);
+        profile.children[2].appendChild(makeFriendList(friendList));
+      }
+    }
+
+    function profileSettings() {
       var profileBody = profile.querySelector(".profileBody");
       profileBody.style.display="none";
-
+      if (profile.children.length > 2) {
+        for (var i = profile.children.length-1; i > 1; i--) {
+          profile.removeChild(profile.children[i]);
+        }
+      }
       makeSettingsPage();
     }
 
@@ -615,11 +664,6 @@ var profilePage = (function() {
           uploadMessage.children[0].innerText = " Good image!";
         }
       }
-
-    }
-
-    function saveSettingsPage(event) {
-
     }
 
     function makeSettingsPage() {
@@ -689,11 +733,6 @@ var profilePage = (function() {
           </div>
         </form>
       `;
-
-      function month_name(num) {
-        var mlist = ["Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        return mlist[num];
-      }
 
       var birthday = viewUserInfo.birthday.split("-");
       var monthSettings = settingsPage.children[1].children[1].children[1].children[0].children[1].children[2];
@@ -769,6 +808,119 @@ var profilePage = (function() {
       //resize text area
       event.target.style.height = "";
       event.target.style.height = event.target.scrollHeight + 15 + "px";
+    }
+
+    function month_name(num) {
+      var mlist = ["Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      return mlist[num];
+    }
+
+    function makeAboutPage() {
+      var birthday = viewUserInfo.birthday.split("-");
+      if (birthday[0] == 0000 || birthday[1] == 00 || birthday[2] == 00) {
+        birthday="";
+      } else {
+        if (viewUserInfo.age != "") {
+          birthday = month_name(Number(birthday[1]))+" "+birthday[2]+", "+birthday[0]+" ("+viewUserInfo.age+" years old)";
+        } else {
+          birthday = month_name(Number(birthday[1]))+" "+birthday[2]+", "+birthday[0];
+        }
+      }
+
+      if (viewUserInfo.gender == 1) {
+        var gender = "Male";
+      } else if (viewUserInfo.gender == 2) {
+        var gender = "Female";
+      } else if (viewUserInfo.gender == 0) {
+        var gender = "";
+      }
+
+      var aboutPage = document.createElement("div");
+      aboutPage.className = "profilePage__AboutPage";
+      aboutPage.innerHTML = `
+        <a href="/profiles/user/${viewUserInfo.id}">Back to Profile</a>
+        <h4 class="text-center pt-3">About</h4>
+        <div class="row">
+          <div class="col">
+            <div class="profilePage__AboutPage--Info">
+              <p>Name: <strong>${viewUserInfo.firstName} ${viewUserInfo.lastName}</strong></p>
+              <p>Birthday: <strong>${birthday}</strong></p>
+              <p>Gender: <strong>${gender}</strong></p>
+              <p>Education: <strong>${viewUserInfo.education}</strong></p>
+              <p>Work: <strong>${viewUserInfo.work}</strong></p>
+              <p>Location: <strong>${viewUserInfo.Location}</strong></p>
+              <p>Description: <strong>${viewUserInfo.description}</strong></p>
+            </div>
+          </div>
+        </div>
+      `;
+      profile.appendChild(aboutPage);
+    }
+
+    function makeFriendsPage() {
+
+      var friendsPage = document.createElement("div");
+      friendsPage.className = "profilePage__FriendsPage";
+      friendsPage.innerHTML = `
+        <a href="/profiles/user/${viewUserInfo.id}">Back to Profile</a>
+        <h4 class="text-center pt-3">Friends</h4>
+        <div class="row">
+          <div class="col">
+            <div class="profilePage__FriendsPage--FriendsContainer">
+              <div class="row">
+                <input class="profilePage__FriendsPage--Search" type="text" name="profilePage-SearchFriends" value="" placeholder="Search friends...">
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      //friends list
+      friendsPage.appendChild(makeFriendList(friendList));
+
+      profile.appendChild(friendsPage);
+    }
+
+    function makeFriendList(list) {
+      if (list) {
+        var friendTotal = list.length;
+        //sort alphabetically
+        list.sort(function(a, b) {
+          if (a.friend_name < b.friend_name) return -1;
+          if (a.friend_name > b.friend_name) return 1;
+          return 0;
+        });
+
+        var friendBox = document.createElement("div");
+        friendBox.className = "row profilePage__FriendsPage--FriendsBox"
+        friendBox.innerHTML = `
+          <p style="width: 100%;">Total Friends (${friendTotal})</p>
+        `;
+
+        for (var i = 0; i < friendTotal; i++) {
+          var friendCol = document.createElement("div");
+          friendCol.className = "col-sm-6 col-md-4 px-0";
+          friendCol.innerHTML = `
+            <a href="/profiles/user/${list[i].friend_id}" style="text-decoration: none;">
+            <div class="profilePage__FriendsPage--Friends">
+              <div class="profilePage__FriendsPage--FriendIconBox">
+                <img class="profilePage__FriendsPage--FriendIcon" src="/user_data/${list[i].profile_img}">
+              </div>
+              <span>${list[i].friend_name}</span>
+            </div>
+            </a>
+          `;
+          friendBox.appendChild(friendCol);
+        }
+        return friendBox;
+      } else {
+          var friendBox = document.createElement("div");
+          friendBox.className = "row profilePage__FriendsPage--FriendsBox"
+          friendBox.innerHTML = `
+            <p style="width: 100%;">Total Friends (0)</p>
+          `;
+          return friendBox;
+      }
     }
 
     //css custom
