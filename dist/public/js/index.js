@@ -1013,24 +1013,45 @@ var profilePage = (function() {
       photosPage.innerHTML = `
         <a href="/profiles/user/${viewUserInfo.id}">Back to Profile</a>
         <h4 class="text-center pt-3">Photos</h4>
-        <div class="row">
-          <div class="col">
-            <div class="profilePage__photosPage--PhotosContainer">
 
-            </div>
+          <div class="profilePage__photosPage--PhotosContainer row">
+
           </div>
-        </div>
       `;
 
+      //photos
+      var viewPhoto = [];
+      viewPost.forEach(function(value) {
+        if (value.photo == 1) {
+          var photo = {
+            userId: value.user_id,
+            postId: value.id,
+            photoName: value.photoName
+          }
+          viewPhoto.push(photo);
+        }
+      });
+      for (var i = 0; i < viewPhoto.length; i++) {
+        var photo = document.createElement("div");
+        photo.className = "col-6 col-sm-4 col-md-3 px-0";
+        photo.innerHTML = `
+          <div class="profilePage__photosPage--viewPhotoBox">
+            <img class="profilePage__photosPage--viewPhoto" name="post-${viewPhoto[i].postId}" src="/user_data/${viewPhoto[i].userId}/${viewPhoto[i].photoName}">
+          </div>
+        `;
+        //console.log(photosPage.children[2].children[0].children[0]);
+        photosPage.children[2].appendChild(photo);
+      }
+
+      //upload button
       if (currentUserId == viewUserInfo.id) {
         var uploadPhoto = document.createElement("div");
         uploadPhoto.className = "text-center";
         uploadPhoto.innerHTML = `
-          <input class="btn btn-success" type="button" name="uploadPhotoProfile" value="Upload A New Image">
+          <input class="btn btn-success mb-3" type="button" name="uploadPhotoProfile" value="Upload A New Image">
         `;
-        photosPage.appendChild(uploadPhoto);
+        photosPage.insertBefore(uploadPhoto, photosPage.children[2]);
       }
-
 
       profile.appendChild(photosPage);
     }

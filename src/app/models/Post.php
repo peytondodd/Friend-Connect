@@ -104,6 +104,20 @@ class Post {
     }
   }
 
+  //get Photo name
+  public function getPhoto($postId) {
+    $this->db->query("SELECT photo_name FROM photos WHERE
+                      post_id = :postId");
+    $this->db->bind(":postId", $postId);
+    $row = $this->db->single();
+
+    if ($row) {
+      return $row;
+    } else {
+      return false;
+    }
+  }
+
   public function likePost($userId, $postId) {
     // CHECK IF like already exists first
     $like = $this->getLikes($postId);

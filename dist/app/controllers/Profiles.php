@@ -106,6 +106,13 @@
               $value->img_src =
               getProfileImgSrc($value->user_id, $picPost->profile_img, $picPost->profile_img_id);
 
+              //post photo
+              if ($value->photo == 1) {
+                $value->photoName = $this->postModel->getPhoto($value->id)->photo_name;
+              } else {
+                //$value->photoName = 0;
+              }
+
               // LIKES
               //gather all like counts per post
               if ($this->postModel->getLikes($value->id)) {

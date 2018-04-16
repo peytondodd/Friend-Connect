@@ -324,7 +324,7 @@
   var viewUserInfo = <?php echo json_encode($viewUserInfo); ?>;
   var friendList = <?php echo json_encode($data["all_friends"]); ?>;
   var pageAction = "<?php echo $pageAction; ?>";
-  console.log(friendList);
+  console.log(viewPost);
 </script>
 
 <!-- <h1>Welcome to <?php echo $data["first_name"] . "'s profile."; ?></h1>

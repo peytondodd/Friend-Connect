@@ -763,6 +763,16 @@ body {
     max-width: 500px;
     margin: 0 auto; }
 
+.profilePage__photosPage--viewPhotoBox {
+  height: calc(0.625rem * 26.9);
+  padding: calc(0.625rem / 2);
+  border: 1px solid black; }
+
+.profilePage__photosPage--viewPhoto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; }
+
 .profilePage__photosUpload {
   margin-bottom: calc(0.625rem* 10); }
   .profilePage__photosUpload--photos_ImgInput {
@@ -819,7 +829,9 @@ body {
     height: calc(0.625rem * 9.6); }
   .profilePage__userFriends--box::after {
     height: calc(0.625rem * 4.8);
-    margin-top: calc(0.625rem * -4.8); } }
+    margin-top: calc(0.625rem * -4.8); }
+  .profilePage__photosPage--viewPhotoBox {
+    height: calc(0.625rem * 24); } }
 
 @media (max-width: 991px) {
   .profilePage__profileImage {
@@ -828,7 +840,9 @@ body {
     height: calc(0.625rem * 6.9); }
   .profilePage__userFriends--box::after {
     height: calc(0.625rem * 3.45);
-    margin-top: calc(0.625rem * -3.45); } }
+    margin-top: calc(0.625rem * -3.45); }
+  .profilePage__photosPage--viewPhotoBox {
+    height: calc(0.625rem * 18); } }
 
 @media (max-width: 767px) {
   .profilePage__profileImage {
@@ -843,7 +857,9 @@ body {
     height: calc(0.625rem * 16.8); }
   .profilePage__userFriends--box::after {
     height: calc(0.625rem * 8.4);
-    margin-top: calc(0.625rem * -8.4); } }
+    margin-top: calc(0.625rem * -8.4); }
+  .profilePage__photosPage--viewPhotoBox {
+    height: calc(0.625rem * 17.9); } }
 
 @media (max-width: 575px) {
   .profilePage__userFriends--box {
@@ -857,7 +873,9 @@ body {
     height: calc(0.625rem * 10); }
   .profilePage__userFriends--box::after {
     height: calc(0.625rem * 5);
-    margin-top: calc(0.625rem * -5); } }
+    margin-top: calc(0.625rem * -5); }
+  .profilePage__photosPage--viewPhotoBox {
+    height: calc(0.625rem * 18); } }
 
 .createPost {
   width: 100%;
