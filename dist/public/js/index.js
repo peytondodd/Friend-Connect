@@ -555,11 +555,21 @@ var profilePage = (function() {
       if (event.target.name == "profilePage-Friends") {
         profileFriends();
       }
+      if (event.target.name == "profilePage-Photos") {
+        profilePhotos();
+      }
+      if (event.target.name == "uploadPhotoProfile") {
+        profilePhotosUpload();
+      }
+      if (event.target.name == "photosUpload-cancelBtn") {
+        profilePhotos();
+      }
+
     }
 
     function profileChangeDir(event) {
-      if (event.target.id == "settings_ImgInput") {
-        settingsImageUpload(event);
+      if (event.target.id == "settings_ImgInput" || event.target.id == "photos_ImgInput") {
+        profileImageUpload(event);
       }
     }
 
@@ -587,6 +597,26 @@ var profilePage = (function() {
         }
       }
       makeAboutPage();
+    }
+
+    function profilePhotos() {
+      profile.children[1].style.display = "none";
+      if (profile.children.length > 2) {
+        for (var i = profile.children.length-1; i > 1; i--) {
+          profile.removeChild(profile.children[i]);
+        }
+      }
+      makePhotosPage();
+    }
+
+    function profilePhotosUpload() {
+      profile.children[1].style.display = "none";
+      if (profile.children.length > 2) {
+        for (var i = profile.children.length-1; i > 1; i--) {
+          profile.removeChild(profile.children[i]);
+        }
+      }
+      makePhotoUploadPage();
     }
 
     function profileFriends() {
@@ -638,10 +668,11 @@ var profilePage = (function() {
       profile.removeChild(profile.children[profile.children.length-1]);
     }
 
-    function settingsImageUpload(event) {
+    function profileImageUpload(event) {
       var newImage = event.target.files[0];
       var uploadMessage = event.target.parentElement.children[2];
-      var settingsImage = event.target.parentElement.parentElement.children[0].children[0];
+      var imageBox = event.target.parentElement.parentElement.children[0];
+      var viewImage = imageBox.children[0];
 
       if (newImage) {
         var imageType = /image.*/;
@@ -655,16 +686,17 @@ var profilePage = (function() {
           uploadMessage.children[0].innerText = " Image size too big!";
         } else {
           var imgURL = window.URL.createObjectURL(newImage);
-          settingsImage.onload = function() {
+          viewImage.onload = function() {
             //console.log("revoked");
             window.URL.revokeObjectURL(imgURL);
           }
-          settingsImage.src = imgURL;
+          viewImage.src = imgURL;
           uploadMessage.children[0].className = "fa fa-check-circle text-success size-20px";
           uploadMessage.children[0].innerText = " Good image!";
         }
       }
     }
+
 
     function makeSettingsPage() {
       var settingsPage = document.createElement("div");
@@ -921,6 +953,86 @@ var profilePage = (function() {
           `;
           return friendBox;
       }
+    }
+
+
+    function makePhotoUploadPage() {
+      var photosUpload = document.createElement("div");
+      photosUpload.className = "profilePage__photosUpload";
+      photosUpload.innerHTML = `
+        <h4 class="text-center pt-3">Upload a Photo</h4>
+        <div class="row">
+          <div class="col">
+            <div class="profilePage__photosUpload--PhotosUploadContainer">
+              <form class="" enctype="multipart/form-data" action="/posts/photos" method="post">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="row">
+                      <div class="profilePage__photosUpload--photoBox">
+                        <img class="profilePage__photosUpload--photo" src="">
+                      </div>
+                      <div class="profilePage__photosUpload--uploader">
+                        <input type="hidden">
+                        <input class="profilePage__photosUpload--photos_ImgInput" type="file" id="photos_ImgInput" name="post_img_upload" value="" required>
+                        <p class="settingsUploadMessage text-center"><i class=""></i></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="profilePage__photosUpload--description">
+                      <p>Would you like to describe this image?</p>
+                      <textarea class="profilePage__photosUpload--textInput" name="photosUpload-description"placeholder="Tell us about this image..."></textarea>
+                      <input class="btn btn-success" type="submit" name="photosUpload-uploadBtn" value="Upload">
+                      <input class="btn btn-danger" type="button" name="photosUpload-cancelBtn" value="Cancel">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      `;
+
+      profile.appendChild(photosUpload);
+      photosUpload.querySelector(".profilePage__photosUpload--textInput")
+        .addEventListener("keydown", uploadPhotoDescDown);
+
+    }
+
+
+    function uploadPhotoDescDown(event) {
+      //resize text area
+      event.target.style.height = "";
+      event.target.style.height = event.target.scrollHeight + 15 + "px";
+    }
+
+    function makePhotosPage() {
+
+      var photosPage = document.createElement("div");
+      photosPage.className = "profilePage__photosPage";
+      photosPage.innerHTML = `
+        <a href="/profiles/user/${viewUserInfo.id}">Back to Profile</a>
+        <h4 class="text-center pt-3">Photos</h4>
+        <div class="row">
+          <div class="col">
+            <div class="profilePage__photosPage--PhotosContainer">
+
+            </div>
+          </div>
+        </div>
+      `;
+
+      if (currentUserId == viewUserInfo.id) {
+        var uploadPhoto = document.createElement("div");
+        uploadPhoto.className = "text-center";
+        uploadPhoto.innerHTML = `
+          <input class="btn btn-success" type="button" name="uploadPhotoProfile" value="Upload A New Image">
+        `;
+        photosPage.appendChild(uploadPhoto);
+      }
+
+
+      profile.appendChild(photosPage);
     }
 
     //css custom

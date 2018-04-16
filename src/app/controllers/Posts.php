@@ -148,6 +148,98 @@ class Posts extends Controller {
     }
   }
 
+  public function photos() {
+    if (isset($_POST["photosUpload-uploadBtn"])) {
+      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+      // echo "<pre>";
+      // print_r($_POST);
+      // print_r($_FILES);
+      // echo "</pre>";
+      $userId = $_SESSION["user_id"];
+      $content = $_POST["photosUpload-description"];
+      $postPhoto = 0;
+
+      //$photoName = uniqid($userId."-", true);
+
+      $fileImage = $_FILES;
+      // photo upload
+      $postPhoto = $this->img_upload($fileImage);
+
+      // make post
+      $this->postModel->createPost($userId, $postPhoto[0], $content);
+
+      //get post id for photo table
+      $postId = $this->postModel->getPostId($userId, $postPhoto[0], $content)->id;
+
+      //insert to photo table
+      if ($postPhoto[0]) {
+        $this->postModel->postPhoto($postId, $postPhoto[1]);
+        return;
+      }
+
+
+    }
+  }
+
+  function img_upload($fileImage) {
+    if ($fileImage["post_img_upload"]["name"] !== "" && $fileImage["post_img_upload"]["size"] !== 0) {
+
+      $fileName = $fileImage["post_img_upload"]["name"];
+      $fileTmpName = $fileImage["post_img_upload"]["tmp_name"];
+      $fileSize = $fileImage["post_img_upload"]["size"];
+      $fileError = $fileImage["post_img_upload"]["error"];
+
+      $fileExt = explode(".", $fileName);
+      $fileActualExt = strtolower(end($fileExt));
+
+      $allowed = array("jpeg", "jpg", "png", "bmp", "gif");
+
+      if (in_array($fileActualExt, $allowed)) {
+        if ($fileError === 0) {
+          if ($fileSize < 50000000) { // 50mb
+            $fileNameNew = uniqid($_SESSION["user_id"]."-", true).".".$fileActualExt;
+            // Create image folder if it doesnt exist
+            if (file_exists("./user_data")) {
+              if (file_exists("./user_data/".$_SESSION["user_id"])) {
+                $userFolder = "./user_data/".$_SESSION["user_id"];
+              } else {
+                mkdir("./user_data/".$_SESSION["user_id"]);
+                $userFolder = "./user_data/".$_SESSION["user_id"];
+              }
+            } else {
+              mkdir("./user_data");
+              mkdir("./user_data/".$_SESSION["user_id"]);
+              $userFolder = "./user_data/".$_SESSION["user_id"];
+            }
+
+            $fileDestination = $userFolder. "/" .$fileNameNew;
+            if (move_uploaded_file($fileTmpName, $fileDestination)) {
+              $res[] = 1;
+              $res[] = $fileNameNew;
+              return $res;
+              //echo "Success";
+            } else {
+              //echo "upload failed";
+              return false;
+            }
+          } else {
+            //echo "file is too big";
+            return false;
+          }
+        } else {
+          //echo "there was an error uploading";
+          return false;
+        }
+      } else {
+        //echo "Wrong file type";
+        return false;
+      }
+    } else {
+      // DO NOTHING
+      return false;
+    }
+  }
+
   public function realTimeEvents() {
     session_write_close();
 

@@ -7,11 +7,12 @@ class Post {
   }
 
   //create post
-  public function createPost($userId, $content) {
-    $this->db->query("INSERT INTO posts (user_id, content)
-                      VALUES (:user_id, :content)");
+  public function createPost($userId, $photo, $content) {
+    $this->db->query("INSERT INTO posts (user_id, content, photo)
+                      VALUES (:user_id, :content, :photo)");
     $this->db->bind(":user_id", $userId);
     $this->db->bind(":content", $content);
+    $this->db->bind(":photo", $photo);
 
     if ($this->db->execute()) {
         return true;
@@ -65,6 +66,19 @@ class Post {
     }
   }
 
+  //find postId
+  public function getPostId($userId, $photo, $content) {
+    $this->db->query("SELECT id FROM posts WHERE
+                      user_id = :user_id AND
+                      photo = :photo AND
+                      content = :content");
+    $this->db->bind(":user_id", $userId);
+    $this->db->bind(":photo", $photo);
+    $this->db->bind(":content", $content);
+
+    return $this->db->single();
+  }
+
   //get one post
   public function getOnePost($postId) {
     $this->db->query("SELECT * FROM posts
@@ -73,6 +87,21 @@ class Post {
     $row = $this->db->single();
 
     return $row;
+  }
+
+  //insert photo
+  public function postPhoto($postId, $photoName) {
+    $this->db->query("INSERT INTO photos
+                      (post_id, photo_name)
+                      VALUES (:post_id, :photo_name)");
+    $this->db->bind(":post_id", $postId);
+    $this->db->bind(":photo_name", $photoName);
+
+    if ($this->db->execute()) {
+        return true;
+    } else {
+      return false;
+    }
   }
 
   public function likePost($userId, $postId) {

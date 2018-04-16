@@ -763,6 +763,30 @@ body {
     max-width: 500px;
     margin: 0 auto; }
 
+.profilePage__photosUpload {
+  margin-bottom: calc(0.625rem* 10); }
+  .profilePage__photosUpload--photos_ImgInput {
+    width: 100%; }
+  .profilePage__photosUpload--photoBox {
+    width: 100%;
+    padding: 0.625rem; }
+  .profilePage__photosUpload--photo {
+    width: 100%;
+    border: 1px solid black; }
+  .profilePage__photosUpload--uploader {
+    margin: 0 auto;
+    padding: 0.625rem; }
+  .profilePage__photosUpload--description {
+    max-width: calc(0.625rem * 50);
+    margin: 0 auto;
+    padding: 0.625rem; }
+  .profilePage__photosUpload--textInput {
+    width: 100%;
+    height: auto;
+    resize: none;
+    padding: 0.625rem;
+    overflow: hidden; }
+
 .profilePage__FriendsPage {
   background-color: #EEE;
   margin-bottom: calc(0.625rem* 10); }

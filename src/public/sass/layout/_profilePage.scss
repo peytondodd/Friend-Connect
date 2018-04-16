@@ -186,6 +186,48 @@
       margin: 0 auto;
     }
   }
+
+  &__photosPage {
+
+  }
+
+  &__photosUpload {
+    margin-bottom: calc(#{$one-rem}* 10);
+    &--photos_ImgInput {
+      width: 100%;
+      // height: 0.1px;
+      // opacity: 0;
+      // overflow: hidden;
+      // position: absolute;
+      // z-index: -1;
+    }
+    &--photoBox {
+      width: 100%;
+      padding: $one-rem;
+    }
+    &--photo {
+      width: 100%;
+      border: 1px solid black;
+    }
+    &--uploader {
+      margin: 0 auto;
+      padding: $one-rem;
+    }
+    &--description {
+      max-width: calc(#{$one-rem} * 50);
+      margin: 0 auto;
+      padding: $one-rem;
+    }
+    &--textInput {
+      width: 100%;
+      height: auto;
+      resize: none;
+      padding: $one-rem;
+      overflow: hidden;
+    }
+
+  }
+
   &__FriendsPage {
     background-color: #EEE;
     margin-bottom: calc(#{$one-rem}* 10);

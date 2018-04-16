@@ -109,7 +109,7 @@
         <div class="profilePage__headerbtn">
           <div class="btn-group">
             <input class="btn btn-primary" type="button" name="profilePage-About" value="About">
-            <input class="btn btn-primary" type="button" name="" value="Photos">
+            <input class="btn btn-primary" type="button" name="profilePage-Photos" value="Photos">
             <input class="btn btn-primary" type="button" name="profilePage-Friends" value="Friends">
             <?php if ($_SESSION["user_id"] == $viewId) : ?>
               <input class="btn btn-primary" type="button" name="profilePage-Settings" value="Settings">
