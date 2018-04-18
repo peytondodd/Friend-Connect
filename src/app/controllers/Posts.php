@@ -16,7 +16,8 @@ class Posts extends Controller {
       //echo $_REQUEST["post-content-create"];
       $content = $_REQUEST["createPostContent"];
       if (strlen($content) <= 2000) {
-        $this->postModel->createPost($_REQUEST["currentUserId"], $content);
+        $this->postModel->createPost($_REQUEST["currentUserId"], 0, $content);
+        echo "true";
         return;
       } else {
         // echo "bad";
@@ -290,6 +291,11 @@ class Posts extends Controller {
               $picPost = $this->userModel->findUserInfoById($value->user_id);
               $value->img_src =
               getProfileImgSrc($value->user_id, $picPost->profile_img, $picPost->profile_img_id);
+              //PHOTOS 
+              if ($value->photo == 1) {
+                $photoName = $this->postModel->getPhoto($value->id)->photo_name;
+                $value->photoName = $photoName;
+              }
               // LIKES
               //gather all like counts per post
               if ($this->postModel->getLikes($value->id)) {

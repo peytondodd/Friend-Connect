@@ -773,6 +773,21 @@ body {
   height: 100%;
   object-fit: cover; }
 
+.profilePage__photosPage--viewPhotoBox:hover {
+  background-color: lightgray;
+  cursor: pointer; }
+
+.profilePage__photosPage--displayPhotoContainer {
+  border: 1px solid black; }
+
+.profilePage__photosPage--displayPhotoBox {
+  width: 80%;
+  margin: 0 auto; }
+
+.profilePage__photosPage--displayPhoto {
+  width: 100%;
+  height: auto; }
+
 .profilePage__photosUpload {
   margin-bottom: calc(0.625rem* 10); }
   .profilePage__photosUpload--photos_ImgInput {

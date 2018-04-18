@@ -21,8 +21,11 @@ var getPost = (function() {
       // });
     });
 
+    getProfilePost.addEventListener("click", profilePhotosClick);
+
     function postClickDir(event) {
       event.preventDefault();
+      //console.log(event.target);
       // LIKE  AND DISLIKE CLICKS
       if (event.target.className == "btn btn-default likeOrDislikeBtn") {
         likeOrDislike(event);
@@ -54,9 +57,116 @@ var getPost = (function() {
       event.target.name == "viewPost__cancelEdit") {
         editPostAction(event);
       }
+
       //console.log(event.target);
     }
 
+    function profilePhotosClick(event) {
+      if (event.target.className == "profilePage__photosPage--viewPhoto" ||
+      event.target.className == "profilePage__photosPage--viewPhotoBox") {
+        displayProfilePhotos(event);
+      }
+    }
+
+    function displayProfilePhotos(event) {
+      getProfilePost.children[1].style.display = "none";
+      if (getProfilePost.children.length > 2) {
+        for (var i = getProfilePost.children.length-1; i > 1; i--) {
+          getProfilePost.removeChild(getProfilePost.children[i]);
+        }
+      }
+
+      if (event.target.localName == "div") {
+        var postId = event.target.children[0].name.split("-")[1];
+      } else if (event.target.localName == "img") {
+        var postId = event.target.name.split("-")[1];
+      }
+      makeDisplayPhotosPage(postId);
+    }
+
+    function makeDisplayPhotosPage(postId) {
+      var post;
+      viewPost.forEach(function(value) {
+        if (value.id == postId) {
+          post = value;
+        }
+      });
+      console.log(post);
+      var displayPhoto = document.createElement("div");
+      displayPhoto.className = "profilePage__photosPage__displayContainer";
+      displayPhoto.innerHTML = `
+        <p><a href="">Back to Profile</a> | <a href="">Back to Photos</a></p>
+        <div class="profilePage__photosPage--displayPhotoContainer">
+          <div class="profilePage__photosPage--displayPhotoBox">
+            <img class="profilePage__photosPage--displayPhoto" src="/user_data/${post.user_id}/${post.photoName}">
+          </div>
+        </div>
+        <div class="viewPost postID-${post.id}">
+          <div class='viewPost__postBox'>
+            <div class="row mx-0">
+              <div class="viewPost__postUserIconBox">
+                <img class="viewPost__postUserIcon" src="/user_data/${post.img_src}" alt="profile picture">
+              </div>
+              <a class="viewPost__name" href="#">${post.name}</a>
+              <span class="viewPost__date">${post.created_at}</span>
+            </div>
+            <div class="row mx-0">
+              <div class="viewPost__content">
+                ${post.content}
+              </div>
+            </div>
+            <div class="row mx-0 viewPost__likeCommentShare">
+              <div class="row mx-0">
+                <div class="btn-group">
+                  <a class="btn btn-default likeOrDislikeBtn" href="">Like</a>
+                  <a class="btn btn-default showCommentsBtn" href="">Comment</a>
+                  <a class="btn btn-default" href="">Share</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // like button
+      if (post.currentUserLike == true) {
+        displayPhoto.querySelector(".likeOrDislikeBtn").innerText = "Dislike";
+      } else {
+        displayPhoto.querySelector(".likeOrDislikeBtn").innerText = "Dislike";
+      }
+      //like count
+      if (post.likeCount > 0) {
+        if (post.likeCount == 1) {
+          var likeNote = "person liked this";
+        } else {
+          var likeNote = "people liked this";
+        }
+        var likeCount = document.createElement("div");
+        likeCount.className = "row";
+        likeCount.innerHTML = `
+          <div class="col viewPost__showLikes">
+            <span class="viewPost__likeCount">${post.likeCount}</span>
+            <span> ${likeNote}</span>
+          </div>
+        `;
+        displayPhoto.children[2].children[0].appendChild(likeCount);
+      }
+      //comments
+      if (post.comments.count > 0) {
+        var comments = document.createElement("div");
+        comments.className = "row";
+        comments.innerHTML = `
+          <div class="col">
+            <a href="" class="viewPost__showComments">View Comments (<span class="commentCount">${post.comments.count}</span>)</a>
+          </div>
+        `;
+        displayPhoto.children[2].children[0].appendChild(comments);
+      }
+
+      getProfilePost.appendChild(displayPhoto);
+
+      displayPhoto.querySelector(".viewPost").addEventListener("click", postClickDir);
+    }
 
     function likeOrDislike(event) {
       //console.log(event.target);
@@ -514,11 +624,17 @@ var getPost = (function() {
       var allPosts = getProfilePost.querySelectorAll(".viewPost");
       var likeCounter = [];
       for (var i = 0; i < allPosts.length; i++) {
-        //console.log(allPosts[i].children[0].children);
-        if (allPosts[i].children[0].children[3]) {
+        //check if photo shown
+        if (allPosts[i].children.length > 1) {
+          var post = allPosts[i].children[1];
+        } else {
+          var post = allPosts[i].children[0];
+        }
+        
+        if (post.children[3]) {
           var postId = allPosts[i].classList[1].split("-")[1];
-          if (allPosts[i].children[0].children[3].children[0].className == "col viewPost__showLikes") {
-            var likeCount = allPosts[i].children[0].children[3].children[0].children[0].innerText;
+          if (post.children[3].children[0].className == "col viewPost__showLikes") {
+            var likeCount = post.children[3].children[0].children[0].innerText;
           } else {
             var likeCount = 0;
           }
@@ -562,10 +678,16 @@ var getPost = (function() {
     }
 
     function likeCountUpdater(postId, likeCount) {
-      var posts = postContainer.children;
+      //var posts = postContainer.children;
+      var posts = getProfilePost.querySelectorAll(".viewPost");
+      //console.log(posts);
       for (var i = 0; i < posts.length; i++) {
         //console.log(posts[i].children[0].children);
-        var likes = posts[i].children[0];
+        if (posts[i].children.length > 1) {
+          var likes = posts[i].children[1];
+        } else {
+          var likes = posts[i].children[0];
+        }
         if (posts[i].classList[1] == "postID-"+postId) {
           console.log(likes.children);
           if (likes.children.length > 3) {
@@ -644,6 +766,12 @@ var getPost = (function() {
             var viewCommentBox = allPosts[i].querySelector(".viewCommentBox");
             var makeCommentBox = allPosts[i].querySelector(".makeCommentBox");
             var commentContainer = commentLoader(newComments, 0, newComments.length);
+            //if photo is shown
+            if (allPosts[i].children.length > 1) {
+              var post = allPosts[i].children[1];
+            } else {
+              var post = allPosts[i].children[0];
+            }
 
             if (viewCommentBox) {//there are comments - view and make shown
               if (commentContainer.children.length < 6) { // 4 comments
@@ -657,8 +785,8 @@ var getPost = (function() {
               }
 
             } else if (!viewCommentBox && makeCommentBox) {//no comments made - only make shown
-              allPosts[i].children[0].removeChild(allPosts[i].children[0].children[3]);
-              allPosts[i].children[0].insertBefore(commentContainer, allPosts[i].children[0].children[3]);
+              post.removeChild(post.children[3]);
+              post.insertBefore(commentContainer, post.children[3]);
 
             } else if (!viewCommentBox && !makeCommentBox) {//not opened - none shown
               //show view Comment link
@@ -668,7 +796,7 @@ var getPost = (function() {
                 if (totalComments > 0) {
                   counterBox.innerText = totalComments;
                 } else {
-                  allPosts[i].children[0].removeChild(allPosts[i].children[0].children[allPosts[i].children[0].children.length-1]);
+                  post.removeChild(post.children[post.children.length-1]);
                 }
               } else {
                 if (totalComments > 0) {
@@ -679,7 +807,7 @@ var getPost = (function() {
                       <a href="" class="viewPost__showComments">View comments (<span class="commentCount">${totalComments}</span>)</a>
                     </div>
                   `;
-                  allPosts[i].children[0].appendChild(viewComments);
+                  post.appendChild(viewComments);
                 }
               }
 
@@ -726,6 +854,11 @@ var getPost = (function() {
               //remove from DOM
               var allPosts = getProfilePost.querySelectorAll(".viewPost");
               for (var i = 0; i < allPosts.length; i++) {
+                if (allPosts[i].children.length > 1) {
+                  var post = allPosts[i].children[1];
+                } else {
+                  var post = allPosts[i].children[0];
+                }
                 var domPostId = allPosts[i].className.split("-")[1];
                 if (domPostId == found[1].post_id) {
                   var viewCommentBox = allPosts[i].querySelectorAll(".viewCommentBox");
@@ -747,7 +880,7 @@ var getPost = (function() {
                       if (totalComments > 0) {
                         counterBox.innerText = totalComments;
                       } else {
-                        allPosts[i].children[0].removeChild(allPosts[i].children[0].children[allPosts[i].children[0].children.length-1]);
+                        post.removeChild(post.children[post.children.length-1]);
                       }
                     } //else {
                     //   if (totalComments > 0) {
@@ -758,7 +891,7 @@ var getPost = (function() {
                     //         <a href="" class="viewPost__showComments">View comments (<span class="commentCount">${totalComments}</span>)</a>
                     //       </div>
                     //     `;
-                    //     allPosts[i].children[0].appendChild(viewComments);
+                    //     post.appendChild(viewComments);
                     //   }
                     // }
                   }
@@ -833,9 +966,14 @@ var getPost = (function() {
         //update DOM
         var allPosts = getProfilePost.querySelectorAll(".viewPost");
         for (var i = 0; i < allPosts.length; i++) {
+          if (allPosts[i].children.length > 1) {
+            var post = allPosts[i].children[1];
+          } else {
+            var post = allPosts[i].children[0];
+          }
           var postId = allPosts[i].className.split("-")[1];
           if (postId == post.id) {
-            var oldContent = allPosts[i].children[0].children[1].children[0];
+            var oldContent = post.children[1].children[0];
 
             if (oldContent.innerText != post.content) {
               oldContent.innerText = post.content;
@@ -845,7 +983,8 @@ var getPost = (function() {
       }
     }
 
-    function displayPost (post) {
+    function displayPost (post, photos = 0) {
+      console.log(post);
       if (!viewPost || viewPost == 0) {
         viewPost = [];
         //console.log(viewPost);
@@ -881,6 +1020,19 @@ var getPost = (function() {
           </div>
         </div>`;
 
+        //if post has a photo
+        if (post[i].photo == 1) {
+          var photoContainer = document.createElement("div");
+          photoContainer.className = "profilePage__photosPage--displayPhotoContainer";
+          photoContainer.innerHTML = `
+          <div class="profilePage__photosPage--displayPhotoBox">
+            <img class="profilePage__photosPage--displayPhoto" src="/user_data/${post[i].user_id}/${post[i].photoName}">
+          </div>
+          `;
+          newViewPost.insertBefore(photoContainer, newViewPost.children[0]);
+        }
+
+        //edit/delete button
         if (currentUserId == post[i].user_id) {
           var postMod = document.createElement("p");
           postMod.className = "viewPost__modLink";
@@ -888,7 +1040,11 @@ var getPost = (function() {
             <a class="viewPost__editPost" href="#">Edit</a> |
             <a class="viewPost__deletePost" href="#">Delete</a>
           `;
+          if (post[i].photo == 1) {
+          newViewPost.children[1].children[0].insertBefore(postMod, newViewPost.children[1].children[0].children[0]);
+          } else {
           newViewPost.children[0].children[0].insertBefore(postMod, newViewPost.children[0].children[0].children[0]);
+          }
         }
 
         postContainer.insertBefore(newViewPost, postContainer.children[0]);

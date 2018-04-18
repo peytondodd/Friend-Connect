@@ -4,7 +4,7 @@
 
   // PROFILE IMAGE
   $viewProfileImgSrc = $data["profile_img"];
-
+  
   //DESCRIPTION
   if (strlen($data["description"]) > 75) {
     $viewDescription = substr($data["description"], 0, 75). "... <a class='descReadMore' href=''>Read More</a>";
@@ -56,6 +56,9 @@
 
   //USER Posts
   $viewPost = $data["user_post"];
+  // echo "<pre>";
+  // print_r($viewPost);
+  // echo "</pre>";
 
   //USER details for javascript
   $viewUserInfo = new stdClass();
@@ -72,12 +75,7 @@
   $viewUserInfo->image = $data["profile_img"];
 
   //clicked from nav bar for account settings
-  if (isset($_SESSION["accountSettingsClick"])) {
-    $pageAction = "Settings Page";
-    unset($_SESSION["accountSettingsClick"]);
-  } else {
-    $pageAction = "none";
-  }
+  $pageAction = $data["page_action"];
 
 ?>
 
@@ -172,7 +170,6 @@
                 <?php endif; ?>
             </p>
           </div>
-
         </div>
 
         <div class="profilePage__userFriends">
@@ -234,6 +231,13 @@
           <?php if ($viewPost != 0) : ?>
             <?php for($i = 0; $i < count($viewPost); $i++) : ?>
               <div class="viewPost postID-<?php echo $viewPost[$i]->id; ?>">
+              <?php if ($viewPost[$i]->photo == 1) : ?>
+                <div class="profilePage__photosPage--displayPhotoContainer">
+                  <div class="profilePage__photosPage--displayPhotoBox">
+                    <img class="profilePage__photosPage--displayPhoto" src="/user_data/<?php echo $viewPost[$i]->user_id."/".$viewPost[$i]->photoName; ?>">
+                  </div>
+                </div>
+              <?php endif; ?>
                 <div class="viewPost__postBox">
                   <div class="row mx-0">
                     <?php if ($_SESSION["user_id"] == $viewPost[$i]->user_id) : ?>

@@ -198,6 +198,23 @@
       height: 100%;
       object-fit: cover;
     }
+
+    &--viewPhotoBox:hover {
+      background-color: lightgray;
+      cursor: pointer;
+    }
+
+    &--displayPhotoContainer {
+      border: 1px solid black;
+    }
+    &--displayPhotoBox {
+      width: 80%;
+      margin: 0 auto;
+    }
+    &--displayPhoto {
+      width: 100%;
+      height: auto;
+    }
   }
 
   &__photosUpload {

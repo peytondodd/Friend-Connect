@@ -15,6 +15,21 @@
     }
 
     public function user($id) {
+      if (isset($_REQUEST["pageAction"])) {
+        if ($_REQUEST["pageAction"] == "settings") {
+          if ($_SESSION["user_id"] != $id) {
+            redirect("profiles/user/".$id);
+          } else {
+            $pageAction = $_REQUEST["pageAction"];
+          }
+        } else {
+          $pageAction = $_REQUEST["pageAction"];
+        }
+
+      } else {
+        $pageAction = 0;
+      }
+
       if ($this->userModel->findUserById($id)) {
         if ($this->userModel->findUserInfoById($id)) {
 
@@ -175,7 +190,8 @@
             "friend_total" => $numberOfFriends,
             "friend_list" => $friend_list_short,
             "all_friends" => $friend_list,
-            "user_post" => $userPosts
+            "user_post" => $userPosts,
+            "page_action" => $pageAction
           ];
 
           $this->view("profile/profile", $data);

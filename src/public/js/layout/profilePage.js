@@ -40,7 +40,10 @@ var profilePage = (function() {
       if (event.target.name == "photosUpload-cancelBtn") {
         profilePhotos();
       }
-
+      // if (event.target.className == "profilePage__photosPage--viewPhoto" ||
+      // event.target.className == "profilePage__photosPage--viewPhotoBox") {
+      //   displayProfilePhotos(event);
+      // }
     }
 
     function profileChangeDir(event) {
@@ -50,7 +53,7 @@ var profilePage = (function() {
     }
 
     //pageACTION
-    if (pageAction == "Settings Page") {
+    if (pageAction == "settings") {
       profileSettings();
     }
 
@@ -94,6 +97,22 @@ var profilePage = (function() {
       }
       makePhotoUploadPage();
     }
+
+    // function displayProfilePhotos(event) {
+    //   profile.children[1].style.display = "none";
+    //   if (profile.children.length > 2) {
+    //     for (var i = profile.children.length-1; i > 1; i--) {
+    //       profile.removeChild(profile.children[i]);
+    //     }
+    //   }
+    //
+    //   if (event.target.localName == "div") {
+    //     var postId = event.target.children[0].name.split("-")[1];
+    //   } else if (event.target.localName == "img") {
+    //     var postId = event.target.name.split("-")[1];
+    //   }
+    //   makeDisplayPhotosPage(postId);
+    // }
 
     function profileFriends() {
       profile.children[1].style.display = "none";
@@ -531,6 +550,54 @@ var profilePage = (function() {
 
       profile.appendChild(photosPage);
     }
+
+    // function makeDisplayPhotosPage(postId) {
+    //   var post;
+    //   viewPost.forEach(function(value) {
+    //     if (value.id == postId) {
+    //       post = value;
+    //     }
+    //   });
+    //
+    //   var displayPhoto = document.createElement("div");
+    //   displayPhoto.className = "profilePage__photosPage__displayContainer";
+    //   displayPhoto.innerHTML = `
+    //     <p><a href="">Back to Profile</a> | <a href="">Back to Photos</a></p>
+    //     <div class="profilePage__photosPage--displayPhotoContainer">
+    //       <div class="profilePage__photosPage--displayPhotoBox">
+    //         <img class="profilePage__photosPage--displayPhoto" src="/user_data/${post.user_id}/${post.photoName}">
+    //       </div>
+    //     </div>
+    //     <div class="viewPost postID-${post.id}">
+    //       <div class='viewPost__postBox'>
+    //         <div class="row mx-0">
+    //           <div class="viewPost__postUserIconBox">
+    //             <img class="viewPost__postUserIcon" src="/user_data/${post.img_src}" alt="profile picture">
+    //           </div>
+    //           <a class="viewPost__name" href="#">${post.name}</a>
+    //           <span class="viewPost__date">${post.created_at}</span>
+    //         </div>
+    //         <div class="row mx-0">
+    //           <div class="viewPost__content">
+    //             ${post.content}
+    //           </div>
+    //         </div>
+    //         <div class="row mx-0 viewPost__likeCommentShare">
+    //           <div class="row mx-0">
+    //             <div class="btn-group">
+    //               <a class="btn btn-default likeOrDislikeBtn" href="">Like</a>
+    //               <a class="btn btn-default showCommentsBtn" href="">Comment</a>
+    //               <a class="btn btn-default" href="">Share</a>
+    //             </div>
+    //           </div>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   `;
+    //
+    //   profile.appendChild(displayPhoto);
+    // }
+
 
     //css custom
     //document.body.style.backgroundColor = "#EEE";
