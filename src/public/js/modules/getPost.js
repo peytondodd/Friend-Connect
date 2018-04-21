@@ -21,10 +21,13 @@ var getPost = (function() {
       // });
     });
 
-    getProfilePost.addEventListener("click", profilePhotosClick);
+    //getProfilePost.addEventListener("click", profilePhotosClick);
 
     function postClickDir(event) {
-      event.preventDefault();
+      if (event.target.className != "viewPost__name") {
+        event.preventDefault();
+      }
+      //event.preventDefault();
       //console.log(event.target);
       // LIKE  AND DISLIKE CLICKS
       if (event.target.className == "btn btn-default likeOrDislikeBtn") {
@@ -61,14 +64,18 @@ var getPost = (function() {
       //console.log(event.target);
     }
 
-    function profilePhotosClick(event) {
-      if (event.target.className == "profilePage__photosPage--viewPhoto" ||
-      event.target.className == "profilePage__photosPage--viewPhotoBox") {
-        displayProfilePhotos(event);
-      }
+    if (pageAction[0] == "post") {
+      displayProfilePhotos(pageAction[1]);
     }
 
-    function displayProfilePhotos(event) {
+    // function profilePhotosClick(event) {
+    //   if (event.target.className == "profilePage__photosPage--viewPhoto" ||
+    //   event.target.className == "profilePage__photosPage--viewPhotoBox") {
+    //     displayProfilePhotos(event);
+    //   }
+    // }
+
+    function displayProfilePhotos(postId) {
       getProfilePost.children[1].style.display = "none";
       if (getProfilePost.children.length > 2) {
         for (var i = getProfilePost.children.length-1; i > 1; i--) {
@@ -76,11 +83,6 @@ var getPost = (function() {
         }
       }
 
-      if (event.target.localName == "div") {
-        var postId = event.target.children[0].name.split("-")[1];
-      } else if (event.target.localName == "img") {
-        var postId = event.target.name.split("-")[1];
-      }
       makeDisplayPhotosPage(postId);
     }
 
@@ -94,20 +96,21 @@ var getPost = (function() {
       console.log(post);
       var displayPhoto = document.createElement("div");
       displayPhoto.className = "profilePage__photosPage__displayContainer";
-      displayPhoto.innerHTML = `
-        <p><a href="">Back to Profile</a> | <a href="">Back to Photos</a></p>
-        <div class="profilePage__photosPage--displayPhotoContainer">
-          <div class="profilePage__photosPage--displayPhotoBox">
-            <img class="profilePage__photosPage--displayPhoto" src="/user_data/${post.user_id}/${post.photoName}">
+      displayPhoto.innerHTML = `        
+        <div class="viewPost postID-${post.id}" style="position: relative;">
+
+          <div class="profilePage__photosPage--displayPhotoContainer">
+            <div class="profilePage__photosPage--displayPhotoBox">
+              <img class="profilePage__photosPage--displayPhoto" src="/user_data/${post.user_id}/${post.photoName}">
+            </div>
           </div>
-        </div>
-        <div class="viewPost postID-${post.id}">
+
           <div class='viewPost__postBox'>
             <div class="row mx-0">
               <div class="viewPost__postUserIconBox">
                 <img class="viewPost__postUserIcon" src="/user_data/${post.img_src}" alt="profile picture">
               </div>
-              <a class="viewPost__name" href="#">${post.name}</a>
+              <a class="viewPost__name" href="/profiles/user/${post.user_id}">${post.name}</a>
               <span class="viewPost__date">${post.created_at}</span>
             </div>
             <div class="row mx-0">
@@ -127,12 +130,22 @@ var getPost = (function() {
           </div>
         </div>
       `;
-      
+     
+      // edit delete btn
+      if (currentUserId == post.user_id) {
+        var modification = document.createElement("p");
+        modification.className = "viewPost__modLink";
+        modification.innerHTML = `
+          <a class="viewPost__editPost" href="#">Edit</a> | 
+          <a class="viewPost__deletePost" href="#">Delete</a>
+        `;
+        displayPhoto.children[0].children[1].children[0].insertBefore(modification, displayPhoto.children[0].children[1].children[0].children[0]);
+      }
       // like button
       if (post.currentUserLike == true) {
         displayPhoto.querySelector(".likeOrDislikeBtn").innerText = "Dislike";
       } else {
-        displayPhoto.querySelector(".likeOrDislikeBtn").innerText = "Dislike";
+        displayPhoto.querySelector(".likeOrDislikeBtn").innerText = "Like";
       }
       //like count
       if (post.likeCount > 0) {
@@ -149,7 +162,7 @@ var getPost = (function() {
             <span> ${likeNote}</span>
           </div>
         `;
-        displayPhoto.children[2].children[0].appendChild(likeCount);
+        displayPhoto.children[0].children[1].appendChild(likeCount);
       }
       //comments
       if (post.comments.count > 0) {
@@ -160,7 +173,11 @@ var getPost = (function() {
             <a href="" class="viewPost__showComments">View Comments (<span class="commentCount">${post.comments.count}</span>)</a>
           </div>
         `;
-        displayPhoto.children[2].children[0].appendChild(comments);
+        displayPhoto.children[0].children[1].appendChild(comments);
+      }
+       //remove photo if not exists
+       if (post.photo != 1) {
+        displayPhoto.children[0].removeChild(displayPhoto.children[0].children[0]);
       }
 
       getProfilePost.appendChild(displayPhoto);
@@ -967,13 +984,14 @@ var getPost = (function() {
         var allPosts = getProfilePost.querySelectorAll(".viewPost");
         for (var i = 0; i < allPosts.length; i++) {
           if (allPosts[i].children.length > 1) {
-            var post = allPosts[i].children[1];
+            var postDOM = allPosts[i].children[1];
           } else {
-            var post = allPosts[i].children[0];
+            var postDOM = allPosts[i].children[0];
           }
+          
           var postId = allPosts[i].className.split("-")[1];
           if (postId == post.id) {
-            var oldContent = post.children[1].children[0];
+            var oldContent = postDOM.children[1].children[0];
 
             if (oldContent.innerText != post.content) {
               oldContent.innerText = post.content;
@@ -1115,14 +1133,13 @@ var getPost = (function() {
 
     // LIVE EVENTS LIVE EVENTS LIVE EVENTS
     function postData() {
-      var profileUserId = (window.location.href).split("/");
-      profileUserId = profileUserId[profileUserId.length-1];
+      var profileUserId = viewUserInfo.id;
       var postCount = postContainer.children.length;
       var likeStats = currentLikeStats();
       var currentComments = JSON.stringify(findPostComments("ALL"));
       var postContent = currentPostContent();
 
-      return ("profilePost="+profileUserId+"&"+
+      return ("profileUserId="+profileUserId+"&"+
               "profilePostCount="+postCount+"&"+
               "currentUserId="+currentUserId+"&"+
               "likeCount="+likeStats+"&"+

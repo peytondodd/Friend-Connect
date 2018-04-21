@@ -10,7 +10,7 @@
   friend_status - holds friend status,
                   1 = pending request
                   2 = accepted
-                  3 = declined
+                  3 = declined // not used // for future purposes
                   4 = blocked
                   5 = request cancelled
 
@@ -73,7 +73,7 @@ class Friend {
   public function getDateUpdated($currentUserId, $viewedUserId) {
     $this->db->query("SELECT date_updated FROM friends WHERE
                     (user_one = :user_one AND user_two = :user_two) OR
-                    (user_one = :user_two OR user_two = :user_one)");
+                    (user_one = :user_two AND user_two = :user_one)");
     $this->db->bind(":user_one", $currentUserId);
     $this->db->bind(":user_two", $viewedUserId);
     $row = $this->db->single();
@@ -84,7 +84,7 @@ class Friend {
   public function wasFriend($currentUserId, $viewedUserId) {
     $this->db->query("SELECT was_friend FROM friends WHERE
                     (user_one = :user_one AND user_two = :user_two) OR
-                    (user_one = :user_two OR user_two = :user_one)");
+                    (user_one = :user_two AND user_two = :user_one)");
     $this->db->bind(":user_one", $currentUserId);
     $this->db->bind(":user_two", $viewedUserId);
     $row = $this->db->single();
@@ -96,13 +96,13 @@ class Friend {
   public function checkFriendStatus($currentUserId, $viewedUserId) {
     $this->db->query("SELECT * FROM friends WHERE
                     (user_one = :user_one AND user_two = :user_two) OR
-                    (user_one = :user_two OR user_two = :user_one)");
+                    (user_one = :user_two AND user_two = :user_one)");
     $this->db->bind(":user_one", $currentUserId);
     $this->db->bind(":user_two", $viewedUserId);
     $row = $this->db->single();
-
+    
     if ($this->db->rowCount() == 0) {
-      return false;
+      return $row;
     } else {
 
       $status = $row->friend_status;
@@ -184,14 +184,18 @@ class Friend {
                         user_two = :user_two,
                         friend_status = :friend_status,
                         was_friend = 2,
-                        date_updated = :date_updated");
+                        date_updated = :date_updated WHERE 
+                        user_one = :user_one AND user_two = :user_two OR 
+                        user_one = :user_two AND user_two = :user_one");
       //$this->db->bind(":was_friend", 1);
     } else {
       $this->db->query("UPDATE friends SET
                         user_one = :user_one,
                         user_two = :user_two,
                         friend_status = :friend_status,
-                        date_updated = :date_updated");
+                        date_updated = :date_updated WHERE 
+                        user_one = :user_one AND user_two = :user_two OR 
+                        user_one = :user_two AND user_two = :user_one");
     }
     $this->db->bind(":user_one", $currentUserId);
     $this->db->bind(":user_two", $viewedUserId);

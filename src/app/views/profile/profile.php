@@ -42,7 +42,8 @@
 
   //LOCATION
   $viewLocation = $data["location"];
-
+  //FRIEND STATUS
+  $friendStatus = $data["friend_status"];
   //FRIEND LIST
   if ($data["friend_list"]) {
     $totalFriends = $data["friend_total"];
@@ -77,6 +78,7 @@
   //clicked from nav bar for account settings
   $pageAction = $data["page_action"];
 
+
 ?>
 
 <?php require APPROOT . "/views/inc/header.php"; ?>
@@ -97,20 +99,42 @@
       <div class="profilePage__header--name">
 
         <div class="row">
-          <div class="col-8">
+          <div class="col-sm-8">
             <h1 class="profilePage__header--userName"><?php echo ucwords($data["first_name"]. " " .$data["last_name"]); ?></h1>
           </div>
-          <div class="col-4 profilePage__header--friendBtnBox">
-            <input class="float-right btn btn-success profilePage__header--friendBtn" type="button" name="" value="Add Friend">
+          <div class="col-sm-4">
+            <div class="profilePage__header--friendBtnBox">
+              <?php if($viewUserInfo->id != $_SESSION["user_id"]) : ?>
+                <button class="btn btn-success profilePage__header--friendBtn" type="button" name="friendBtn-Status"><?php echo $friendStatus; ?></button>
+                <?php if($friendStatus == "Add Friend") : ?>
+                  <button class="btn btn-danger profilePage__header--friendBtn" type="button" name="friendBtn-Status-Action">Block</button>
+                <?php endif; ?>
+                <?php if($friendStatus == "Pending") : ?>
+                  <button class="btn btn-danger profilePage__header--friendBtn" type="button" name="friendBtn-Status-Action">Cancel</button>
+                  <button class="btn btn-danger profilePage__header--friendBtn" type="button" name="friendBtn-Status-Action">Block</button>
+                <?php endif; ?>
+                <?php if($friendStatus == "Accept") : ?>
+                  <button class="btn btn-danger profilePage__header--friendBtn" type="button" name="friendBtn-Status-Action">Decline</button>
+                  <button class="btn btn-danger profilePage__header--friendBtn" type="button" name="friendBtn-Status-Action">Block</button>
+                <?php endif; ?>
+                <?php if($friendStatus == "Friends") : ?>
+                  <button class="btn btn-danger profilePage__header--friendBtn" type="button" name="friendBtn-Status-Action">Unfriend</button>
+                  <button class="btn btn-danger profilePage__header--friendBtn" type="button" name="friendBtn-Status-Action">Block</button>
+                <?php endif; ?>
+                <!-- <?php if($friendStatus == "Unblocked") : ?>
+                  <button class="btn btn-danger profilePage__header--friendBtn" type="button" name="friendBtn-Status-Action">Unblock</button>
+                <?php endif; ?> -->
+              <?php endif; ?>
+            </div>
           </div>
         </div>
         <div class="profilePage__headerbtn">
           <div class="btn-group">
-            <input class="btn btn-primary" type="button" name="profilePage-About" value="About">
-            <input class="btn btn-primary" type="button" name="profilePage-Photos" value="Photos">
-            <input class="btn btn-primary" type="button" name="profilePage-Friends" value="Friends">
+            <a class="btn btn-primary" href="/profiles/user/<?php echo $viewId; ?>/?pageAction=about" name="profilePage-About">About</a>
+            <a class="btn btn-primary" href="/profiles/user/<?php echo $viewId; ?>/?pageAction=photos" name="profilePage-Photos">Photos</a>
+            <a class="btn btn-primary" href="/profiles/user/<?php echo $viewId; ?>/?pageAction=friends" name="profilePage-Friends">Friends</a>
             <?php if ($_SESSION["user_id"] == $viewId) : ?>
-              <input class="btn btn-primary" type="button" name="profilePage-Settings" value="Settings">
+              <a class="btn btn-primary" href="/profiles/user/<?php echo $_SESSION["user_id"] ?>/?pageAction=settings" name="profilePage-Settings">Settings</a>
             <?php endif; ?>
           </div>
         </div>
@@ -250,7 +274,7 @@
                     <div class="viewPost__postUserIconBox">
                       <img class="viewPost__postUserIcon" src="/user_data/<?php echo $viewPost[$i]->img_src; ?>" alt="profile picture">
                     </div>
-                    <a class="viewPost__name" href="#"><?php echo $viewPost[$i]->name; ?></a>
+                    <a class="viewPost__name" href=""><?php echo $viewPost[$i]->name; ?></a>
                     <span class="viewPost__date"><?php echo $viewPost[$i]->created_at; ?></span>
                   </div>
                   <div class="row mx-0">
@@ -327,8 +351,8 @@
   var viewPost = <?php echo json_encode($viewPost); ?>;
   var viewUserInfo = <?php echo json_encode($viewUserInfo); ?>;
   var friendList = <?php echo json_encode($data["all_friends"]); ?>;
-  var pageAction = "<?php echo $pageAction; ?>";
-  console.log(viewPost);
+  var pageAction = <?php echo $pageAction; ?>;
+  console.log(pageAction);
 </script>
 
 <!-- <h1>Welcome to <?php echo $data["first_name"] . "'s profile."; ?></h1>

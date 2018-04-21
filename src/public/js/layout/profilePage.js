@@ -53,8 +53,14 @@ var profilePage = (function() {
     }
 
     //pageACTION
-    if (pageAction == "settings") {
+    if (pageAction[0] == "settings") {
       profileSettings();
+    } else if (pageAction[0] == "about") {
+      profileAbout();
+    } else if (pageAction[0] == "photos") {
+      profilePhotos();
+    } else if (pageAction[0] == "friends") {
+      profileFriends();
     }
 
 
@@ -515,29 +521,32 @@ var profilePage = (function() {
       `;
 
       //photos
-      var viewPhoto = [];
-      viewPost.forEach(function(value) {
-        if (value.photo == 1) {
-          var photo = {
-            userId: value.user_id,
-            postId: value.id,
-            photoName: value.photoName
+      if (viewPost) {
+        var viewPhoto = [];
+        viewPost.forEach(function(value) {
+          if (value.photo == 1) {
+            var photo = {
+              userId: value.user_id,
+              postId: value.id,
+              photoName: value.photoName
+            }
+            viewPhoto.push(photo);
           }
-          viewPhoto.push(photo);
+        });
+        for (var i = 0; i < viewPhoto.length; i++) {
+          var photo = document.createElement("div");
+          photo.className = "col-6 col-sm-4 col-md-3 px-0";
+          photo.innerHTML = `
+            <a href="/profiles/user/${viewUserInfo.id}?pageAction=post&postId=${viewPhoto[i].postId}">
+              <div class="profilePage__photosPage--viewPhotoBox">
+                <img class="profilePage__photosPage--viewPhoto" name="post-${viewPhoto[i].postId}" src="/user_data/${viewPhoto[i].userId}/${viewPhoto[i].photoName}">
+              </div>
+            </a>
+          `;
+          //console.log(photosPage.children[2].children[0].children[0]);
+          photosPage.children[2].appendChild(photo);
         }
-      });
-      for (var i = 0; i < viewPhoto.length; i++) {
-        var photo = document.createElement("div");
-        photo.className = "col-6 col-sm-4 col-md-3 px-0";
-        photo.innerHTML = `
-          <div class="profilePage__photosPage--viewPhotoBox">
-            <img class="profilePage__photosPage--viewPhoto" name="post-${viewPhoto[i].postId}" src="/user_data/${viewPhoto[i].userId}/${viewPhoto[i].photoName}">
-          </div>
-        `;
-        //console.log(photosPage.children[2].children[0].children[0]);
-        photosPage.children[2].appendChild(photo);
       }
-
       //upload button
       if (currentUserId == viewUserInfo.id) {
         var uploadPhoto = document.createElement("div");

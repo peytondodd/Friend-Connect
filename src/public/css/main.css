@@ -649,6 +649,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: flex-end; }
+  .profilePage__header--friendBtn {
+    float: right; }
 
 .profilePage__profileImage {
   width: 100%;
@@ -877,6 +879,15 @@ body {
     height: calc(0.625rem * 17.9); } }
 
 @media (max-width: 575px) {
+  .profilePage__header--userName {
+    text-align: center; }
+  .profilePage__header--friendBtn {
+    float: none; }
+  .profilePage__header--friendBtnBox {
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%); }
   .profilePage__userFriends--box {
     height: calc(0.625rem * 14); }
   .profilePage__userFriends--box::after {

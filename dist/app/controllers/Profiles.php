@@ -16,14 +16,22 @@
 
     public function user($id) {
       if (isset($_REQUEST["pageAction"])) {
+        $pageAction = [];
         if ($_REQUEST["pageAction"] == "settings") {
           if ($_SESSION["user_id"] != $id) {
             redirect("profiles/user/".$id);
           } else {
-            $pageAction = $_REQUEST["pageAction"];
+            $pageAction[] = $_REQUEST["pageAction"];
+          }
+        } elseif ($_REQUEST["pageAction"] == "post") {
+          if (isset($_REQUEST["postId"])) {
+            $pageAction[] = $_REQUEST["pageAction"];
+            $pageAction[] = $_REQUEST["postId"];
+          } else {
+            redirect("profiles/user/".$id);
           }
         } else {
-          $pageAction = $_REQUEST["pageAction"];
+          $pageAction[] = $_REQUEST["pageAction"];
         }
 
       } else {
@@ -41,14 +49,20 @@
           // FRIEND STATUS
           if ($user->id != $_SESSION["user_id"]) {
             $friendStatus = $this->friendModel->checkFriendStatus($_SESSION["user_id"], $user->id);
-            if ($friendStatus != false) {
+            //echo "$friendStatus";
+            if ($friendStatus) {
               // has relationship
               $status = $friendStatus;
             } else {
               // no relationship
-              $status = "add friend";
+              $status = "Add Friend";
             }
           }
+          // blocked profile 
+          if ($status == "No Access") {
+            redirect("profiles/blocked");
+          }
+          //echo $status;
           //["accept", "friends", "pending", "no access", "add friend", "unblock"]
 
           // FRIEND LIST
@@ -186,12 +200,12 @@
             "work" => $userInfo->work,
             "location" => $userInfo->location,
             "description" => $userInfo->description,
-            "friend_status" => $status."hi",
+            "friend_status" => $status,
             "friend_total" => $numberOfFriends,
             "friend_list" => $friend_list_short,
             "all_friends" => $friend_list,
             "user_post" => $userPosts,
-            "page_action" => $pageAction
+            "page_action" => json_encode($pageAction)
           ];
 
           $this->view("profile/profile", $data);
@@ -374,6 +388,9 @@
       }
     }
 
+    public function blocked() {
+      echo "YOU ARE BLOCKED FROM ACCESSING THIS PROFILE";
+    }
 
     public function setup() {
       //already completed

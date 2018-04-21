@@ -23,7 +23,7 @@
       justify-content: flex-end;
     }
     &--friendBtn {
-      //display: block;
+      float: right;
     }
   }
   &__profileImage {
@@ -188,6 +188,7 @@
   }
 
   &__photosPage {
+    
     &--viewPhotoBox {
       height: calc(#{$one-rem} * 26.9);
       padding: calc(#{$one-rem} / 2);
@@ -371,6 +372,20 @@
 
 @media (max-width: 575px) {
   .profilePage {
+    &__header {
+      &--userName {
+        text-align: center;
+      }
+      &--friendBtn {
+        float: none;
+      }
+      &--friendBtnBox {
+        display: inline-block;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
     &__userFriends {
       &--box {
         height: calc(#{$one-rem} * 14);

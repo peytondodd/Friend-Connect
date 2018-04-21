@@ -577,8 +577,14 @@ var profilePage = (function() {
     }
 
     //pageACTION
-    if (pageAction == "settings") {
+    if (pageAction[0] == "settings") {
       profileSettings();
+    } else if (pageAction[0] == "about") {
+      profileAbout();
+    } else if (pageAction[0] == "photos") {
+      profilePhotos();
+    } else if (pageAction[0] == "friends") {
+      profileFriends();
     }
 
 
@@ -1039,29 +1045,32 @@ var profilePage = (function() {
       `;
 
       //photos
-      var viewPhoto = [];
-      viewPost.forEach(function(value) {
-        if (value.photo == 1) {
-          var photo = {
-            userId: value.user_id,
-            postId: value.id,
-            photoName: value.photoName
+      if (viewPost) {
+        var viewPhoto = [];
+        viewPost.forEach(function(value) {
+          if (value.photo == 1) {
+            var photo = {
+              userId: value.user_id,
+              postId: value.id,
+              photoName: value.photoName
+            }
+            viewPhoto.push(photo);
           }
-          viewPhoto.push(photo);
+        });
+        for (var i = 0; i < viewPhoto.length; i++) {
+          var photo = document.createElement("div");
+          photo.className = "col-6 col-sm-4 col-md-3 px-0";
+          photo.innerHTML = `
+            <a href="/profiles/user/${viewUserInfo.id}?pageAction=post&postId=${viewPhoto[i].postId}">
+              <div class="profilePage__photosPage--viewPhotoBox">
+                <img class="profilePage__photosPage--viewPhoto" name="post-${viewPhoto[i].postId}" src="/user_data/${viewPhoto[i].userId}/${viewPhoto[i].photoName}">
+              </div>
+            </a>
+          `;
+          //console.log(photosPage.children[2].children[0].children[0]);
+          photosPage.children[2].appendChild(photo);
         }
-      });
-      for (var i = 0; i < viewPhoto.length; i++) {
-        var photo = document.createElement("div");
-        photo.className = "col-6 col-sm-4 col-md-3 px-0";
-        photo.innerHTML = `
-          <div class="profilePage__photosPage--viewPhotoBox">
-            <img class="profilePage__photosPage--viewPhoto" name="post-${viewPhoto[i].postId}" src="/user_data/${viewPhoto[i].userId}/${viewPhoto[i].photoName}">
-          </div>
-        `;
-        //console.log(photosPage.children[2].children[0].children[0]);
-        photosPage.children[2].appendChild(photo);
       }
-
       //upload button
       if (currentUserId == viewUserInfo.id) {
         var uploadPhoto = document.createElement("div");
@@ -1255,6 +1264,267 @@ var createPost = (function() {
 
 })();
 
+var friendBtn = (function() {
+
+    var friendBtnBox = document.querySelector(".profilePage__header--friendBtnBox");
+    var friendStatus = friendBtnBox.querySelector("button[name='friendBtn-Status']");
+    if (friendStatus) {
+
+        friendBtnBox.addEventListener("click", friendBtnClick);
+        
+        function friendBtnClick(event) {
+            //console.log(event.target.innerText);
+            if (event.target.innerText == "Add Friend") {
+                addFriend();
+            }
+            if (event.target.innerText == "Cancel") {
+                cancelFriend();
+            }
+            if (event.target.innerText == "Accept") {
+                acceptFriend();
+            }
+            if (event.target.innerText == "Decline") {
+                declineFriend();
+            }
+            if (event.target.innerText == "Unfriend") {
+                unfriendFriend();
+            }
+            if (event.target.innerText == "Block") {
+                blockFriend();
+            }
+            if (event.target.innerText == "Unblock") {
+                unblockFriend();
+            }
+            
+        }
+
+        // Add friend
+        function addFriend() {
+            ajaxCall("GET", "/friends/add?addFriendId="+viewUserInfo.id, true)
+                .then(addFriendSuccess, addFriendFail);
+            
+            function addFriendSuccess(data) {
+                friendBtnBox.querySelector("button[name='friendBtn-Status']").innerText = data;
+                while(friendBtnBox.children.length > 1) {
+                    friendBtnBox.removeChild(friendBtnBox.children[friendBtnBox.children.length - 1]);
+                }
+
+                friendBtnBox.appendChild(friendActionBtn("Cancel"));
+                friendBtnBox.appendChild(friendActionBtn("Block"));
+            }
+            function addFriendFail(data) {}
+        }
+        // Cancel Friend
+        function cancelFriend() {
+            ajaxCall("GET", "/friends/cancel?cancelFriendId="+viewUserInfo.id, true)
+                .then(cancelFriendSuccess, cancelFriendFail);
+            
+            function cancelFriendSuccess(data) {
+                friendBtnBox.querySelector("button[name='friendBtn-Status']").innerText = data;
+                while(friendBtnBox.children.length > 1) {
+                    friendBtnBox.removeChild(friendBtnBox.children[friendBtnBox.children.length - 1]);
+                }
+                friendBtnBox.appendChild(friendActionBtn("Block"));
+            }
+            function cancelFriendFail(data) {}
+        }
+
+        // accept Friend
+        function acceptFriend() {
+            ajaxCall("GET", "/friends/accept?acceptFriendId="+viewUserInfo.id, true)
+            .then(acceptFriendSuccess, acceptFriendFail);
+
+            function acceptFriendSuccess(data) {
+                friendBtnBox.querySelector("button[name='friendBtn-Status']").innerText = data;
+                while(friendBtnBox.children.length > 1) {
+                    friendBtnBox.removeChild(friendBtnBox.children[friendBtnBox.children.length - 1]);
+                }
+                friendBtnBox.appendChild(friendActionBtn("Unfriend"));
+                friendBtnBox.appendChild(friendActionBtn("Block"));
+            }
+            function acceptFriendFail(data) {}
+        }
+
+        // unfriend Friend
+        function unfriendFriend() {
+            ajaxCall("GET", "/friends/unfriend?unfriendFriendId="+viewUserInfo.id, true)
+            .then(unfriendFriendSuccess, unfriendFriendFail);
+
+            function unfriendFriendSuccess(data) {
+                friendBtnBox.querySelector("button[name='friendBtn-Status']").innerText = data;
+                while(friendBtnBox.children.length > 1) {
+                    friendBtnBox.removeChild(friendBtnBox.children[friendBtnBox.children.length - 1]);
+                }
+                friendBtnBox.appendChild(friendActionBtn("Block"));
+            }
+            function unfriendFriendFail(data) {}
+        }
+
+        // decline friend
+        function declineFriend() {
+            ajaxCall("GET", "/friends/decline?declineFriendId="+viewUserInfo.id, true)
+            .then(declineFriendSuccess, declineFriendFail);
+
+            function declineFriendSuccess(data) {
+                friendBtnBox.querySelector("button[name='friendBtn-Status']").innerText = data;
+                while(friendBtnBox.children.length > 1) {
+                    friendBtnBox.removeChild(friendBtnBox.children[friendBtnBox.children.length - 1]);
+                }
+                friendBtnBox.appendChild(friendActionBtn("Block"));
+            }
+            function declineFriendFail(data) {}
+        }
+
+        // block friend
+        function blockFriend() {
+            ajaxCall("GET", "/friends/block?blockFriendId="+viewUserInfo.id, true)
+            .then(blockFriendSuccess, blockFriendFail);
+
+            function blockFriendSuccess(data) {
+                friendBtnBox.querySelector("button[name='friendBtn-Status']").innerText = data;
+                while(friendBtnBox.children.length > 1) {
+                    friendBtnBox.removeChild(friendBtnBox.children[friendBtnBox.children.length - 1]);
+                }
+            }
+            function blockFriendFail(data) {}
+        }
+        //unblock Friend
+        function unblockFriend() {
+            ajaxCall("GET", "/friends/unblock?unblockFriendId="+viewUserInfo.id, true)
+            .then(unblockFriendSuccess, unblockFriendFail);
+            function unblockFriendSuccess(data) {
+                friendBtnBox.querySelector("button[name='friendBtn-Status']").innerText = data;
+                while(friendBtnBox.children.length > 1) {
+                    friendBtnBox.removeChild(friendBtnBox.children[friendBtnBox.children.length - 1]);
+                }
+                if (data == "Add Friend") {
+                    friendBtnBox.appendChild(friendActionBtn("Block"));
+                } else if (data == "Accept") {
+                    friendBtnBox.appendChild(friendActionBtn("Decline"));
+                    friendBtnBox.appendChild(friendActionBtn("Block"));
+                } else if (data == "Friends") {
+                    friendBtnBox.appendChild(friendActionBtn("Unfriend"));
+                    friendBtnBox.appendChild(friendActionBtn("Block"));
+                }
+            }
+            function unblockFriendFail(data) {}
+        }
+
+        //friendActionBTN MAKER
+        function friendActionBtn(btnName) {
+            var friendActionBtn = document.createElement("button");
+            friendActionBtn.className = "btn btn-danger profilePage__header-friendBtn";
+            friendActionBtn.type = "button";
+            friendActionBtn.name = "friendBtn-Status-Action";
+            friendActionBtn.innerText = btnName;
+            return friendActionBtn;
+        }
+
+        // AJAX CALL
+        function ajaxCall(method, url, sync, postData=0) {
+            var promiseObj = new Promise (function(resolve, reject) {
+            var friendAction = new XMLHttpRequest();
+            friendAction.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                if (this.status == 200) {
+                    //console.log(this.responseText);
+                    resolve(this.responseText);
+                } else {
+                    reject(this.status);
+                }
+                }
+            };
+    
+            friendAction.open(method, url, sync);
+            if (method == "GET") {
+                friendAction.send()
+            } else if (method == "POST") {
+                friendAction.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                friendAction.send(postData);
+            }
+            });
+            return promiseObj;
+        }
+
+        // LIFE AJAX CALLER - REAL TIME
+        function liveAjaxCall(statusData) {
+            var promiseObj = new Promise (function(resolve, reject) {
+            var getFriendStatus = new XMLHttpRequest();
+            getFriendStatus.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                if (this.status == 200) {
+                    resolve(this.responseText);
+                } else {
+                    reject(this.status);
+                }
+                }
+            };
+            getFriendStatus.open("POST", "/posts/realTimeEvents", true);
+            getFriendStatus.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            getFriendStatus.send(statusData);
+            });
+            return promiseObj;
+        }
+
+        // LIVE EVENTS LIVE EVENTS LIVE EVENTS
+        var oldFriendStatus = friendBtnBox.querySelector("button[name='friendBtn-Status']").innerText;
+        var viewedFriendId = viewUserInfo.id;
+        var timestamp = "0000-00-00 00:00:00";
+
+        ajaxCall("GET", "/friends/realtimestatus?oldFriendStatus="+oldFriendStatus+"&viewFriendId="+viewedFriendId+"&timestamp="+timestamp, true)
+            .then(liveStatusSuccess, liveStatusFail);
+        
+        function liveStatusSuccess(data) {
+            if (data != "") {
+                console.log(data);
+                data = JSON.parse(data);
+            
+                var currentStatus = friendBtnBox.querySelector("button[name='friendBtn-Status']").innerText;
+                if (data.newStatus != currentStatus) {
+                    friendBtnBox.querySelector("button[name='friendBtn-Status']").innerText = data.newStatus;
+                    while(friendBtnBox.children.length > 1) {
+                        friendBtnBox.removeChild(friendBtnBox.children[friendBtnBox.children.length - 1]);
+                    }
+                    if (data.newStatus == "Pending") {
+                        friendBtnBox.appendChild(friendActionBtn("Cancel"));
+                        friendBtnBox.appendChild(friendActionBtn("Block"));
+                    } else if (data.newStatus == "Accept") {
+                        friendBtnBox.appendChild(friendActionBtn("Decline"));
+                        friendBtnBox.appendChild(friendActionBtn("Block"));
+                    } else if (data.newStatus == "Friends") {
+                        friendBtnBox.appendChild(friendActionBtn("Unfriend"));
+                        friendBtnBox.appendChild(friendActionBtn("Block"));
+                    } else if (data.newStatus == "Add Friend") {
+                        friendBtnBox.appendChild(friendActionBtn("Block"));
+                    } else if (data.newStatus == "Unblock") {
+                        //nothing
+                    } else if (data.newStatus == "No Access") {
+                        //redirect back
+                        window.location.replace("/profiles/blocked");
+                    }
+                }
+                var oldFriendStatus = data.newStatus;
+                var timestamp = data.newTimestamp;
+                // console.log(oldFriendStatus);
+                ajaxCall("GET", "/friends/realtimestatus?oldFriendStatus="+oldFriendStatus+"&viewFriendId="+viewedFriendId+"&timestamp="+timestamp, true)
+                    .then(liveStatusSuccess, liveStatusFail);
+            } else {
+                // ajaxCall("GET", "/friends/realtimestatus?oldFriendStatus="+oldFriendStatus+"&viewFriendId="+viewedFriendId+"&timestamp="+timestamp, true)
+                //     .then(liveStatusSuccess, liveStatusFail);
+            }
+
+        }
+        function liveStatusFail(data) {
+            ajaxCall("GET", "/friends/realtimestatus?oldFriendStatus="+oldFriendStatus+"&viewFriendId="+viewedFriendId+"&timestamp="+timestamp, true)
+                .then(liveStatusSuccess, liveStatusFail);
+        }
+
+    }
+
+  
+
+
+})();
 
 var getPost = (function() {
 
@@ -1278,10 +1548,13 @@ var getPost = (function() {
       // });
     });
 
-    getProfilePost.addEventListener("click", profilePhotosClick);
+    //getProfilePost.addEventListener("click", profilePhotosClick);
 
     function postClickDir(event) {
-      event.preventDefault();
+      if (event.target.className != "viewPost__name") {
+        event.preventDefault();
+      }
+      //event.preventDefault();
       //console.log(event.target);
       // LIKE  AND DISLIKE CLICKS
       if (event.target.className == "btn btn-default likeOrDislikeBtn") {
@@ -1318,14 +1591,18 @@ var getPost = (function() {
       //console.log(event.target);
     }
 
-    function profilePhotosClick(event) {
-      if (event.target.className == "profilePage__photosPage--viewPhoto" ||
-      event.target.className == "profilePage__photosPage--viewPhotoBox") {
-        displayProfilePhotos(event);
-      }
+    if (pageAction[0] == "post") {
+      displayProfilePhotos(pageAction[1]);
     }
 
-    function displayProfilePhotos(event) {
+    // function profilePhotosClick(event) {
+    //   if (event.target.className == "profilePage__photosPage--viewPhoto" ||
+    //   event.target.className == "profilePage__photosPage--viewPhotoBox") {
+    //     displayProfilePhotos(event);
+    //   }
+    // }
+
+    function displayProfilePhotos(postId) {
       getProfilePost.children[1].style.display = "none";
       if (getProfilePost.children.length > 2) {
         for (var i = getProfilePost.children.length-1; i > 1; i--) {
@@ -1333,11 +1610,6 @@ var getPost = (function() {
         }
       }
 
-      if (event.target.localName == "div") {
-        var postId = event.target.children[0].name.split("-")[1];
-      } else if (event.target.localName == "img") {
-        var postId = event.target.name.split("-")[1];
-      }
       makeDisplayPhotosPage(postId);
     }
 
@@ -1351,20 +1623,21 @@ var getPost = (function() {
       console.log(post);
       var displayPhoto = document.createElement("div");
       displayPhoto.className = "profilePage__photosPage__displayContainer";
-      displayPhoto.innerHTML = `
-        <p><a href="">Back to Profile</a> | <a href="">Back to Photos</a></p>
-        <div class="profilePage__photosPage--displayPhotoContainer">
-          <div class="profilePage__photosPage--displayPhotoBox">
-            <img class="profilePage__photosPage--displayPhoto" src="/user_data/${post.user_id}/${post.photoName}">
+      displayPhoto.innerHTML = `        
+        <div class="viewPost postID-${post.id}" style="position: relative;">
+
+          <div class="profilePage__photosPage--displayPhotoContainer">
+            <div class="profilePage__photosPage--displayPhotoBox">
+              <img class="profilePage__photosPage--displayPhoto" src="/user_data/${post.user_id}/${post.photoName}">
+            </div>
           </div>
-        </div>
-        <div class="viewPost postID-${post.id}">
+
           <div class='viewPost__postBox'>
             <div class="row mx-0">
               <div class="viewPost__postUserIconBox">
                 <img class="viewPost__postUserIcon" src="/user_data/${post.img_src}" alt="profile picture">
               </div>
-              <a class="viewPost__name" href="#">${post.name}</a>
+              <a class="viewPost__name" href="/profiles/user/${post.user_id}">${post.name}</a>
               <span class="viewPost__date">${post.created_at}</span>
             </div>
             <div class="row mx-0">
@@ -1384,12 +1657,22 @@ var getPost = (function() {
           </div>
         </div>
       `;
-      
+     
+      // edit delete btn
+      if (currentUserId == post.user_id) {
+        var modification = document.createElement("p");
+        modification.className = "viewPost__modLink";
+        modification.innerHTML = `
+          <a class="viewPost__editPost" href="#">Edit</a> | 
+          <a class="viewPost__deletePost" href="#">Delete</a>
+        `;
+        displayPhoto.children[0].children[1].children[0].insertBefore(modification, displayPhoto.children[0].children[1].children[0].children[0]);
+      }
       // like button
       if (post.currentUserLike == true) {
         displayPhoto.querySelector(".likeOrDislikeBtn").innerText = "Dislike";
       } else {
-        displayPhoto.querySelector(".likeOrDislikeBtn").innerText = "Dislike";
+        displayPhoto.querySelector(".likeOrDislikeBtn").innerText = "Like";
       }
       //like count
       if (post.likeCount > 0) {
@@ -1406,7 +1689,7 @@ var getPost = (function() {
             <span> ${likeNote}</span>
           </div>
         `;
-        displayPhoto.children[2].children[0].appendChild(likeCount);
+        displayPhoto.children[0].children[1].appendChild(likeCount);
       }
       //comments
       if (post.comments.count > 0) {
@@ -1417,7 +1700,11 @@ var getPost = (function() {
             <a href="" class="viewPost__showComments">View Comments (<span class="commentCount">${post.comments.count}</span>)</a>
           </div>
         `;
-        displayPhoto.children[2].children[0].appendChild(comments);
+        displayPhoto.children[0].children[1].appendChild(comments);
+      }
+       //remove photo if not exists
+       if (post.photo != 1) {
+        displayPhoto.children[0].removeChild(displayPhoto.children[0].children[0]);
       }
 
       getProfilePost.appendChild(displayPhoto);
@@ -2224,13 +2511,14 @@ var getPost = (function() {
         var allPosts = getProfilePost.querySelectorAll(".viewPost");
         for (var i = 0; i < allPosts.length; i++) {
           if (allPosts[i].children.length > 1) {
-            var post = allPosts[i].children[1];
+            var postDOM = allPosts[i].children[1];
           } else {
-            var post = allPosts[i].children[0];
+            var postDOM = allPosts[i].children[0];
           }
+          
           var postId = allPosts[i].className.split("-")[1];
           if (postId == post.id) {
-            var oldContent = post.children[1].children[0];
+            var oldContent = postDOM.children[1].children[0];
 
             if (oldContent.innerText != post.content) {
               oldContent.innerText = post.content;
@@ -2372,14 +2660,13 @@ var getPost = (function() {
 
     // LIVE EVENTS LIVE EVENTS LIVE EVENTS
     function postData() {
-      var profileUserId = (window.location.href).split("/");
-      profileUserId = profileUserId[profileUserId.length-1];
+      var profileUserId = viewUserInfo.id;
       var postCount = postContainer.children.length;
       var likeStats = currentLikeStats();
       var currentComments = JSON.stringify(findPostComments("ALL"));
       var postContent = currentPostContent();
 
-      return ("profilePost="+profileUserId+"&"+
+      return ("profileUserId="+profileUserId+"&"+
               "profilePostCount="+postCount+"&"+
               "currentUserId="+currentUserId+"&"+
               "likeCount="+likeStats+"&"+

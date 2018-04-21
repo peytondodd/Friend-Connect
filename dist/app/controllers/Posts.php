@@ -245,8 +245,8 @@ class Posts extends Controller {
     session_write_close();
 
     //Profile Post Updater INIT
-    if (isset($_REQUEST["profilePost"])) {
-      $profileId = $_REQUEST["profilePost"];
+    if (isset($_REQUEST["profileUserId"])) {
+      $profileId = $_REQUEST["profileUserId"];
       $profilePostCount = $_REQUEST["profilePostCount"];
       $newProfilePostCount = 0;
     }
@@ -272,13 +272,12 @@ class Posts extends Controller {
     do {
 
       //Profile Post Updater
-      if (isset($_REQUEST["profilePost"])) {
+      if (isset($_REQUEST["profileUserId"])) {
         // $profileId - all posts releating to that ID
         $userPosts = $this->postModel->getAllUserPost($profileId);
         if ($userPosts) {
           $newProfilePostCount = count($userPosts);
         }
-
         //only when posts exists, look for post, likes, or comments
         if ($profilePostCount > 0 || $newProfilePostCount > 0) {
 
