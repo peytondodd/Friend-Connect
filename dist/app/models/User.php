@@ -72,6 +72,15 @@
       return $row;
     }
 
+    // Get User Name
+    public function nameOfUser($userId) {
+      $this->db->query("SELECT first_name, last_name FROM users
+                        WHERE id = :id");
+      $this->db->bind(":id", $userId);
+      $row = $this->db->single();
+      return ucwords($row->first_name." ".$row->last_name);
+    }
+
     // Update Name
     public function updateName($userId, $firstName, $lastName) {
       $this->db->query("UPDATE users SET

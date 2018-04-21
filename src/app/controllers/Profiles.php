@@ -85,7 +85,6 @@
               $friend->friend_id = $friend_id;
               $friend->friend_name = ucwords($friend_name->first_name. " " .$friend_name->last_name);
               $friend->profile_img = getProfileImgSrc($friend_id, $friend_info->profile_img, $friend_info->profile_img_id);
-
               // push into friend list array
               $friend_list[] = $friend;
             }
@@ -168,7 +167,7 @@
 
                   $picComm= $this->userModel->findUserInfoById($comm->user_id);
                   $comm->img_src =
-                  getProfileImgSrc($value->user_id, $picComm->profile_img, $picComm->profile_img_id);
+                  getProfileImgSrc($comm->user_id, $picComm->profile_img, $picComm->profile_img_id);
                 }
 
                 $value->comments->count = count($postComment);
