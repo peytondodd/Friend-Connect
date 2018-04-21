@@ -224,6 +224,7 @@
       </div>
     </div>
     <div class="col-md-8">
+      <?php if ($viewUserInfo->id == $_SESSION["user_id"]) :?>
       <div class="row mb-3">
         <div class="col">
           <div class="createPost">
@@ -250,6 +251,7 @@
           </div>
         </div>
       </div>
+      <?php endif; ?>
       <div class="row">
         <div class="col profilePage__displayPost">
           <?php if ($viewPost != 0) : ?>

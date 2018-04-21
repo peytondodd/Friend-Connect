@@ -410,6 +410,9 @@ class Posts extends Controller {
                   } elseif ($newCommentsCount < $value->commentsCount) {
                     $data[] = "Delete Comment";
                     $data[] = $newComments;
+                    if (!$newComments) {
+                      $data[] = $value->postId;
+                    }
                     echo json_encode($data);
                     return;
                   }

@@ -841,9 +841,13 @@ var getPost = (function() {
     }
 
     function deletedCommentFromDatabase(commentList) {
+      console.log(commentList);
       if (commentList) {
-        var postId = commentList[0].post_id;
-
+        if (commentList[0] == "Last Comment") {
+          var postId = commentList[1];
+        } else {
+          var postId = commentList[0].post_id;
+        }
         viewPost.forEach(function(value) {
           if (value.id == postId) {
             var found = [];
@@ -854,8 +858,8 @@ var getPost = (function() {
                   exists = 1;
                 }
                 if (j == commentList.length - 1) {
-                  if (exists != 1) { //found the deleted comment
-                    found.push(i);
+                  if (exists != 1) { //comment is deleted if not in list eg. index will = 0
+                    found.push(i); // post index
                     found.push(value.comments.list[i]);
                   }
                 }
@@ -863,10 +867,11 @@ var getPost = (function() {
             }
 
             console.log(found);
-            if (found[0]) {
+            if (found[0] >= 0) {
               // remove from viewPost
               value.comments.list.splice(found[0], 1);
               value.comments.count = value.comments.count - 1;
+              console.log(viewPost);
 
               //remove from DOM
               var allPosts = getProfilePost.querySelectorAll(".viewPost");
@@ -891,7 +896,11 @@ var getPost = (function() {
                   } else { //view comments not shown
 
                     //show view Comment link
-                    var totalComments = commentList.length;
+                    if (commentList[0] == "Last Comment") {
+                      var totalComments = 0;
+                    } else {
+                      var totalComments = commentList.length;
+                    }
                     var counterBox = allPosts[i].querySelector(".commentCount");
                     if (counterBox) {
                       if (totalComments > 0) {
@@ -920,12 +929,18 @@ var getPost = (function() {
 
           }
         });
+      } else {
+        //location.reload();
       }
       //console.log(commentList);
     }
 
     function deletePostFromDatabase(newPosts) {
       var found = [];
+      //last post
+      if (viewPost.length == 1 && newPosts == false) {
+        found.push("zero");
+      }
       viewPost.forEach(function(value,index) {
         var exists = 0;
 
@@ -954,13 +969,15 @@ var getPost = (function() {
         } else {
           viewPost.splice(found[0], 1);
         }
-
+        
         //remove from dom
         var allPosts = getProfilePost.querySelectorAll(".viewPost");
         var postIndex;
         for (var i = 0; i < allPosts.length; i++) {
           var postId = allPosts[i].className.split("-")[1];
-          if (postId == found[1].id) {
+          if (found[i] = "zero") {
+            postIndex = i;
+          } else if (postId == found[1].id) {
             postIndex = i;
           }
         }
@@ -1179,7 +1196,22 @@ var getPost = (function() {
           commentUpdater(newComments);
         }
         if (data[0] == "Delete Comment") {
-          deletedCommentFromDatabase(data[1]); // also user
+          var temp = [];
+          if (!data[1]) {//last comment
+            viewPost.forEach(function(value) {
+              if (value.id == data[2]) {
+                if (value.comments.list[0]) {
+                  temp.push("Last Comment"); // also user
+                  temp.push(value.id);
+                }
+              }
+            });
+            if (temp[0]) {
+              deletedCommentFromDatabase(temp);
+            }
+          } else { 
+            deletedCommentFromDatabase(data[1]); // also user
+          }
         }
         if (data[0] == "Delete Post") {
           deletePostFromDatabase(data[1]); // also user

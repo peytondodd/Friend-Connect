@@ -1,7 +1,9 @@
 var friendBtn = (function() {
 
     var friendBtnBox = document.querySelector(".profilePage__header--friendBtnBox");
-    var friendStatus = friendBtnBox.querySelector("button[name='friendBtn-Status']");
+    if (friendBtnBox) {
+        var friendStatus = friendBtnBox.querySelector("button[name='friendBtn-Status']");
+    }
     if (friendStatus) {
 
         friendBtnBox.addEventListener("click", friendBtnClick);
