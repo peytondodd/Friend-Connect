@@ -765,31 +765,6 @@ body {
     max-width: 500px;
     margin: 0 auto; }
 
-.profilePage__photosPage--viewPhotoBox {
-  height: calc(0.625rem * 26.9);
-  padding: calc(0.625rem / 2);
-  border: 1px solid black; }
-
-.profilePage__photosPage--viewPhoto {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; }
-
-.profilePage__photosPage--viewPhotoBox:hover {
-  background-color: lightgray;
-  cursor: pointer; }
-
-.profilePage__photosPage--displayPhotoContainer {
-  border: 1px solid black; }
-
-.profilePage__photosPage--displayPhotoBox {
-  width: 80%;
-  margin: 0 auto; }
-
-.profilePage__photosPage--displayPhoto {
-  width: 100%;
-  height: auto; }
-
 .profilePage__photosUpload {
   margin-bottom: calc(0.625rem* 10); }
   .profilePage__photosUpload--photos_ImgInput {
@@ -846,9 +821,7 @@ body {
     height: calc(0.625rem * 9.6); }
   .profilePage__userFriends--box::after {
     height: calc(0.625rem * 4.8);
-    margin-top: calc(0.625rem * -4.8); }
-  .profilePage__photosPage--viewPhotoBox {
-    height: calc(0.625rem * 24); } }
+    margin-top: calc(0.625rem * -4.8); } }
 
 @media (max-width: 991px) {
   .profilePage__profileImage {
@@ -857,9 +830,7 @@ body {
     height: calc(0.625rem * 6.9); }
   .profilePage__userFriends--box::after {
     height: calc(0.625rem * 3.45);
-    margin-top: calc(0.625rem * -3.45); }
-  .profilePage__photosPage--viewPhotoBox {
-    height: calc(0.625rem * 18); } }
+    margin-top: calc(0.625rem * -3.45); } }
 
 @media (max-width: 767px) {
   .profilePage__profileImage {
@@ -874,9 +845,7 @@ body {
     height: calc(0.625rem * 16.8); }
   .profilePage__userFriends--box::after {
     height: calc(0.625rem * 8.4);
-    margin-top: calc(0.625rem * -8.4); }
-  .profilePage__photosPage--viewPhotoBox {
-    height: calc(0.625rem * 17.9); } }
+    margin-top: calc(0.625rem * -8.4); } }
 
 @media (max-width: 575px) {
   .profilePage__header--userName {
@@ -899,9 +868,7 @@ body {
     height: calc(0.625rem * 10); }
   .profilePage__userFriends--box::after {
     height: calc(0.625rem * 5);
-    margin-top: calc(0.625rem * -5); }
-  .profilePage__photosPage--viewPhotoBox {
-    height: calc(0.625rem * 18); } }
+    margin-top: calc(0.625rem * -5); } }
 
 .createPost {
   width: 100%;
@@ -1070,6 +1037,41 @@ body {
     resize: none;
     padding: 0.625rem;
     overflow: hidden; }
+  .viewPost__photosPage--viewPhotoBox {
+    height: calc(0.625rem * 26.9);
+    padding: calc(0.625rem / 2);
+    border: 1px solid black; }
+  .viewPost__photosPage--viewPhoto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; }
+  .viewPost__photosPage--viewPhotoBox:hover {
+    background-color: lightgray;
+    cursor: pointer; }
+  .viewPost__photosPage--displayPhotoContainer {
+    border: 1px solid black; }
+  .viewPost__photosPage--displayPhotoBox {
+    width: 80%;
+    margin: 0 auto; }
+  .viewPost__photosPage--displayPhoto {
+    width: 100%;
+    height: auto; }
+
+@media (max-width: 1199px) {
+  .viewPost__photosPage--viewPhotoBox {
+    height: calc(0.625rem * 24); } }
+
+@media (max-width: 991px) {
+  .viewPost__photosPage--viewPhotoBox {
+    height: calc(0.625rem * 18); } }
+
+@media (max-width: 767px) {
+  .viewPost__photosPage--viewPhotoBox {
+    height: calc(0.625rem * 17.9); } }
+
+@media (max-width: 400px) {
+  .viewPost__photosPage--viewPhotoBox {
+    height: calc(0.625rem * 18); } }
 
 .modal-bg {
   display: block;

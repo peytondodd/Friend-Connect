@@ -38,7 +38,7 @@ gulp.task("scripts", function() {
     "layout/profilePage.js",
     "modules/createPost.js",
     "modules/friendBtn.js",
-    "modules/getPost.js"
+    "modules/viewPostContainer.js"
   ], {cwd: "src/public/js/"})
     .pipe(concat("index.js"))
     .pipe(gulp.dest("dist/public/js"));

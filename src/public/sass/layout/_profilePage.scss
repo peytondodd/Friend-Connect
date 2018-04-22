@@ -187,37 +187,6 @@
     }
   }
 
-  &__photosPage {
-    
-    &--viewPhotoBox {
-      height: calc(#{$one-rem} * 26.9);
-      padding: calc(#{$one-rem} / 2);
-      border: 1px solid black;
-    }
-    &--viewPhoto {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    &--viewPhotoBox:hover {
-      background-color: lightgray;
-      cursor: pointer;
-    }
-
-    &--displayPhotoContainer {
-      border: 1px solid black;
-    }
-    &--displayPhotoBox {
-      width: 80%;
-      margin: 0 auto;
-    }
-    &--displayPhoto {
-      width: 100%;
-      height: auto;
-    }
-  }
-
   &__photosUpload {
     margin-bottom: calc(#{$one-rem}* 10);
     &--photos_ImgInput {
@@ -305,12 +274,6 @@
         margin-top: calc(#{$one-rem} * -4.8);
       }
     }
-
-    &__photosPage {
-      &--viewPhotoBox {
-        height: calc(#{$one-rem} * 24);
-      }
-    }
   }
 
 }
@@ -326,12 +289,6 @@
       &--box::after {
         height: calc(#{$one-rem} * 3.45);
         margin-top: calc(#{$one-rem} * -3.45);
-      }
-    }
-
-    &__photosPage {
-      &--viewPhotoBox {
-        height: calc(#{$one-rem} * 18);
       }
     }
   }
@@ -359,11 +316,6 @@
       &--box::after {
         height: calc(#{$one-rem} * 8.4);
         margin-top: calc(#{$one-rem} * -8.4);
-      }
-    }
-    &__photosPage {
-      &--viewPhotoBox {
-        height: calc(#{$one-rem} * 17.9);
       }
     }
   }
@@ -406,11 +358,6 @@
       &--box::after {
         height: calc(#{$one-rem} * 5);
         margin-top: calc(#{$one-rem} * -5);
-      }
-    }
-    &__photosPage {
-      &--viewPhotoBox {
-        height: calc(#{$one-rem} * 18);
       }
     }
   }

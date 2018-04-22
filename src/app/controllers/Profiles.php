@@ -182,7 +182,8 @@
             $userPosts = 0;
           }
 
-
+          $postsUserId = [];
+          $postsUserId[] = $id;
           // echo "<pre>";
           // print_r($userPosts);
           // echo "</pre>";
@@ -204,7 +205,8 @@
             "friend_list" => $friend_list_short,
             "all_friends" => $friend_list,
             "user_post" => $userPosts,
-            "page_action" => json_encode($pageAction)
+            "page_action" => json_encode($pageAction),
+            "posts_user_id" => json_encode($postsUserId)
           ];
 
           $this->view("profile/profile", $data);

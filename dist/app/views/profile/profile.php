@@ -253,14 +253,14 @@
       </div>
       <?php endif; ?>
       <div class="row">
-        <div class="col profilePage__displayPost">
+        <div class="col viewPostBox">
           <?php if ($viewPost != 0) : ?>
             <?php for($i = 0; $i < count($viewPost); $i++) : ?>
               <div class="viewPost postID-<?php echo $viewPost[$i]->id; ?>">
               <?php if ($viewPost[$i]->photo == 1) : ?>
-                <div class="profilePage__photosPage--displayPhotoContainer">
-                  <div class="profilePage__photosPage--displayPhotoBox">
-                    <img class="profilePage__photosPage--displayPhoto" src="/user_data/<?php echo $viewPost[$i]->user_id."/".$viewPost[$i]->photoName; ?>">
+                <div class="viewPost__photosPage--displayPhotoContainer">
+                  <div class="viewPost__photosPage--displayPhotoBox">
+                    <img class="viewPost__photosPage--displayPhoto" src="/user_data/<?php echo $viewPost[$i]->user_id."/".$viewPost[$i]->photoName; ?>">
                   </div>
                 </div>
               <?php endif; ?>
@@ -354,7 +354,9 @@
   var viewUserInfo = <?php echo json_encode($viewUserInfo); ?>;
   var friendList = <?php echo json_encode($data["all_friends"]); ?>;
   var pageAction = <?php echo $pageAction; ?>;
-  console.log(pageAction);
+  var postsUserId = <?php echo $data["posts_user_id"]; ?>;
+  console.log(postsUserId);
+  console.log(viewPost);
 </script>
 
 <!-- <h1>Welcome to <?php echo $data["first_name"] . "'s profile."; ?></h1>

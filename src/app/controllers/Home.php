@@ -15,24 +15,31 @@
     }
 
     public function index() {
+      //current user details
+      $currentUserDetails = $this->userModel->findUserInfoById($_SESSION["user_id"]);
+      //current user profile pic
+      $currentUserPicture = getProfileImgSrc($_SESSION["user_id"], $currentUserDetails->profile_img, $currentUserDetails->profile_img_id);
+
+      // Get posts of own and friends
       $userIdList = [];
       //Get Friend ID 
       $friendList = $this->friendModel->friendListOfUser($_SESSION["user_id"]);
       if ($friendList) { //if user has friends
         foreach ($friendList as $value) {
           if ($value->user_one == $_SESSION["user_id"]) {
-            $userIdList[] = ["user_id" => $value->user_two];
+            $userIdList[] = $value->user_two;
           } else {
-            $userIdList[] = ["user_id" => $value->user_one];
+            $userIdList[] = $value->user_one;
           }
         }
       }
       //add own Id
-      $userIdList[] = ["user_id" => $_SESSION["user_id"]];
+      $userIdList[] = $_SESSION["user_id"];
+
       //find posts id, user_id, photo, created_at, content
       $listOfPost = [];
       foreach ($userIdList as $value) {
-        $userPost = $this->postModel->getAllUserPost($value["user_id"]);
+        $userPost = $this->postModel->getAllUserPost($value);
         if ($userPost) {
           foreach($userPost as $subValue) {
             $listOfPost[] = $subValue;
@@ -58,7 +65,7 @@
             $listOfPost[$i]->likeCount = 0;
           }
           //currentUserLike
-          if ($this->postModel->currentUserLike($listOfPost[$i]->user_id, $listOfPost[$i]->id)) {
+          if ($this->postModel->currentUserLike($_SESSION["user_id"], $listOfPost[$i]->id)) {
             $listOfPost[$i]->currentUserLike = true;
           } else {
             $listOfPost[$i]->currentUserLike = false;
@@ -89,9 +96,9 @@
         $listOfPost = 0;
       }
 
-      echo "<pre>";
-      print_r($listOfPost);
-      echo "</pre>";
+      // echo "<pre>";
+      // print_r($listOfPost);
+      // echo "</pre>";
 
       // POST REQUIRES
       /*
@@ -109,10 +116,12 @@
       */
 
       $data = [
-
+        "currentUserPicture" => $currentUserPicture,
+        "listOfPost" => $listOfPost,
+        "userIdList" => $userIdList
       ];
 
-      $this->view("home/home");
+      $this->view("home/home", $data);
     }
   }
 

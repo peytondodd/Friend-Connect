@@ -510,12 +510,12 @@ var profilePage = (function() {
     function makePhotosPage() {
 
       var photosPage = document.createElement("div");
-      photosPage.className = "profilePage__photosPage";
+      photosPage.className = "viewPost__photosPage";
       photosPage.innerHTML = `
         <a href="/profiles/user/${viewUserInfo.id}">Back to Profile</a>
         <h4 class="text-center pt-3">Photos</h4>
 
-          <div class="profilePage__photosPage--PhotosContainer row">
+          <div class="viewPost__photosPage--PhotosContainer row">
 
           </div>
       `;
@@ -538,8 +538,8 @@ var profilePage = (function() {
           photo.className = "col-6 col-sm-4 col-md-3 px-0";
           photo.innerHTML = `
             <a href="/profiles/user/${viewUserInfo.id}?pageAction=post&postId=${viewPhoto[i].postId}">
-              <div class="profilePage__photosPage--viewPhotoBox">
-                <img class="profilePage__photosPage--viewPhoto" name="post-${viewPhoto[i].postId}" src="/user_data/${viewPhoto[i].userId}/${viewPhoto[i].photoName}">
+              <div class="viewPost__photosPage--viewPhotoBox">
+                <img class="viewPost__photosPage--viewPhoto" name="post-${viewPhoto[i].postId}" src="/user_data/${viewPhoto[i].userId}/${viewPhoto[i].photoName}">
               </div>
             </a>
           `;

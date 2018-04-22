@@ -245,8 +245,8 @@ class Posts extends Controller {
     session_write_close();
 
     //Profile Post Updater INIT
-    if (isset($_REQUEST["profileUserId"])) {
-      $profileId = $_REQUEST["profileUserId"];
+    if (isset($_REQUEST["postsUserId"])) {
+      $postsUserId = json_decode($_REQUEST["postsUserId"]);
       $profilePostCount = $_REQUEST["profilePostCount"];
       $newProfilePostCount = 0;
     }
@@ -272,9 +272,19 @@ class Posts extends Controller {
     do {
 
       //Profile Post Updater
-      if (isset($_REQUEST["profileUserId"])) {
+      if (isset($_REQUEST["postsUserId"])) {
         // $profileId - all posts releating to that ID
-        $userPosts = $this->postModel->getAllUserPost($profileId);
+        $userPosts = [];
+
+        for ($i = 0; $i < count($postsUserId); $i++) {
+          //$userPosts = $this->postModel->getAllUserPost($postsUserId);
+          $tempPosts = $this->postModel->getAllUserPost($postsUserId[$i]);
+          if ($tempPosts) {
+            for ($j = 0; $j < count($tempPosts); $j++) {
+              $userPosts[] = $tempPosts[$j];
+            }
+          }
+        }
         if ($userPosts) {
           $newProfilePostCount = count($userPosts);
         }
@@ -331,7 +341,7 @@ class Posts extends Controller {
               }
             }
 
-
+            usort($userPosts, "sortOldToNew");
             $data[] = "New Post";
             $data[] = $userPosts;
             $data[] = $newProfilePostCount - $profilePostCount;
