@@ -93,31 +93,33 @@ var createPost = (function() {
 
 
     function submitPost() {
-      var submitPost = new XMLHttpRequest();
-      submitPost.onreadystatechange = function() {
-        if (this.readyState == 4) {
-          if (this.status == 200) {
-            //success
-            //console.log(this.responseText);
-            //console.log("success");
-            input.value = "";
-            input.style.fontSize = "16px";
-            input.style.height = "94px";
-            charCounter.innerHTML = "0";
-          } else {
-            //failed
+      if (input.value.length > 0) {
+      
+        var submitPost = new XMLHttpRequest();
+        submitPost.onreadystatechange = function() {
+          if (this.readyState == 4) {
+            if (this.status == 200) {
+              //success
+              //console.log(this.responseText);
+              //console.log("success");
+              input.value = "";
+              input.style.fontSize = "16px";
+              input.style.height = "94px";
+              charCounter.innerHTML = "0";
+            } else {
+              //failed
+            }
           }
-        }
 
-      };
-      submitPost.open("POST", "/posts/createPost",true);
-      submitPost.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      submitPost.send("createPostContent="+input.value+"&"+
-                      "currentUserId="+currentUserId
-      );
+        };
+        submitPost.open("POST", "/posts/createPost",true);
+        submitPost.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        submitPost.send("createPostContent="+input.value+"&"+
+                        "currentUserId="+currentUserId
+        );
 
+      }
     }
-
   }
 
 })();

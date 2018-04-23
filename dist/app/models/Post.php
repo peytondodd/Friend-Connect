@@ -14,8 +14,10 @@ class Post {
     $this->db->bind(":content", $content);
     $this->db->bind(":photo", $photo);
 
-    if ($this->db->execute()) {
-        return true;
+    $row = $this->db->executeAndReturnLastId();
+
+    if ($row) {
+      return $row;
     } else {
       return false;
     }

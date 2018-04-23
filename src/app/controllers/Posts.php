@@ -167,17 +167,17 @@ class Posts extends Controller {
       $postPhoto = $this->img_upload($fileImage);
 
       // make post
-      $this->postModel->createPost($userId, $postPhoto[0], $content);
+      $makePost = $this->postModel->createPost($userId, $postPhoto[0], $content);
+      //createPost now returns id of inserted row ******
 
       //get post id for photo table
-      $postId = $this->postModel->getPostId($userId, $postPhoto[0], $content)->id;
+      //$postId = $this->postModel->getPostId($userId, $postPhoto[0], $content)->id;
 
       //insert to photo table
       if ($postPhoto[0]) {
-        $this->postModel->postPhoto($postId, $postPhoto[1]);
-        return;
+        $this->postModel->postPhoto($makePost, $postPhoto[1]);
+        redirect("/profiles/user/".$userId."?pageAction=photos");
       }
-
 
     }
   }
@@ -330,7 +330,7 @@ class Posts extends Controller {
 
                   $picComm= $this->userModel->findUserInfoById($comm->user_id);
                   $comm->img_src =
-                  getProfileImgSrc($value->user_id, $picComm->profile_img, $picComm->profile_img_id);
+                  getProfileImgSrc($comm->user_id, $picComm->profile_img, $picComm->profile_img_id);
                 }
 
                 $value->comments->count = count($postComment);

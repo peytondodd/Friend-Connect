@@ -66,7 +66,28 @@ var viewPostContainer = (function() {
 
       //console.log(event.target);
     }
-
+    if (pageAction) {
+      if (pageAction[0] == "post") {
+      //  var profile = document.querySelector(".profilePage");
+      //   profile.children[1].style.display = "none";
+      //   if (profile.children.length > 2) {
+      //     for (var i = profile.children.length-1; i > 1; i--) {
+      //       profile.removeChild(profile.children[i]);
+      //     }
+      //   }
+        var post = [];
+        viewPost.forEach(function(value) {
+          if (value.id == pageAction[1]) {
+            post.push(value);
+          }
+        });
+        if (post[0]) {
+          displayPost(post, 1);
+        } else {
+          window.location.replace("/profiles/user/"+viewUserInfo.id);
+        }
+      }
+    }
     function likeOrDislike(event) {
       //console.log(event.target);
       var likePostId = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.classList[1].split("-")[1];
@@ -408,13 +429,13 @@ var viewPostContainer = (function() {
         post.parentElement.removeChild(post);
 
         //remove from viewPost
-        var deleteIndex;
-        for (var i = 0; i < viewPost.length; i++) {
-          if (viewPost[i].id == postId) {
-            deleteIndex = i;
-          }
-        }
-        viewPost.splice(deleteIndex, 1);
+        // var deleteIndex;
+        // for (var i = 0; i < viewPost.length; i++) {
+        //   if (viewPost[i].id == postId) {
+        //     deleteIndex = i;
+        //   }
+        // }
+        // viewPost.splice(deleteIndex, 1);
 
       }
       function deletePostFail(data) {
@@ -580,11 +601,24 @@ var viewPostContainer = (function() {
 
     function likeCountUpdater(postId, likeCount) {
       //var posts = viewPostBox.children;
-      var posts = viewPostBox.querySelectorAll(".viewPost");
+      var tempposts = viewPostBox.querySelectorAll(".viewPost");
+      var posts = [];
+      for (var i = 0; i < tempposts.length; i++) { //convert nodelist to array
+        posts.push(tempposts[i]);
+      }
+      console.log(posts);
+      //photos page post
+      var photoDisplayContainer = document.querySelector(".profilePage__photosPage__displayContainer");
+      if (photoDisplayContainer) {
+        var singlePost = photoDisplayContainer.querySelector(".viewPost");
+        posts.push(singlePost);
+      }
+      console.log(photoDisplayContainer);
+      console.log(posts);
       //console.log(posts);
       for (var i = 0; i < posts.length; i++) {
         //console.log(posts[i].children[0].children);
-        if (posts[i].children.length > 1) {
+        if (posts[i].children.length > 1) { //get postBox
           var likes = posts[i].children[1];
         } else {
           var likes = posts[i].children[0];
@@ -619,7 +653,7 @@ var viewPostContainer = (function() {
       }
     }
 
-    function createNewLikeCounter(likes, likeCount) {
+    function createNewLikeCounter(likes, likeCount) { //likes = postBox
       if (likeCount != 0) {
         console.log("kooya");
         //create new row for like counter
@@ -643,7 +677,6 @@ var viewPostContainer = (function() {
     }
 
     function commentUpdater(newComments) {
-      //update viewPost
       viewPost.forEach(function(value) {
         //update ViewPost
         for (var i = 0; i < newComments.length; i++) {
@@ -660,8 +693,17 @@ var viewPostContainer = (function() {
         value.comments.count = value.comments.list.length; //needed in the delete, delete uses the count property
 
         //update the DOM
-        var allPosts = viewPostBox.querySelectorAll(".viewPost");
-        for (var i = 0; i < allPosts.length; i++) {
+        var tempAllPosts = viewPostBox.querySelectorAll(".viewPost");
+        var allPosts = [];
+        for (var i = 0; i < tempAllPosts.length; i++) { //convert nodeList to array
+          allPosts.push(tempAllPosts[i]);
+        }
+        var photoDisplayContainer = document.querySelector(".profilePage__photosPage__displayContainer");
+        if (photoDisplayContainer) {
+          var singlePost = photoDisplayContainer.querySelector(".viewPost");
+          allPosts.push(singlePost);
+        }
+        for (var i = 0; i < allPosts.length; i++) {     
           var postId = allPosts[i].className.split("-")[1];
           if (postId == value.id) { //post # found
             var viewCommentBox = allPosts[i].querySelector(".viewCommentBox");
@@ -755,10 +797,20 @@ var viewPostContainer = (function() {
               // remove from viewPost
               value.comments.list.splice(found[0], 1);
               value.comments.count = value.comments.count - 1;
-              console.log(viewPost);
+              // console.log(viewPost);
 
               //remove from DOM
-              var allPosts = viewPostBox.querySelectorAll(".viewPost");
+              var tempPosts = viewPostBox.querySelectorAll(".viewPost");
+              var allPosts = [];
+              for (var i = 0; i < tempPosts.length; i++) { //covert nodeList to array
+                allPosts.push(tempPosts[i]);
+              }
+              //single page post
+              var photoDisplayContainer = document.querySelector(".profilePage__photosPage__displayContainer");
+              if (photoDisplayContainer) {
+                var singlePost = photoDisplayContainer.querySelector(".viewPost");
+                allPosts.push(singlePost);
+              }
               for (var i = 0; i < allPosts.length; i++) {
                 if (allPosts[i].children.length > 1) {
                   var post = allPosts[i].children[1];
@@ -766,11 +818,12 @@ var viewPostContainer = (function() {
                   var post = allPosts[i].children[0];
                 }
                 var domPostId = allPosts[i].className.split("-")[1];
+
                 if (domPostId == found[1].post_id) {
                   var viewCommentBox = allPosts[i].querySelectorAll(".viewCommentBox");
-
+                  console.log(viewCommentBox);
                   if (viewCommentBox[0]) { //view shown
-                    console.log(viewCommentBox);
+                    // console.log(viewCommentBox);
                     for (var j = 0; j < viewCommentBox[0].children.length; j++) {
                       var viewCommentId = viewCommentBox[0].children[j].className.split("-")[1];
                       if (viewCommentId == found[1].id) {
@@ -819,7 +872,7 @@ var viewPostContainer = (function() {
       //console.log(commentList);
     }
 
-    function deletePostFromDatabase(newPosts) {
+    function deletePostFromDatabase(newPosts) {//newPosts = posts not deleted
       var found = [];
       //last post
       if (viewPost.length == 1 && newPosts == false) {
@@ -846,7 +899,18 @@ var viewPostContainer = (function() {
         }
       });
       console.log(found);
-      if (found[0]) {
+      if (found.length > 2) {
+        for (var i = 1; i < found.length; i += 2) {
+          for (var j = 0; j < viewPost.length; j++) {
+            if (viewPost[j].id == found[i].id) {
+              viewPost.splice(j, 1);
+            }
+          }
+          //console.log(viewPost.splice(found[i], 1));
+          //console.log("DELETE = "+ i);
+        }
+        console.log(viewPost.length);
+      } else if (found[0]) {
         //update viewPost
         if (found[0] == "zero") {
           viewPost.splice(0, 1);
@@ -855,17 +919,33 @@ var viewPostContainer = (function() {
         }
 
         //remove from dom
-        var allPosts = viewPostBox.querySelectorAll(".viewPost");
-        var postIndex;
-        for (var i = 0; i < allPosts.length; i++) {
-          var postId = allPosts[i].className.split("-")[1];
-          if (found[i] == "zero") {
-            postIndex = i;
-          } else if (postId == found[1].id) {
-            postIndex = i;
+        console.log("hi");
+        var tempPosts = viewPostBox.querySelectorAll(".viewPost");
+        var allPosts = [];
+        for (var i = 0; i < tempPosts.length; i++) { //convert nodeList to array
+          allPosts.push(tempPosts[i]);
+        }
+        //single page post
+        var photoDisplayContainer = document.querySelector(".profilePage__photosPage__displayContainer");
+        if (photoDisplayContainer) {
+          var singlePost = photoDisplayContainer.querySelector(".viewPost");
+          if (singlePost) {
+            allPosts.push(singlePost);
           }
         }
-        allPosts[postIndex].parentElement.removeChild(allPosts[postIndex]);
+        var postIndex;
+        for (var i = 0; i < allPosts.length; i++) {
+          console.log(allPosts[i]);
+          var postId = allPosts[i].className.split("-")[1];
+          if (found[i] == "zero") {
+            //postIndex = i;
+            allPosts[i].parentElement.removeChild(allPosts[i]);
+          } else if (postId == found[1].id) {
+            //postIndex = i;
+            allPosts[i].parentElement.removeChild(allPosts[i]);
+          }
+        }
+        //allPosts[postIndex].parentElement.removeChild(allPosts[postIndex]);
 
       }
     }
@@ -882,7 +962,17 @@ var viewPostContainer = (function() {
         });
 
         //update DOM
-        var allPosts = viewPostBox.querySelectorAll(".viewPost");
+        var tempPosts = viewPostBox.querySelectorAll(".viewPost");
+        var allPosts = [];
+        for (var i = 0; i < tempPosts.length; i++) {
+          allPosts.push(tempPosts[i]);
+        }
+        //single page post
+        var photoDisplayContainer = document.querySelector(".profilePage__photosPage__displayContainer");
+        if (photoDisplayContainer) {
+          var singlePost = photoDisplayContainer.querySelector(".viewPost");
+          allPosts.push(singlePost);
+        }
         for (var i = 0; i < allPosts.length; i++) {
           if (allPosts[i].children.length > 1) {
             var postDOM = allPosts[i].children[1];
@@ -903,14 +993,15 @@ var viewPostContainer = (function() {
     }
 
     function displayPost (post, photos = 0) {
-      console.log(post);
       if (!viewPost || viewPost == 0) {
         viewPost = [];
         //console.log(viewPost);
       }
       for (var i = 0; i <post.length; i++) {
         //update ViewPost
-        viewPost.push(post[i]);
+        if (photos != 1) {
+          viewPost.push(post[i]);
+        }
         //update DOM
         var newViewPost = document.createElement("div");
         newViewPost.className = "viewPost postID-"+post[i].id;
@@ -968,7 +1059,39 @@ var viewPostContainer = (function() {
           }
         }
 
-        viewPostBox.insertBefore(newViewPost, viewPostBox.children[0]);
+        // likes
+        if (post[i].currentUserLike) {
+          newViewPost.querySelector(".likeOrDislikeBtn").innerText = "Dislike";
+        }
+        if (post[i].likeCount > 0) {
+          if (newViewPost.children.length > 1) {
+            var postBox = newViewPost.children[1]; 
+          } else {
+            var postBox = newViewPost.children[0];
+          }
+          createNewLikeCounter(postBox, post[i].likeCount);
+        }
+
+        // comments
+        var totalComments = post[i].comments.list.length;
+        if (totalComments > 0) {
+          var viewComments = document.createElement("div");
+          viewComments.className = "row";
+          viewComments.innerHTML = `
+            <div class="col">
+              <a href="" class="viewPost__showComments">View comments (<span class="commentCount">${totalComments}</span>)</a>
+            </div>
+          `;
+          newViewPost.children[newViewPost.children.length-1].appendChild(viewComments);
+        }
+
+        if (photos == 1) { // add to DOM
+          var photoDisplayContainer = document.querySelector(".profilePage__photosPage__displayContainer");
+          photoDisplayContainer.appendChild(newViewPost);
+          console.log(photoDisplayContainer);
+        } else {
+          viewPostBox.insertBefore(newViewPost, viewPostBox.children[0]);
+        }
         newViewPost.addEventListener("click", postClickDir);
       }
       // convert php datetime to javascript date object
@@ -1085,7 +1208,7 @@ var viewPostContainer = (function() {
           var temp = [];
           if (!data[1]) {//last comment
             viewPost.forEach(function(value) {
-              if (value.id == data[2]) {
+              if (value.id == data[2]) { // id of post of comment-(data[2])
                 if (value.comments.list[0]) {
                   temp.push("Last Comment"); // also user
                   temp.push(value.id);
@@ -1093,14 +1216,14 @@ var viewPostContainer = (function() {
               }
             });
             if (temp[0]) {
-              deletedCommentFromDatabase(temp);
+              deletedCommentFromDatabase(temp); //last comment
             }
           } else { 
-            deletedCommentFromDatabase(data[1]); // also user
+            deletedCommentFromDatabase(data[1]); // also user //not last comment
           }
         }
         if (data[0] == "Delete Post") {
-          deletePostFromDatabase(data[1]); // also user
+          deletePostFromDatabase(data[1]); // only from database // when user clicks delete, it is deleted from dom and viewpost on success
         }
         if (data[0] == "New Post Content") {
           updatePostContent(data[1]);

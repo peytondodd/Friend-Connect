@@ -65,7 +65,11 @@
     public function execute() {
       return $this->stmt->execute();
     }
-
+    // Execute and return last id
+    public function executeAndReturnLastId() {
+      $this->stmt->execute();
+      return $this->dbh->lastInsertId();
+    }
     // Get result set as array of objects
     public function resultSet() {
       $this->execute();

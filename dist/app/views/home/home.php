@@ -130,5 +130,6 @@
     var currentUserId = <?php echo $_SESSION["user_id"]; ?>;
     var viewPost = <?php echo json_encode($viewPost); ?>;
     var postsUserId = <?php echo $userIdList; ?>;
+    var pageAction = null;
 </script>
 <?php require APPROOT . "/views/inc/footer.php"; ?>
