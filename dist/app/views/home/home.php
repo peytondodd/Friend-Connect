@@ -61,9 +61,11 @@
 
                                 <?php endif; ?>
                                 <div class="viewPost__postUserIconBox">
-                                <img class="viewPost__postUserIcon" src="/user_data/<?php echo $viewPost[$i]->img_src; ?>" alt="profile picture">
+                                    <a class="viewPost__postUserIconLink" href="/profiles/user/<?php echo $viewPost[$i]->user_id; ?>">
+                                        <img class="viewPost__postUserIcon" src="/user_data/<?php echo $viewPost[$i]->img_src; ?>" alt="profile picture">
+                                    </a>
                                 </div>
-                                <a class="viewPost__name" href=""><?php echo $viewPost[$i]->name; ?></a>
+                                <a class="viewPost__name" href="/profiles/user/<?php echo $viewPost[$i]->user_id; ?>"><?php echo $viewPost[$i]->name; ?></a>
                                 <span class="viewPost__date"><?php echo $viewPost[$i]->created_at; ?></span>
                             </div>
                             <div class="row mx-0">

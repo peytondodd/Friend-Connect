@@ -1550,9 +1550,15 @@ var viewPostContainer = (function() {
     });
 
     function postClickDir(event) {
-      if (event.target.className != "viewPost__name") {
+      if (event.target.className != "viewPost__name" && 
+      event.target.className != "viewPost__postUserIconLink" && 
+      event.target.className != "viewPost__postUserIcon" &&
+      event.target.className != "viewPost__commentIconLink" && 
+      event.target.className != "viewPost__commentIcon" && 
+      event.target.className != "viewPost__commentName") {
         event.preventDefault();
       }
+      //console.log(event.target);
       //event.preventDefault();
       //console.log(event.target);
       // LIKE  AND DISLIKE CLICKS
@@ -1888,10 +1894,12 @@ var viewPostContainer = (function() {
           newComment.className = "viewPost__commentContainer commentId-"+allComments[order[i]].id;
           newComment.innerHTML = `
             <div class="viewPost__commentIconBox">
-              <img class="viewPost__commentIcon" src="/user_data/${allComments[order[i]].img_src}" alt="profile icon">
+              <a class="viewPost__commentIconLink" href="/profiles/user/${allComments[order[i]].user_id}">
+                <img class="viewPost__commentIcon" src="/user_data/${allComments[order[i]].img_src}" alt="profile icon">
+              </a>
             </div>
             <div class="viewPost__commentContent">
-              <a href="/profiles/user/${allComments[order[i]].user_id}">${allComments[order[i]].name} </a>
+              <a class="viewPost__commentName" href="/profiles/user/${allComments[order[i]].user_id}">${allComments[order[i]].name} </a>
               <span>${allComments[order[i]].content}</span>
               <div class="">
                 ${allComments[order[i]].created_at}
@@ -2439,9 +2447,11 @@ var viewPostContainer = (function() {
         <div class='viewPost__postBox'>
           <div class="row mx-0">
             <div class="viewPost__postUserIconBox">
-              <img class="viewPost__postUserIcon" src="/user_data/${post[i].img_src}" alt="profile picture">
+              <a class="viewPost__postUserIconLink" href="/profiles/user/${post[i].user_id}">
+                <img class="viewPost__postUserIcon" src="/user_data/${post[i].img_src}" alt="profile picture">
+              </a>
             </div>
-            <a class="viewPost__name" href="#">${post[i].name}</a>
+            <a class="viewPost__name" href="/profiles/user/${post[i].user_id}">${post[i].name}</a>
             <span class="viewPost__date">${post[i].created_at}</span>
           </div>
           <div class="row mx-0">
