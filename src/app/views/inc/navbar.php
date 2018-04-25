@@ -1,6 +1,14 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
   <div class="container">
-    <a class="navbar-brand" href="<?php echo URLROOT; ?>"><?php echo SITENAME; ?></a>
+    <a class="navbar-friendconnect navbar-brand" href="<?php echo URLROOT; ?>"><?php echo SITENAME; ?></a>
+    <a class="navbar-logo-icon-box" href="<?php echo URLROOT; ?>">
+      <img class="navbar-logo-icon" src="/images/friend-connect-logo-white.png" alt="Nav Logo">
+    </a>
+    <div class="navbar-searchFriends">
+      <form class="" action="/search" method="get">
+        <input class="form-control navbar-searchInput" type="text" autocomplete="off" name="q" placeholder="Search for friends" value="">
+      </form>
+    </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -9,7 +17,7 @@
 
       <ul class="navbar-nav mr-auto">
         <?php if (isLoggedIn()) : ?>
-          <div class="">
+          <div class="navbar-searchFriend-dropDown">
             <form class="" action="<?php $_SERVER['PHP_SELF'] ?>" method="get">
               <input class="form-control" type="search" name="" value="">
             </form>

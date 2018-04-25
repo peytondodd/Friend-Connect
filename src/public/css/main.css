@@ -1095,6 +1095,76 @@ body {
   position: relative;
   top: 0.625rem; }
 
+.navbar-logo-icon {
+  width: calc(0.625rem * 3.5);
+  height: auto;
+  display: none; }
+
+.navbar-logo-icon-box {
+  display: none; }
+
+.navbar-searchFriend-dropDown {
+  display: none; }
+
+@media (max-width: 460px) {
+  .navbar-friendconnect {
+    display: none !important; }
+  .navbar-logo-icon-box {
+    display: inline-block; }
+  .navbar-logo-icon {
+    display: inline-block; }
+  .navbar {
+    padding: 0.5rem 0.625rem !important; } }
+
+@media (max-width: 319px) {
+  .navbar-searchFriends {
+    display: none; }
+  .navbar-searchFriend-dropDown {
+    display: block; } }
+
+.navbar-searchDropDown {
+  width: calc(0.625rem * 19.3);
+  position: absolute;
+  z-index: 20;
+  border: 1px solid lightgrey;
+  background-color: white; }
+
+.navbar__searchItem--img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; }
+
+.navbar__searchItem--imgBox {
+  width: calc(0.625rem * 4);
+  height: calc(0.625rem * 4);
+  display: inline-block; }
+
+.navbar__searchItem--itemBox {
+  height: calc(0.625rem * 4);
+  overflow: hidden;
+  white-space: nowrap; }
+
+.navbar__searchItem--itemBox:hover {
+  background-color: lightgrey; }
+
+.navbar__searchItem--seeMore {
+  background: none;
+  padding: 0;
+  color: #007bff;
+  border: none;
+  font: inherit;
+  border-bottom: 1px solid #007bff;
+  cursor: pointer; }
+
+.navbar__searchItem:link {
+  text-decoration: none; }
+
+.searchHighlight {
+  background-color: lightgrey; }
+
+.text-highlight {
+  background-color: yellow; }
+
 /*!
  * Bootstrap v4.0.0 (https://getbootstrap.com)
  * Copyright 2011-2018 The Bootstrap Authors

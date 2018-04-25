@@ -1,0 +1,35 @@
+.navbar-logo-icon {
+    width: calc(#{$one-rem} * 3.5);
+    height: auto;
+    display: none;
+}
+.navbar-logo-icon-box {
+    display: none;
+}
+.navbar-searchFriend-dropDown {
+    display: none;
+}
+
+@media(max-width: 460px) {
+    .navbar-friendconnect {
+        display: none !important;
+    }
+    .navbar-logo-icon-box {
+        display: inline-block;
+    }
+    .navbar-logo-icon {
+        display: inline-block;
+    }
+    .navbar {
+        padding: .5rem $one-rem !important;
+    }
+}
+
+@media(max-width: 319px) {
+    .navbar-searchFriends {
+        display: none;
+    }
+    .navbar-searchFriend-dropDown {
+        display: block;
+    }
+}

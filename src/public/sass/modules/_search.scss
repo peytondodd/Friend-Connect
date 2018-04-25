@@ -1,0 +1,49 @@
+.navbar {
+    &-searchDropDown {
+        width: calc(#{$one-rem} * 19.3);
+        position: absolute;
+        z-index: 20;
+        border: 1px solid lightgrey;
+        background-color: white;
+    }
+    &__searchItem {
+
+        &--img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        &--imgBox {
+            width: calc(#{$one-rem} * 4);
+            height: calc(#{$one-rem} * 4);
+            display: inline-block;
+        }
+        &--itemBox {
+            height: calc(#{$one-rem} * 4);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        &--itemBox:hover {
+            background-color: lightgrey;
+        }
+        &--seeMore {
+            background: none;
+            padding: 0;
+            color: #007bff;
+            border: none;
+            font: inherit;
+            border-bottom: 1px solid #007bff;
+            cursor: pointer;
+        }
+    }
+    &__searchItem:link {
+        text-decoration: none;
+    }
+}
+.searchHighlight {
+    background-color: lightgrey;
+}
+
+.text-highlight {
+    background-color: yellow;
+}
