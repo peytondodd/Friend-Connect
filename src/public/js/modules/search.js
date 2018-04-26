@@ -2,11 +2,57 @@ var search = (function() {
 
     var search = document.querySelector(".navbar-searchInput");
     if (search) {
-
+        var searchResultContainer = document.querySelector(".searchResultContainer");
+        
+        if (searchResultContainer) {
+            searchResultContainer.addEventListener("click", searchDir);
+        }
         search.addEventListener("keyup", searchKeyUp);
         search.addEventListener("focus", searchKeyUp);
         document.addEventListener("click", searchHide);
         search.parentElement.addEventListener("keydown", formAction);
+
+        function searchDir(event) {
+            if (event.target.innerText == "Name(a-z)" || 
+            event.target.innerText == "Name(z-a)" || 
+            event.target.innerText == "Popularity(views)") {
+                sortSearchResult(event.target.innerText);
+            }
+        }
+
+        function sortSearchResult(sortDir) {
+            if (sortDir == "Name(a-z)") {
+                result.sort(function(a, b) {
+                    var first = (a.full_name).toLowerCase();
+                    var second = (b.full_name).toLowerCase();
+                    if (first == second) {
+                        return 0;
+                    }
+                    return first > second ? 1 : -1;
+                });
+                displayNewResults(result);
+            } else if (sortDir == "Name(z-a)") {
+                result.sort(function(a, b) {
+                    var first = (a.full_name).toLowerCase();
+                    var second = (b.full_name).toLowerCase();
+                    if (first == second) {
+                        return 0;
+                    }
+                    return first < second ? 1 : -1;
+                });
+                displayNewResults(result);
+            } else if (sortDir == "Popularity(views)") {
+                result.sort(function(a, b) {
+                    var first = Number(a.profile_views);
+                    var second = Number(b.profile_views);
+                    if (first == second) {
+                        return 0;
+                    }
+                    return first < second ? 1 : -1;
+                });
+                displayNewResults(result);
+            }
+        }
 
         function searchKeyUp(event) {
             console.log(event.keyCode);
@@ -20,14 +66,14 @@ var search = (function() {
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         //input.innerHTML = this.responseText;
-                        //console.log(this.responseText);
+                        console.log(this.responseText);
                         var searchData = JSON.parse(this.responseText);
                         searchDropDown(searchData , search.value);
                     }
                 };
                 xmlhttp.open("GET", "/search?realTimeSearch=" + realTimeSearch, true);
                 xmlhttp.send();
-            } else { //Navigation arrows
+            } else { //Navigation arrows and enter
                 //locate highlight
                 var highlightIndex = "none";
                 var list = search.parentElement.children[1];
@@ -161,6 +207,10 @@ var search = (function() {
         function formAction(event) {
             if (event.keyCode == 13) {
                 event.preventDefault();
+                //empty search
+                if (search.value == "" && event.keyCode == 13) {
+                    window.location.replace("/search");
+                }
                 //locate highlight
                 var highlightIndex = "none";
                 var list = search.parentElement.children[1];
@@ -202,6 +252,73 @@ var search = (function() {
                     window.location.replace("/search?q=" + enterSearch[0]);
                 }
             }
+        }
+
+        function displayNewResults(result) {
+            var searchResultBox = searchResultContainer.querySelector(".searchResultBox");
+            var searchResultLength = searchResultBox.children.length;
+            for (var i = 0; i < searchResultLength; i++) { // remove previous
+                searchResultBox.removeChild(searchResultBox.children[0]);
+            }
+
+            result.forEach(function(item) {
+                var resultItem = document.createElement("a");
+                resultItem.className = "searchResult__aTagRemove";
+                resultItem.href = "/profiles/user/" + item.id;
+                resultItem.innerHTML = `
+                    <div class='searchResult'>
+                        <div class='row mx-0 py-2'>
+                            <div class='col-sm-3'>
+                                <div class="searchResult__imageContainer">
+                                    <img class="searchResult__image" src="/user_data/${item.img_src}" alt="profile pic">
+                                </div>
+                            </div>
+                            <div class='col-sm-9'>
+                                <div class='searchResult__userDetails'>
+                                    <p class="m-0"><span class="text-muted">Status: </span><strong>${item.status}</strong></p>
+                                    <p class="m-0"><span class="text-muted">Name: </span><strong>${item.first_name+" "+item.last_name}</strong></p>
+                                    <p class="m-0"><span class="text-muted">Email: </span><strong>${item.email}</strong></p>
+                                    <p class="m-0"><span class="text-muted">Joined: </span><strong>${item.created_at}</strong></p>
+                                    <p class="m-0"><span class="text-muted">Profile Views: </span><strong>${item.profile_views}</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                
+                `;
+                var userDetails = resultItem.querySelector(".searchResult__userDetails");
+                var section = ["Birthday", "Gender", "Education", "Work", "Location"];
+                var sectionInfo = [item.birthday, item.gender, item.education, item.work, item.location];
+                //birthday, gender, education, work, location
+                sectionInfo.forEach(function(value,index) {
+                    if (value != "" && value != "0000-00-00" && value != "0") {
+                        var newSection = document.createElement("p");
+                        newSection.className = "m-0";
+                        newSection.innerHTML = `
+                            <span class='text-muted'>${section[index]}: </span><strong>${value}</strong>
+                        `;
+                        userDetails.insertBefore(newSection, userDetails.children[userDetails.children.length - 2]);
+                    }
+                });
+                if (item.description != "") {
+                    var description = document.createElement("p");
+                    description.className = "m-0";
+                    if (item.descLength > 35) {
+                        description.innerHTML = `
+                            <span class='text-muted'>Description: </span>
+                            <strong>${item.shortDesc}...</strong>
+                            <span class='searchResult__fakeATag'> Read More</span>
+                        `;
+                    } else {
+                        description.innerHTML = `
+                            <span class='text-muted'>Description: </span>
+                            <strong>${item.description}</strong>
+                        `;
+                    }
+                    userDetails.insertBefore(description, userDetails.children[userDetails.children.length - 2]);
+                }
+                
+                searchResultBox.appendChild(resultItem);
+            });
         }
 
     }

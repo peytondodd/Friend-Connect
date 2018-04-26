@@ -15,6 +15,8 @@
     }
 
     public function user($id) {
+
+      //page action
       if (isset($_REQUEST["pageAction"])) {
         $pageAction = [];
         if ($_REQUEST["pageAction"] == "settings") {
@@ -40,11 +42,15 @@
 
       if ($this->userModel->findUserById($id)) {
         if ($this->userModel->findUserInfoById($id)) {
-
+      
           // USER INFO AND DETAILS
           $user = $this->userModel->findUserById($id);
           $userInfo = $this->userModel->findUserInfoById($id);
           $status = "";
+
+          //profile visit counter update
+          $profileViews = $userInfo->profile_views;
+          $updateProfileViews = $this->userModel->updateProfileViews($id, $profileViews+1);
 
           // FRIEND STATUS
           if ($user->id != $_SESSION["user_id"]) {
@@ -200,6 +206,7 @@
             "work" => $userInfo->work,
             "location" => $userInfo->location,
             "description" => $userInfo->description,
+            "profile_views" => $profileViews+1,
             "friend_status" => $status,
             "friend_total" => $numberOfFriends,
             "friend_list" => $friend_list_short,

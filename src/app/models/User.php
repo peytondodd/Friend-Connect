@@ -184,9 +184,19 @@
       return $rows;
     }
 
-    // GET ALL USER_INFO
-    public function getAllUser_Info() {
+    // UPDATE VIEWS
+    public function updateProfileViews($profileId, $newViewCount) {
+      $this->db->query("UPDATE user_info 
+                        SET profile_views = :profile_views
+                        WHERE user_id = :user_id");
+      $this->db->bind(":user_id", $profileId);
+      $this->db->bind(":profile_views", $newViewCount);
 
+      if ($this->db->execute()) {
+        return true;
+      } else {
+        return false;
+      }
     }
 
 

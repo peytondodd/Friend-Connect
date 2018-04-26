@@ -1,59 +1,88 @@
+<?php
+
+  $result = $data["result"];
+  $term = $data["term"];
+  $allUsersCount = $data["allUsersCount"];
+  // echo "<pre>";
+  // var_dump($result);
+  // echo "</pre>";
+
+?>
 <?php require APPROOT . "/views/inc/header.php"; ?>
 
-<input class="searchField mb-5 mt-5" type="text" name="search" placeholder="Search">
-<p class="input"></p>
-<p><?php echo strpos("abc","z"); ?></p>
-<?php foreach ($data as $user) : ?>
-<div class="row align-items-center border mb-3">
-  <div class="col-12 col-md-4">
-    <img width: "100%" alt="Grandfather with child"
-    src="/images/<?php echo $user->user_id; ?>/profile.<?php echo $user->user_id; ?>.jpeg">
-  </div>
-  <div class="col-12 col-md-8">
-  	<h3><?php echo $user->first_name . " " . $user->last_name; ?></h3>
-    <?php if ($user->status == 0) : ?>
-  	   <p>Status: Offline</p>
-    <?php elseif ($user->status == 1) : ?>
-      <p>Status: Online</p>
-    <?php endif; ?>
+<div class="container" style="height: 2000px;">
 
-  	<p>Birthday: <?php echo $user->birthday; ?></p>
+  <?php if (empty($result)) : ?>
+    <h1 class="text-center">0 Results for "<?php echo $term; ?>"</h1>
+  <?php else : ?>
+    <div class="searchResultContainer">
+      <p><a href="/search">View All Users(<?php echo $allUsersCount; ?>)</a></p>
+      <p>Sort results on page by: 
+        <span class="searchResult__fakeATag">Name(a-z)</span> - 
+        <span class="searchResult__fakeATag">Name(z-a)</span> - 
+        <span class="searchResult__fakeATag">Popularity(views)</span>
+      </p>
+      <?php if ($term != "") : ?>
+        <p>You searched for : "<?php echo $term; ?>"</p>
+      <?php endif; ?>
+      <div class="searchResultBox">
+        <?php foreach($result as $value) : ?>
+          <a class="searchResult__aTagRemove" href="/profiles/user/<?php echo $value->id; ?>">
+            <div class="searchResult">
+              <div class="row mx-0 py-2">
+                <div class="col-sm-3">
+                  <div class="searchResult__imageContainer">
+                    <img class="searchResult__image" src="/user_data/<?php echo $value->img_src?>" alt="profile pic">
+                  </div>
+                </div>
+                <div class="col-sm-9">
+                  <div class="searchResult__userDetails">
+                    <p class="m-0"><span class="text-muted">Status: </span><strong><?php echo $value->status; ?></strong></p>
+                    <p class="m-0"><span class="text-muted">Name: </span><strong><?php echo $value->first_name." ".$value->last_name; ?></strong></p>
+                    <p class="m-0"><span class="text-muted">Email: </span><strong><?php echo $value->email; ?></strong></p>
+                    <?php if ($value->birthday != "" && $value->birthday != "0000-00-00") : ?>
+                      <p class="m-0"><span class="text-muted">Birthday: </span><strong><?php echo $value->birthday;?></strong></p>
+                    <?php endif; ?>
+                    <?php if ($value->gender != "" && $value->gender != "0") : ?>
+                      <p class="m-0"><span class="text-muted">Gender: </span><strong><?php echo $value->gender; ?></strong></p>
+                    <?php endif; ?>
+                    <?php if ($value->education != "") : ?>
+                      <p class="m-0"><span class="text-muted">Education: </span><strong><?php echo $value->education; ?></strong></p>
+                    <?php endif; ?>
+                    <?php if ($value->work != "") : ?>
+                      <p class="m-0"><span class="text-muted">Work: </span><strong><?php echo $value->work; ?></strong></p>
+                    <?php endif; ?>
+                    <?php if ($value->location != "") : ?>
+                      <p class="m-0"><span class="text-muted">Location: </span><strong><?php echo $value->location; ?></strong></p>
+                    <?php endif; ?>
+                    <?php if ($value->description != "") : ?>
+                      <p class="m-0"><span class="text-muted">Description: </span>
+                        <?php if ($value->descLength > 35) : ?>
+                          <strong><?php echo $value->shortDesc."..."; ?></strong>
+                          <span class="searchResult__fakeATag"> Read More</span>
+                        <?php else : ?>
+                          <strong><?php echo $value->description; ?></strong>
+                        <?php endif; ?>
+                      </p>
+                    <?php endif; ?>
+                    <p class="m-0"><span class="text-muted">Joined: </span><strong><?php echo $value->created_at; ?></strong></p>
+                    <p class="m-0"><span class="text-muted">Profile Views: </span><strong><?php echo $value->profile_views; ?></strong></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  <?php endif; ?>
 
-    <?php if ($user->status == 0) : ?>
-  	   <p>Gender: </p>
-    <?php elseif ($user->status == 1) : ?>
-      <p>Gender: Male</p>
-    <?php elseif ($user->status == 2) : ?>
-      <p>Gender: Female</p>
-    <?php endif; ?>
-
-  	<p>Education: <?php echo $user->education; ?></p>
-  	<p>Work: <?php echo $user->work; ?></p>
-  	<p>Location: <?php echo $user->location; ?></p>
-  	<p>Description: <?php echo $user->description; ?></p>
-  </div>
 </div>
-<?php endforeach; ?>
+
 
 <script>
-
-
-var test = document.querySelector(".searchField");
-var input = document.querySelector(".input");
-test.onkeyup = function() {
-var query = test.value;
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-          //input.innerHTML = this.responseText;
-          var blah = JSON.parse(this.responseText);
-          console.log(blah);
-      }
-  };
-  xmlhttp.open("GET", "/search?q=" + query, true);
-  xmlhttp.send();
-}
-
+  var result = <?php echo json_encode($result); ?>;
+  console.log(result);
 </script>
 
 <?php require APPROOT . "/views/inc/footer.php"; ?>

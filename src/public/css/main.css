@@ -1159,11 +1159,51 @@ body {
 .navbar__searchItem:link {
   text-decoration: none; }
 
+.searchResult {
+  border: 1px solid lightgrey;
+  margin-bottom: 0.625rem; }
+  .searchResult__imageContainer {
+    width: 100%;
+    height: calc(0.625rem * 26.45); }
+  .searchResult__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; }
+  .searchResult__text {
+    margin: 0; }
+  .searchResult__userDetails {
+    word-wrap: break-word; }
+  .searchResult__aTagRemove {
+    color: inherit;
+    text-decoration: none; }
+  .searchResult__aTagRemove:hover {
+    color: inherit;
+    text-decoration: none; }
+  .searchResult__fakeATag {
+    color: #007bff; }
+  .searchResult__fakeATag:hover {
+    text-decoration: underline;
+    cursor: pointer; }
+
+.searchResult:hover {
+  background-color: lightblue;
+  cursor: pointer; }
+
 .searchHighlight {
   background-color: lightgrey; }
 
 .text-highlight {
   background-color: yellow; }
+
+@media (max-width: 992px) {
+  .searchResult__imageContainer {
+    width: 100%;
+    height: calc(0.625rem * 15.95); } }
+
+@media (max-width: 768px) {
+  .searchResult__imageContainer {
+    width: 100%;
+    height: calc(0.625rem * 11.45); } }
 
 /*!
  * Bootstrap v4.0.0 (https://getbootstrap.com)

@@ -42,6 +42,8 @@
 
   //LOCATION
   $viewLocation = $data["location"];
+  //profileviews
+  $profileViews = $data["profile_views"];
   //FRIEND STATUS
   $friendStatus = $data["friend_status"];
   //FRIEND LIST
@@ -192,6 +194,12 @@
                 <?php if (!empty($viewDescription)) : ?>
                   <strong><?php echo $viewDescription; ?></strong>
                 <?php endif; ?>
+            </p>
+          </div>
+          <div class="profilePage__userInfo">
+            <p class="profilePage__description">
+              <span class="text-muted">Profile Views: </span>
+              <strong><?php echo $profileViews; ?></strong>
             </p>
           </div>
         </div>
