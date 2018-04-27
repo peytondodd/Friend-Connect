@@ -6,6 +6,20 @@ class Chat {
     $this->db = new Database;
   }
 
+  public function getAllMessages($currentUserId) {
+    $this->db->query("SELECT * FROM chat WHERE 
+                    sender_id = :currentUser OR 
+                    receiver_id = :currentUser");
+    $this->db->bind(":currentUser", $currentUserId);
+    $row = $this->db->resultSet();
+
+    if ($this->db->rowCount() > 0) {
+      return $row;
+    } else {
+      return false;
+    }
+  }
+
   public function getMessages($currentUserId, $friendId) {
     $this->db->query("SELECT * FROM chat WHERE
                     (sender_id = :user_one AND receiver_id = :user_two) OR

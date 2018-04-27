@@ -16,5 +16,11 @@ function sortOldToNew($a, $b) {
   //oldest to newest date/ new at bottom
 }
 
+function messagesOldToNew($a ,$b) {
+  if ($a->date_sent == $b->date_sent) {
+    return 0;
+  }
+  return ($a->date_sent < $b->date_sent) ? -1 : 1;
+}
 
 ?>

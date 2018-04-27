@@ -10,7 +10,7 @@
 ?>
 <?php require APPROOT . "/views/inc/header.php"; ?>
 
-<div class="container" style="height: 2000px;">
+<div class="container">
 
   <?php if (empty($result)) : ?>
     <h1 class="text-center">0 Results for "<?php echo $term; ?>"</h1>
