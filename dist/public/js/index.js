@@ -2978,7 +2978,7 @@ var search = (function() {
             if (event) {
                 //if (event.target.className) {
                     var item = event.target.className;
-                    console.log(item);
+                    //console.log(item);
                     if (item != "form-control navbar__searchItem" && item != "form-control navbar__searchItem--itemBox" && 
                     item != "form-control navbar__searchItem--imgBox" && item != "form-control navbar__searchItem--img" && 
                     item != "form-control navbar__searchItem--name" && item != "form-control navbar-searchInput" && 

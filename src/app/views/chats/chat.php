@@ -1,18 +1,54 @@
+<?php
+  $convoList = $data["convoList"];
+  $convoView = $data["convoView"];
+
+  // echo date_default_timezone_get();
+  //phpinfo();
+  // echo "<pre>";
+  // print_r($convoList);
+  // echo "</pre>";
+?>
 <?php require APPROOT . "/views/inc/header.php"; ?>
 
-<h1><?php echo $data["id"]; ?></h1>
+<div class="container">
+  
+  <div class="chatBox">
+    <div class="convoList">
+      <div class="convoList__searchContainer">
+        <input class="convoList__search" type="text">
+      </div>
+      <div class="convoList__listContainer">
+        <?php for($i = 0; $i < count($convoList); $i++) : ?>
+          <div class="convoList__listBox">
+            <div class="convoList__iconContainer">
+              <div class="convoList__iconBox">
+                <img class="convoList__icon" src="/user_data/<?php echo $convoList[$i]->img_src; ?>" alt="">
+              </div>
+            </div>
+            <div class="convoList__infoContainer">
+              <p class="m-0 convoList__infoContainer--date"><?php echo $convoList[$i]->last_date; ?></p>
+              <p class="m-0"><?php echo $convoList[$i]->name; ?></p>
+              <p class="m-0 convoList__infoContainer--message"><?php echo $convoList[$i]->last_message; ?></p>
+            </div>
+          </div>
+        <?php endfor; ?>
+      </div>
+    </div>
+    <div class="convoView">
+      <div class="convoView__heading">
 
-<div class="chatBox border" style="height: 300px; background-color: white; overflow-y: scroll;">
+      </div>
+      <div class="convoView__display">
+
+      </div>
+      <div class="convoView__input">
+
+      </div>
+    </div>
+  </div>
+
 
 </div>
-
-<!-- <form class="" action="/chats/user/<?php echo $data["id"]; ?>" method="post"> -->
-
-  <input class="inputMessage form-control" type="text" name="inputMessage" placeholder="Enter message">
-
-  <input class="form-control btn btn-success" type="submit" name="" value="Send">
-<!--
-</form> -->
 
 <script>
 

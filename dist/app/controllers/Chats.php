@@ -4,6 +4,7 @@ class Chats extends Controller {
 
   public function __construct() {
     $this->userModel = $this->model("User");
+    $this->friendModel = $this->model("Friend");
     $this->chatModel = $this->model("Chat");
   }
 
@@ -39,10 +40,31 @@ class Chats extends Controller {
       // name
       $friendDetails->first_name = $nameOfFriend[0];
       $friendDetails->last_name = $nameOfFriend[1];
+      // friend status online or offline
+      $friendDetails->status = $userInfo->status;
       // img_src
       $friendDetails->img_src = getProfileImgSrc($friendDetails->id, $userInfo->profile_img, $userInfo->profile_img_id);
       // MESSAGES
       $messages = $allMessages[$convoIndex];
+      // chat disabled
+      $friend_status = $this->friendModel->checkFriendStatus($_SESSION["user_id"], $friendDetails->id);
+      if ($friend_status == "Pending" || $friend_status == "Add Friend" || $friend_status == "Unblock" || 
+      $friend_status == "Accept" || $friend_status == "No Access" || !$friend_status) {
+        $friendDetails->chat_disabled = 1;
+        if ($friend_status == "Add Friend" || !$friend_status) {
+          $friendDetails->chat_reason = "You are not friends with ".$friendDetails->first_name.".";
+        } elseif ($friend_status == "Pending") {
+          $friendDetails->chat_reason = "Wait for ".$friendDetails->first_name." to accept your friend request.";
+        } elseif ($friend_status == "Accept") {
+          $friendDetails->chat_reason = "Accept ".$friendDetails->first_name."'s friend request first.";
+        } elseif ($friend_status == "Unblock") {
+          $friendDetails->chat_reason = "You blocked ".$friendDetails->first_name.".";
+        } elseif ($friend_status == "No Access") {
+          $friendDetails->chat_reason = "You have been blocked by ".$friendDetails->first_name.".";
+        }
+      } else {
+        $friendDetails->chat_disabled = 0;
+      }
 
       $convoView = [$friendDetails, $messages];
 
@@ -56,33 +78,92 @@ class Chats extends Controller {
         } elseif ($value[0]->receiver_id != $_SESSION["user_id"]) {
           $newList->id = $value[0]->receiver_id;
         }
-        //friend name
-        $newList->name = $this->userModel->nameOfUser($newList->id);
-        //img_src
+
         $userInfo = $this->userModel->findUserInfoById($newList->id);
+        //friend status online offline
+        $newList->status = $userInfo->status;
+        //img_src
         $newList->img_src = getProfileImgSrc($newList->id, $userInfo->profile_img, $userInfo->profile_img_id);
         //last messsage in convo
         $tempMessage = $value[count($value) - 1]->message;
-        $displayLength = 25;
-        if (strlen($tempMessage) > $displayLength) {
-          $tempMessage = substr($tempMessage, 0, $displayLength) . "...";
+        $displayLength = 40; //length of message to be displayed in the convo list 
+        if ($value[count($value) - 1]->sender_id == $_SESSION["user_id"]) {
+          $tempMessage = "You: " . $tempMessage;
         }
-        $newList->last_message = $tempMessage;
+        if (strlen($tempMessage) > $displayLength) {
+          if ($value[count($value) - 1]->sender_id == $_SESSION["user_id"]) {
+            $newList->last_message = substr($tempMessage, 0, $displayLength - 5) . "...";
+          } else {
+            $newList->last_message = substr($tempMessage, 0, $displayLength) . "...";
+          }
+        } else {
+          $newList->last_message = $tempMessage;
+        }
+
         //date of last message
-        $newList->last_date = $value[count($value) - 1]->date_sent;
+        date_default_timezone_set("America/Toronto");
+        $tempDate = new DateTime(date($value[count($value) - 1]->date_sent));
+        $now = new DateTime(date("Y-m-d H:i:s"));
+        $interval = $tempDate->diff($now);
+        if ($interval->format("%y") != "0") {
+          $newList->last_date = date("Y-m-d", strtotime($value[count($value) - 1]->date_sent));
+          $nameLimit = 11;
+        } elseif ($interval->format("%m") != "0") {
+          $newList->last_date = date("M", strtotime($value[count($value) - 1]->date_sent))." ".date("j", strtotime($value[count($value) - 1]->date_sent));
+          $nameLimit = 16;
+        } elseif ($interval->format("%d") != "0") {
+          if ($interval->format("%d") < "8") {
+            if ($interval->format("%d") == "1") {
+            $newList->last_date = "Yesterday";
+            $nameLimit = 13;
+            } else {
+              $newList->last_date = date("D", strtotime($value[count($value) - 1]->date_sent));
+              $nameLimit = 18;
+            }
+          } else {
+            $newList->last_date = date("M", strtotime($value[count($value) - 1]->date_sent))." ".date("j", strtotime($value[count($value) - 1]->date_sent));
+            $nameLimit = 16;
+          }
+        } else {
+          if (date("d", strtotime($value[count($value) - 1]->date_sent)) != $now->format("d")) {
+            $newList->last_date = "Yesterday";
+            $nameLimit = 13;
+          } else {
+            $newList->last_date = date("h:i a", strtotime($value[count($value) - 1]->date_sent));
+            $nameLimit = 13;
+          }
+        }
+
+        date_default_timezone_set("UTC");
+
+        //friend name
+        $tempName = $this->userModel->nameOfUser($newList->id);
+        if (strlen($tempName) > $nameLimit) {
+          $newList->name = substr($tempName, 0, $nameLimit) . "...";
+        } else {
+          $newList->name = $tempName;
+        }
+
+        //sender id
+        // $newList->sender_id = $value[count($value) - 1]->sender_id;
 
         $convoList[] = $newList;
       }
 
 
-      echo "<pre>";
-      print_r($convoList);
-      echo "</pre>";
+      // echo "<pre>";
+      // print_r($convoView);
+      // echo "</pre>";
 
+      $data = [
+        "convoView" => $convoView,
+        "convoList" => $convoList
+      ];
+      $this->view("chats/chat", $data);
     }
     //redirect("chats/user/3");
     //$data = [];
-    //$this->view("chat/index");
+    // $this->view("chats/chat");
   }
 
   public function user($friendId) {
