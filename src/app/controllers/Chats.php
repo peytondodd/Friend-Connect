@@ -14,146 +14,10 @@ class Chats extends Controller {
     $allMessages = $this->chatModel->getAllMessages($_SESSION["user_id"]);
     
     if ($allMessages) {
-      // //sorting messages into conversations
-      // $allMessages = $this->sortToConvo($allMessages);
-      
-      // //convoView Module
-      // $convoIndex = 0; //default
-      // if (isset($_SESSION["showConvo"])) { //different convo set
-      //   $friendId = $_SESSION["showConvo"];
-      //   foreach($allMessages as $key => $value) {
-      //     if ($friendId == $value[0]->sender_id) {
-      //       $convoIndex = $key;
-      //     } elseif ($friendId == $value[0]->receiver_id) {
-      //       $convoIndex = $key;
-      //     }
-      //   }
-      // }
-      // // FRIEND DETAILS
-      // $friendDetails = new stdClass();
-      // // id
-      // if ($allMessages[$convoIndex][0]->sender_id != $_SESSION["user_id"]) {
-      //   $friendDetails->id = $allMessages[$convoIndex][0]->sender_id;
-      // } elseif ($allMessages[$convoIndex][0]->receiver_id != $_SESSION["user_id"]) {
-      //   $friendDetails->id = $allMessages[$convoIndex][0]->receiver_id;
-      // }
-      // $userInfo = $this->userModel->findUserInfoById($friendDetails->id);
-      // $nameOfFriend = explode(" ", $this->userModel->nameOfUser($friendDetails->id));
-      // // name
-      // $friendDetails->first_name = $nameOfFriend[0];
-      // $friendDetails->last_name = $nameOfFriend[1];
-      // // friend status online or offline
-      // $friendDetails->status = $userInfo->status;
-      // // img_src
-      // $friendDetails->img_src = getProfileImgSrc($friendDetails->id, $userInfo->profile_img, $userInfo->profile_img_id);
-      // // MESSAGES
-      // $messages = $allMessages[$convoIndex];
-      // // chat disabled
-      // $friend_status = $this->friendModel->checkFriendStatus($_SESSION["user_id"], $friendDetails->id);
-      // if ($friend_status == "Pending" || $friend_status == "Add Friend" || $friend_status == "Unblock" || 
-      // $friend_status == "Accept" || $friend_status == "No Access" || !$friend_status) {
-      //   $friendDetails->chat_disabled = 1;
-      //   if ($friend_status == "Add Friend" || !$friend_status) {
-      //     $friendDetails->chat_reason = "You are not friends with ".$friendDetails->first_name.".";
-      //   } elseif ($friend_status == "Pending") {
-      //     $friendDetails->chat_reason = "Wait for ".$friendDetails->first_name." to accept your friend request.";
-      //   } elseif ($friend_status == "Accept") {
-      //     $friendDetails->chat_reason = "Accept ".$friendDetails->first_name."'s friend request first.";
-      //   } elseif ($friend_status == "Unblock") {
-      //     $friendDetails->chat_reason = "You blocked ".$friendDetails->first_name.".";
-      //   } elseif ($friend_status == "No Access") {
-      //     $friendDetails->chat_reason = "You have been blocked by ".$friendDetails->first_name.".";
-      //   }
-      // } else {
-      //   $friendDetails->chat_disabled = 0;
-      // }
-
       // $convoView = [$friendDetails, $messages];
+      $convoList = $this->getConvoList($allMessages); 
       $convoView = $this->getConvoView($allMessages);
       
-      //convoList Module
-      // $convoList = [];
-      // $allMessages = $this->sortToConvo($allMessages);
-      // foreach ($allMessages as $key => $value) {
-      //   $newList = new stdClass();
-      //   //friend id
-      //   if ($value[0]->sender_id != $_SESSION["user_id"]) {
-      //     $newList->id = $value[0]->sender_id;
-      //   } elseif ($value[0]->receiver_id != $_SESSION["user_id"]) {
-      //     $newList->id = $value[0]->receiver_id;
-      //   }
-
-      //   $userInfo = $this->userModel->findUserInfoById($newList->id);
-      //   //friend status online offline
-      //   $newList->status = $userInfo->status;
-      //   //img_src
-      //   $newList->img_src = getProfileImgSrc($newList->id, $userInfo->profile_img, $userInfo->profile_img_id);
-      //   //last messsage in convo
-      //   $tempMessage = $value[count($value) - 1]->message;
-      //   $displayLength = 40; //length of message to be displayed in the convo list 
-      //   if ($value[count($value) - 1]->sender_id == $_SESSION["user_id"]) {
-      //     $tempMessage = "You: " . $tempMessage;
-      //   }
-      //   if (strlen($tempMessage) > $displayLength) {
-      //     if ($value[count($value) - 1]->sender_id == $_SESSION["user_id"]) {
-      //       $newList->last_message = substr($tempMessage, 0, $displayLength - 5) . "...";
-      //     } else {
-      //       $newList->last_message = substr($tempMessage, 0, $displayLength) . "...";
-      //     }
-      //   } else {
-      //     $newList->last_message = $tempMessage;
-      //   }
-
-      //   //date of last message
-      //   date_default_timezone_set("America/Toronto");
-      //   $tempDate = new DateTime(date($value[count($value) - 1]->date_sent));
-      //   $now = new DateTime(date("Y-m-d H:i:s"));
-      //   $interval = $tempDate->diff($now);
-      //   if ($interval->format("%y") != "0") {
-      //     $newList->last_date = date("Y-m-d", strtotime($value[count($value) - 1]->date_sent));
-      //     $nameLimit = 11;
-      //   } elseif ($interval->format("%m") != "0") {
-      //     $newList->last_date = date("M", strtotime($value[count($value) - 1]->date_sent))." ".date("j", strtotime($value[count($value) - 1]->date_sent));
-      //     $nameLimit = 16;
-      //   } elseif ($interval->format("%d") != "0") {
-      //     if ($interval->format("%d") < "8") {
-      //       if ($interval->format("%d") == "1") {
-      //       $newList->last_date = "Yesterday";
-      //       $nameLimit = 13;
-      //       } else {
-      //         $newList->last_date = date("D", strtotime($value[count($value) - 1]->date_sent));
-      //         $nameLimit = 18;
-      //       }
-      //     } else {
-      //       $newList->last_date = date("M", strtotime($value[count($value) - 1]->date_sent))." ".date("j", strtotime($value[count($value) - 1]->date_sent));
-      //       $nameLimit = 16;
-      //     }
-      //   } else {
-      //     if (date("d", strtotime($value[count($value) - 1]->date_sent)) != $now->format("d")) {
-      //       $newList->last_date = "Yesterday";
-      //       $nameLimit = 13;
-      //     } else {
-      //       $newList->last_date = date("h:i a", strtotime($value[count($value) - 1]->date_sent));
-      //       $nameLimit = 13;
-      //     }
-      //   }
-
-      //   date_default_timezone_set("UTC");
-
-      //   //friend name
-      //   $tempName = $this->userModel->nameOfUser($newList->id);
-      //   if (strlen($tempName) > $nameLimit) {
-      //     $newList->name = substr($tempName, 0, $nameLimit) . "...";
-      //   } else {
-      //     $newList->name = $tempName;
-      //   }
-
-      //   //sender id
-      //   // $newList->sender_id = $value[count($value) - 1]->sender_id;
-
-      //   $convoList[] = $newList;
-      // }
-      $convoList = $this->getConvoList($allMessages); 
 
       // echo "<pre>";
       // print_r($convoList);
@@ -312,6 +176,11 @@ class Chats extends Controller {
     $friendDetails->img_src = getProfileImgSrc($friendDetails->id, $userInfo->profile_img, $userInfo->profile_img_id);
     // MESSAGES
     $messages = $allMessages[$convoIndex];
+    // change date of messages to am pm
+    foreach($messages as $key => $message) {
+      $tempDate = new DateTime($message->date_sent);
+      $message->date_sent = $tempDate->format("Y-m-d h:i:s A");
+    }
     // chat disabled
     $friend_status = $this->friendModel->checkFriendStatus($_SESSION["user_id"], $friendDetails->id);
     if ($friend_status == "Pending" || $friend_status == "Add Friend" || $friend_status == "Unblock" || 
@@ -402,7 +271,8 @@ class Chats extends Controller {
         $nameLimit = 16;
       } elseif ($interval->format("%d") != "0") {
         if ($interval->format("%d") < "8") {
-          if ($interval->format("%d") == "1") {
+          // if ($interval->format("%d") == "1") {
+          if (date("d", strtotime($value[count($value) - 1]->date_sent)) == ($now->format("d"))-1) {
           $newList->last_date = "Yesterday";
           $nameLimit = 13;
           } else {

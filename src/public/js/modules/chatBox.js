@@ -174,6 +174,9 @@ var chatBox = (function() {
                     convoView.classList.remove("fade-in-towards-left-sm");
                 }, 300);
             }
+            //scroll to bottom on start
+            convoView.querySelector(".convoView__display").scrollTop = 
+                convoView.querySelector(".convoView__display").scrollHeight;
         }
 
         function chatKeyDown(event) {
@@ -209,25 +212,27 @@ var chatBox = (function() {
 
         function sendMessage() {
             var textarea = convoView.querySelector(".convoView__textarea");
-            var receiver_id = convoView.id;
-            var sender_id = currentUserId;
-            var message = textarea.value;
+            if (textarea.value != "") {
+                var receiver_id = convoView.id;
+                var sender_id = currentUserId;
+                var message = textarea.value;
 
-            var messageData = (
-                "sender_id="+sender_id+"&"+
-                "receiver_id="+receiver_id+"&"+ 
-                "message="+message
-            );
+                var messageData = (
+                    "sender_id="+sender_id+"&"+
+                    "receiver_id="+receiver_id+"&"+ 
+                    "message="+message
+                );
 
-            ajaxCall("POST", "chats/sendMessage", true, messageData)
-                .then(sendMessageSuccess, sendMessageFail);
+                ajaxCall("POST", "chats/sendMessage", true, messageData)
+                    .then(sendMessageSuccess, sendMessageFail);
 
-            function sendMessageSuccess(data) {
-                //remove textarea value
-                postSendMessageUpdate();
-            }
-            function sendMessageFail(data) {
+                function sendMessageSuccess(data) {
+                    //remove textarea value
+                    postSendMessageUpdate();
+                }
+                function sendMessageFail(data) {
 
+                }
             }
         }
 
@@ -238,8 +243,10 @@ var chatBox = (function() {
             // return to orignal dimensions
             textarea.parentElement.style.height = "49px";
             textarea.parentElement.parentElement.style.height = "85px";
+            // textarea.parentElement.parentElement.parentElement
+            //     .children[1].style.height = "323.32px";
             textarea.parentElement.parentElement.parentElement
-                .children[1].style.height = "323.32px";
+                .children[1].style.height = "calc(100% - 75px - 85px";
         }
 
         // AJAX CALL
