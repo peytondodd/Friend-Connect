@@ -1287,6 +1287,28 @@ body {
       line-height: calc(0.625rem * 1.8); }
   .convoList__selected {
     background-color: lightgrey; }
+  .convoList__searchIconContainer {
+    height: 100%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; }
+  .convoList__searchIconBox {
+    width: calc(0.625rem * 4);
+    height: calc(0.625rem * 4); }
+  .convoList__searchIcon {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover; }
+  .convoList__searchNameContainer {
+    display: inline-block; }
+  .convoList__searchListBox {
+    height: calc(0.625rem * 5);
+    padding: 0 0.625rem; }
+  .convoList__searchListBox:hover {
+    background-color: lightgrey;
+    cursor: pointer; }
 
 .convoView {
   width: calc(100% - (0.625rem * 30));

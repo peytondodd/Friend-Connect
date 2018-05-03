@@ -19,27 +19,31 @@
           <input class="convoList__search" type="text" placeholder="Search friends...">
         </div>
         <div class="convoList__listContainer">
-          <?php for($i = 0; $i < count($convoList); $i++) : ?>
-            <div class="convoList__listBox <?php echo ($convoList[$i]->id == $convoView[0]->id) ? "convoList__selected" : ""; ?>" 
-            id="<?php echo $convoList[$i]->id; ?>">
-              <div class="convoList__iconContainer">
-                <div class="convoList__iconBox">
-                  <img class="convoList__icon" src="/user_data/<?php echo $convoList[$i]->img_src; ?>" alt="user icon">
+          <?php if ($convoList) : ?>
+
+            <?php for($i = 0; $i < count($convoList); $i++) : ?>
+              <div class="convoList__listBox <?php echo ($convoList[$i]->id == $convoView[0]->id) ? "convoList__selected" : ""; ?>" 
+              id="<?php echo $convoList[$i]->id; ?>">
+                <div class="convoList__iconContainer">
+                  <div class="convoList__iconBox">
+                    <img class="convoList__icon" src="/user_data/<?php echo $convoList[$i]->img_src; ?>" alt="user icon">
+                  </div>
+                  <?php if ($convoList[$i]->status) : ?>
+                    <div class="convoList__online"></div>
+                  <?php endif; ?>
                 </div>
-                <?php if ($convoList[$i]->status) : ?>
-                  <div class="convoList__online"></div>
-                <?php endif; ?>
+                <div class="convoList__infoContainer">
+                  <p class="m-0 convoList__infoContainer--date"><?php echo $convoList[$i]->last_date; ?></p>
+                  <p class="m-0 convoList__infoContainer--name"><?php echo $convoList[$i]->name; ?></p>
+                  <p class="m-0 convoList__infoContainer--message"><?php echo $convoList[$i]->last_message; ?></p>
+                </div>
               </div>
-              <div class="convoList__infoContainer">
-                <p class="m-0 convoList__infoContainer--date"><?php echo $convoList[$i]->last_date; ?></p>
-                <p class="m-0 convoList__infoContainer--name"><?php echo $convoList[$i]->name; ?></p>
-                <p class="m-0 convoList__infoContainer--message"><?php echo $convoList[$i]->last_message; ?></p>
-              </div>
-            </div>
-          <?php endfor; ?>
+            <?php endfor; ?>
+
+          <?php endif; ?>
         </div>
       </div>
-      <div class="convoView" id="<?php echo $convoView[0]->id; ?>">
+      <div class="convoView" id="<?php echo ($convoView) ? $convoView[0]->id : ""; ?>">
         <div class="convoView__heading">
           <div class="convoView__viewConvoListBtnBox">
             <span><i class="fa fa-chevron-left"></i></span>
@@ -47,37 +51,47 @@
           <div class="convoView__friendDetails">
             <div class="convoView__iconContainer">
               <div class="convoView__iconBox">
-                <img class="convoView__icon" src="/user_data/<?php echo $convoView[0]->img_src; ?>" alt="user icon">
+                <img class="convoView__icon" src="/user_data/<?php echo ($convoView) ? $convoView[0]->img_src : ""; ?>" alt="user icon">
               </div>
             </div>
             <div class="convoView__nameContainer">
-              <p class="m-0 convoView__name"><?php echo $convoView[0]->first_name." ".$convoView[0]->last_name; ?></p>
-              <?php if ($convoView[0]->status) : ?>
-                <p class="m-0 convoView__status">Online</p>
+              <p class="m-0 convoView__name"><?php echo ($convoView) ? $convoView[0]->first_name." ".$convoView[0]->last_name : ""; ?></p>
+              <?php if ($convoView) : ?> 
+                <?php if ($convoView[0]->status) : ?>
+                  <p class="m-0 convoView__status">Online</p>
+                <?php else : ?>
+                  <p class="m-0 convoView__status">Offline</p>
+                <?php endif; ?>
               <?php else : ?>
-                <p class="m-0 convoView__status">Offline</p>
+                <p class="m-0 convoView__status"></p>
               <?php endif; ?>
             </div>
           </div>
         </div>
         <div class="convoView__display">
-          <?php foreach ($convoView[1] as $value) : ?>
-            <div class="convoView__messageBox">
-              <div class="<?php echo ($value->sender_id == $_SESSION["user_id"] ? "message-right" : "message-left") ?>">
-                <div class="<?php echo ($value->sender_id == $_SESSION["user_id"] ? "convoView__myMessageBox" : "convoView__friendMessageBox") ?>">
-                  <div class="<?php echo ($value->sender_id == $_SESSION["user_id"] ? "convoView__myMessage" : "convoView__friendMessage") ?>">
-                    <span><?php echo $value->message; ?></span>
+          <?php if ($convoView) : ?>
+            <?php foreach ($convoView[1] as $value) : ?>
+              <div class="convoView__messageBox">
+                <div class="<?php echo ($value->sender_id == $_SESSION["user_id"] ? "message-right" : "message-left") ?>">
+                  <div class="<?php echo ($value->sender_id == $_SESSION["user_id"] ? "convoView__myMessageBox" : "convoView__friendMessageBox") ?>">
+                    <div class="<?php echo ($value->sender_id == $_SESSION["user_id"] ? "convoView__myMessage" : "convoView__friendMessage") ?>">
+                      <span><?php echo $value->message; ?></span>
+                    </div>
                   </div>
+                  <span class="convoView__date"><?php echo $value->date_sent; ?></span>
                 </div>
-                <span class="convoView__date"><?php echo $value->date_sent; ?></span>
               </div>
-            </div>
-          <?php endforeach; ?>
+            <?php endforeach; ?>
+          <?php endif; ?>
         </div>
         <div class="convoView__inputBox">
           <div class="convoView__textareaBox">
-            <?php if ($convoView[0]->chat_disabled == 1) : ?>
-              <textarea disabled class="convoView__textarea" name="" id="" placeholder="<?php echo $convoView[0]->chat_reason; ?>"></textarea>
+            <?php if ($convoView) : ?>
+              <?php if ($convoView[0]->chat_disabled == 1) : ?>
+                <textarea disabled class="convoView__textarea" name="" id="" placeholder="<?php echo $convoView[0]->chat_reason; ?>"></textarea>
+              <?php else : ?>
+                <textarea class="convoView__textarea" name="" id="" placeholder="Enter message..."></textarea>
+              <?php endif; ?>
             <?php else : ?>
               <textarea class="convoView__textarea" name="" id="" placeholder="Enter message..."></textarea>
             <?php endif; ?>

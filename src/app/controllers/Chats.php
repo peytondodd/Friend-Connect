@@ -22,10 +22,16 @@ class Chats extends Controller {
       // echo "<pre>";
       // print_r($convoList);
       // echo "</pre>";
-
+      
       $data = [
         "convoView" => $convoView,
         "convoList" => $convoList
+      ];
+      $this->view("chats/chat", $data);
+    } else {
+      $data = [
+        "convoView" => [],
+        "convoList" => []
       ];
       $this->view("chats/chat", $data);
     }
@@ -43,7 +49,9 @@ class Chats extends Controller {
         echo json_encode($convoView);
         return;
       } else {
-        echo json_encode([]);
+        $convoId = $_REQUEST["convoId"];
+        $convoView = $this->getConvoView($allMessages, $convoId);
+        echo json_encode($convoView);
         return;
       }
     }
@@ -58,6 +66,46 @@ class Chats extends Controller {
       }
       echo "GOod";
       return;
+    }
+  }
+
+  public function searchFriend() {
+    if (isset($_REQUEST["friendName"])) {
+      $tempFriendList = $this->friendModel->friendListOfUser($_SESSION["user_id"]);
+      $friendList = [];
+      foreach($tempFriendList as $value) {
+        if ($value->user_one == $_SESSION["user_id"]) {
+          $friendId = $value->user_two;
+        } else {
+          $friendId = $value->user_one;
+        }
+        $tempUserInfo = $this->userModel->findUserInfoById($friendId);
+        $tempImgSrc = getProfileImgSrc($friendId, $tempUserInfo->profile_img, $tempUserInfo->profile_img_id);
+        $tempUserName = $this->userModel->nameOfUser($friendId);
+        $friendInfo = [
+          "id" => $friendId,
+          "name" => $tempUserName,
+          "img_src" => $tempImgSrc
+        ];
+        $friendList[] = $friendInfo;
+      }
+      
+      $searchedTerm = $_REQUEST["friendName"];
+      if ($searchedTerm != "") {
+        $filtered = [];
+        for ($i = 0; $i < count($friendList); $i++) {
+          if (strpos(strtolower($friendList[$i]["name"]), $searchedTerm) !== false) {
+            if (!in_array($friendList[$i], $filtered)) {
+              $filtered[] = $friendList[$i];
+            }
+          }
+        }
+        echo json_encode($filtered);
+        return;
+      } else {
+        echo json_encode($friendList);
+        return;
+      }
     }
   }
 
@@ -76,44 +124,61 @@ class Chats extends Controller {
         $newConvoList = $this->getConvoList($allNewMessages);
 
         if ($newConvoList) {
-
-          foreach ($newConvoList as $key => $value) {
+          if (count($newConvoList) == count($convoList)) {
+            foreach ($newConvoList as $key => $value) {
+              $data = [];
+              // New message
+              if ($value->messageCount != $convoList[$key]->messageCount) {
+                $data[] = "New Message";
+                //list
+                $data[1][] = $value;
+                //view
+                $newTotal = $value->messageCount - $convoList[$key]->messageCount;
+                $newConvoView = $this->getConvoView($allNewMessages, $value->id);
+                $temp = [];
+                for($i = $newTotal; $i > 0; $i--) {
+                  $temp[] = $newConvoView[1][count($newConvoView[1]) - $i];
+                }
+                $data[1][] = $temp;
+                echo json_encode($data);
+                return;
+              }
+              // New Status
+              if ($value->status != $convoList[$key]->status) {
+                $data[] = "New Status";
+                $data[] = $value->id;
+                if ($value->status == "1") {
+                  $data[] = "Online";
+                } else {
+                  $data[] = "Offline";
+                }
+                echo json_encode($data);
+                return;
+              }
+              // chat disabled
+              if ($value->chat_disabled != $convoList[$key]->chat_disabled) {
+                $data[] = "Chat Disabled";
+                $data[] = $value;
+                echo json_encode($data);
+                return;
+              }
+            }
+          } elseif (count($newConvoList) > count($convoList)) { //new conversation
             $data = [];
-            // New message
-            if ($value->messageCount != $convoList[$key]->messageCount) {
-              $data[] = "New Message";
-              //list
-              $data[1][] = $value;
-              //view
-              $newTotal = $value->messageCount - $convoList[$key]->messageCount;
-              $newConvoView = $this->getConvoView($allNewMessages, $value->id);
-              $temp = [];
-              for($i = $newTotal; $i > 0; $i--) {
-                $temp[] = $newConvoView[1][count($newConvoView[1]) - $i];
-              }
-              $data[1][] = $temp;
-              echo json_encode($data);
-              return;
-            }
-            // New Status
-            if ($value->status != $convoList[$key]->status) {
-              $data[] = "New Status";
-              $data[] = $value->id;
-              if ($value->status == "1") {
-                $data[] = "Online";
-              } else {
-                $data[] = "Offline";
-              }
-              echo json_encode($data);
-              return;
-            }
-            // chat disabled
-            if ($value->chat_disabled != $convoList[$key]->chat_disabled) {
-              $data[] = "Chat Disabled";
-              $data[] = $value;
-              echo json_encode($data);
-              return;
-            }
+            $data[] = "New Conversation";
+            //list
+            $data[1][] = $newConvoList[0];
+            //view
+            $newTotal = $newConvoList[0]->messageCount - $newConvoList[0]->messageCount;
+            $newConvoView = $this->getConvoView($allNewMessages, $newConvoList[0]->id);
+            $temp = [];
+            //for($i = $newTotal; $i > 0; $i--) {
+              // $temp[] = $newConvoView[1][count($newConvoView[1]) - $i];
+              $temp[] = $newConvoView[1][0];
+            //}
+            $data[1][] = $temp;
+            echo json_encode($data);
+            return;
           }
 
         }
@@ -133,15 +198,19 @@ class Chats extends Controller {
 
   function getConvoView($allMessages, $convoId = 0) {
     //sorting messages into conversations
-    $allMessages = $this->sortToConvo($allMessages);
+    if ($allMessages) {
+      $allMessages = $this->sortToConvo($allMessages);
+    }
 
     //convoView Module
     if ($convoId) {
-      foreach ($allMessages as $key => $value) {
-        if ($value[0]->sender_id == $convoId) {
-          $convoIndex = $key;
-        } elseif ($value[0]->receiver_id == $convoId) {
-          $convoIndex = $key;
+      if ($allMessages) {
+        foreach ($allMessages as $key => $value) {
+          if ($value[0]->sender_id == $convoId) {
+            $convoIndex = $key;
+          } elseif ($value[0]->receiver_id == $convoId) {
+            $convoIndex = $key;
+          }
         }
       }
     } else {
@@ -160,10 +229,14 @@ class Chats extends Controller {
     // FRIEND DETAILS
     $friendDetails = new stdClass();
     // id
-    if ($allMessages[$convoIndex][0]->sender_id != $_SESSION["user_id"]) {
-      $friendDetails->id = $allMessages[$convoIndex][0]->sender_id;
-    } elseif ($allMessages[$convoIndex][0]->receiver_id != $_SESSION["user_id"]) {
-      $friendDetails->id = $allMessages[$convoIndex][0]->receiver_id;
+    if (isset($convoIndex)) {
+      if ($allMessages[$convoIndex][0]->sender_id != $_SESSION["user_id"]) {
+        $friendDetails->id = $allMessages[$convoIndex][0]->sender_id;
+      } elseif ($allMessages[$convoIndex][0]->receiver_id != $_SESSION["user_id"]) {
+        $friendDetails->id = $allMessages[$convoIndex][0]->receiver_id;
+      }
+    } else { //if convo doesnt exists
+      $friendDetails->id = $convoId;
     }
     $userInfo = $this->userModel->findUserInfoById($friendDetails->id);
     $nameOfFriend = explode(" ", $this->userModel->nameOfUser($friendDetails->id));
@@ -175,11 +248,15 @@ class Chats extends Controller {
     // img_src
     $friendDetails->img_src = getProfileImgSrc($friendDetails->id, $userInfo->profile_img, $userInfo->profile_img_id);
     // MESSAGES
-    $messages = $allMessages[$convoIndex];
-    // change date of messages to am pm
-    foreach($messages as $key => $message) {
-      $tempDate = new DateTime($message->date_sent);
-      $message->date_sent = $tempDate->format("Y-m-d h:i:s A");
+    if (isset($convoIndex)) {
+      $messages = $allMessages[$convoIndex];
+      // change date of messages to am pm
+      foreach($messages as $key => $message) {
+        $tempDate = new DateTime($message->date_sent);
+        $message->date_sent = $tempDate->format("Y-m-d h:i:s A");
+      }
+    } else { // if convo doesnt exists
+      $messages = [];
     }
     // chat disabled
     $friend_status = $this->friendModel->checkFriendStatus($_SESSION["user_id"], $friendDetails->id);
@@ -315,39 +392,40 @@ class Chats extends Controller {
     $currentUserId = $_SESSION["user_id"];
     $friendIds = [];
     $conversations = [];
-    foreach($allMessages as $value) {
-      if ($value->sender_id != $currentUserId) {
-        $found = array_search($value->sender_id, $friendIds);
-        if ($found === false) { //create new index if convo doesn't exists
-          $friendIds[] = $value->sender_id;
-          $conversations[][] = $value;
-        } else {
-          $conversations[$found][] = $value;
-        }
-      } elseif ($value->receiver_id != $currentUserId) {
-        $found = array_search($value->receiver_id, $friendIds);
-        if ($found === false) { //create new index if convo doesn't exists
-          $friendIds[] = $value->receiver_id;
-          $conversations[][] = $value;
-        } else {
-          $conversations[$found][] = $value;
+    if ($allMessages) {
+      foreach($allMessages as $value) {
+        if ($value->sender_id != $currentUserId) {
+          $found = array_search($value->sender_id, $friendIds);
+          if ($found === false) { //create new index if convo doesn't exists
+            $friendIds[] = $value->sender_id;
+            $conversations[][] = $value;
+          } else {
+            $conversations[$found][] = $value;
+          }
+        } elseif ($value->receiver_id != $currentUserId) {
+          $found = array_search($value->receiver_id, $friendIds);
+          if ($found === false) { //create new index if convo doesn't exists
+            $friendIds[] = $value->receiver_id;
+            $conversations[][] = $value;
+          } else {
+            $conversations[$found][] = $value;
+          }
         }
       }
-    }
-    //sort messages in conversation according to date_sent - old to new
-    foreach($conversations as $key => $value) {
-      usort($conversations[$key], "messagesOldToNew");
-    }
-    //sort conversation according to latest date sent - new to old
-    usort($conversations, function($a, $b) {
-      $one = $a[count($a) - 1]->date_sent;
-      $two = $b[count($b) - 1]->date_sent;
-      if ($one == $two) {
-        return 0;
+      //sort messages in conversation according to date_sent - old to new
+      foreach($conversations as $key => $value) {
+        usort($conversations[$key], "messagesOldToNew");
       }
-      return ($one > $two) ? -1 : 1;
-    });
-
+      //sort conversation according to latest date sent - new to old
+      usort($conversations, function($a, $b) {
+        $one = $a[count($a) - 1]->date_sent;
+        $two = $b[count($b) - 1]->date_sent;
+        if ($one == $two) {
+          return 0;
+        }
+        return ($one > $two) ? -1 : 1;
+      });
+    }
       // echo "<pre>";  
       // print_r($conversations);
       // echo "</pre>";  

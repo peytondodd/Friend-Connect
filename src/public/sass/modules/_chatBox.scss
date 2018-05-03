@@ -99,7 +99,34 @@
     &__selected {
         background-color: lightgrey;
     }
-
+    &__searchIconContainer {
+        height: 100%;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+    &__searchIconBox {
+        width: calc(#{$one-rem} * 4);
+        height: calc(#{$one-rem} * 4);
+    }
+    &__searchIcon {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    &__searchNameContainer {
+        display: inline-block;
+    }
+    &__searchListBox {
+        height: calc(#{$one-rem} * 5);
+        padding: 0 $one-rem;
+    }
+    &__searchListBox:hover {
+        background-color: lightgrey;
+        cursor: pointer;
+    }
 }
 
 .convoView {
