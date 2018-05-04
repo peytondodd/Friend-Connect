@@ -92,6 +92,7 @@
     &--name {
       color: white;
       position: absolute;
+      left: 0;
       bottom: 0;
       width: 100%;
       text-align: center;
@@ -103,6 +104,7 @@
       padding: 0 !important;
       border: 1px solid white;
       overflow: hidden;
+      position: relative;
     }
     &--box::after {
       background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1));

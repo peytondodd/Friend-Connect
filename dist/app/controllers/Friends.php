@@ -3,12 +3,44 @@
 class Friends extends Controller {
 
   public function __construct() {
-    $this->friendModel = $this->model("Friend");
     session_write_close();
+    if (!isset($_SESSION["user_id"])) {
+      redirect("login");
+    }
+    
+    $this->friendModel = $this->model("Friend");
+    $this->userModel = $this->model("User");
   }
 
   public function index () {
     
+  }
+
+  public function friendrequest() {
+    $friendRequests = $this->friendModel->friendRequests($_SESSION["user_id"]);
+    $users = [];
+    if ($friendRequests) {
+      foreach($friendRequests as $value) {
+        $user = new stdClass();
+        $user->id = $value->user_one;
+        $user->name = $this->userModel->nameOfUser($value->user_one);
+        $userInfo = $this->userModel->findUserInfoById($value->user_one);
+        $user->img_src = getProfileImgSrc($value->user_one, $userInfo->profile_img, $userInfo->profile_img_id);
+        $users[] = $user;
+      }
+    }
+
+    // echo "<pre>";
+    // print_r($users);
+    // echo "</pre>";
+
+    $data = [
+      "users" => $users
+    ];
+
+    $this->view("friends/friendrequest", $data);
+    
+
   }
 
   public function add() {

@@ -117,7 +117,7 @@
     &--viewPhotoBox {
       height: calc(#{$one-rem} * 26.9);
       padding: calc(#{$one-rem} / 2);
-      border: 1px solid black;
+      border: 1px solid lightgrey;
     }
     &--viewPhoto {
       width: 100%;
@@ -131,10 +131,10 @@
     }
 
     &--displayPhotoContainer {
-      border: 1px solid black;
+      border: 1px solid lightgrey;
     }
     &--displayPhotoBox {
-      width: 80%;
+      //width: 80%;
       margin: 0 auto;
     }
     &--displayPhoto {
@@ -187,6 +187,13 @@
       &--viewPhotoBox {
         height: calc(#{$one-rem} * 18);
       }
+    }
+  }
+}
+@media (max-width: 385px) {
+  .viewPost {
+    &__date {
+      transform: none;
     }
   }
 }

@@ -702,6 +702,7 @@ body {
   .profilePage__userFriends--name {
     color: white;
     position: absolute;
+    left: 0;
     bottom: 0;
     width: 100%;
     text-align: center;
@@ -711,7 +712,8 @@ body {
     overflow-y: hidden;
     padding: 0 !important;
     border: 1px solid white;
-    overflow: hidden; }
+    overflow: hidden;
+    position: relative; }
   .profilePage__userFriends--box::after {
     background: linear-gradient(transparent, black);
     display: block;
@@ -869,6 +871,25 @@ body {
   .profilePage__userFriends--box::after {
     height: calc(0.625rem * 5);
     margin-top: calc(0.625rem * -5); } }
+
+.friendrequest {
+  border: 1px solid lightgrey;
+  width: calc(0.625rem * 30);
+  padding: calc(0.625rem / 2);
+  margin: 0 auto;
+  display: flex;
+  align-items: center; }
+  .friendrequest__iconContainer {
+    width: calc(0.625rem * 4.4);
+    height: calc(0.625rem * 4.4);
+    display: inline-block; }
+  .friendrequest__icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; }
+  .friendrequest__userinfo {
+    display: inline-block;
+    padding-left: 0.625rem; }
 
 .createPost {
   width: 100%;
@@ -1040,7 +1061,7 @@ body {
   .viewPost__photosPage--viewPhotoBox {
     height: calc(0.625rem * 26.9);
     padding: calc(0.625rem / 2);
-    border: 1px solid black; }
+    border: 1px solid lightgrey; }
   .viewPost__photosPage--viewPhoto {
     width: 100%;
     height: 100%;
@@ -1049,9 +1070,8 @@ body {
     background-color: lightgray;
     cursor: pointer; }
   .viewPost__photosPage--displayPhotoContainer {
-    border: 1px solid black; }
+    border: 1px solid lightgrey; }
   .viewPost__photosPage--displayPhotoBox {
-    width: 80%;
     margin: 0 auto; }
   .viewPost__photosPage--displayPhoto {
     width: 100%;
@@ -1072,6 +1092,10 @@ body {
 @media (max-width: 400px) {
   .viewPost__photosPage--viewPhotoBox {
     height: calc(0.625rem * 18); } }
+
+@media (max-width: 385px) {
+  .viewPost__date {
+    transform: none; } }
 
 .modal-bg {
   display: block;

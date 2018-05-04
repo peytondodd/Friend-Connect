@@ -36,6 +36,7 @@ gulp.task("scripts", function() {
     "layout/loginPage.js",
     "layout/profileSetupPage.js",
     "layout/profilePage.js",
+    "layout/friendRequest.js",
     "modules/createPost.js",
     "modules/friendBtn.js",
     "modules/viewPostContainer.js",

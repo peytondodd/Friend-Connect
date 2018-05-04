@@ -5,6 +5,10 @@ class Chats extends Controller {
   public function __construct() {
     session_write_close();
 
+    if (!isset($_SESSION["user_id"])) {
+      redirect("login");
+    }
+
     $this->userModel = $this->model("User");
     $this->friendModel = $this->model("Friend");
     $this->chatModel = $this->model("Chat");

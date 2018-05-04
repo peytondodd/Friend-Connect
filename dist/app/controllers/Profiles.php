@@ -2,6 +2,9 @@
 
   class Profiles extends Controller {
     public function __construct() {
+      if (!isset($_SESSION["user_id"])) {
+        redirect("login");
+      }
       $this->userModel = $this->model("User");
       $this->friendModel = $this->model("Friend");
       $this->postModel = $this->model("Post");

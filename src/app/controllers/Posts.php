@@ -2,6 +2,10 @@
 
 class Posts extends Controller {
   public function __construct() {
+    if (!isset($_SESSION["user_id"])) {
+      redirect("login");
+    }
+
     $this->postModel = $this->model("Post");
     $this->userModel = $this->model("User");
   }

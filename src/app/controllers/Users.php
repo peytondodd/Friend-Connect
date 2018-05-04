@@ -2,11 +2,17 @@
 
   class Users extends Controller {
     public function __construct() {
+ 
       $this->userModel = $this->model("User");
     }
 
     public function index() {
       redirect("");
+    }
+
+    public function recover() {
+      echo "hello";
+      $this->view("users/recover");
     }
 
     public function register() {

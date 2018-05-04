@@ -5,12 +5,18 @@
     $userIdList = json_encode($data["userIdList"]);
 ?>
 <?php require APPROOT . "/views/inc/header.php"; ?>
-<h1>Hello <?php echo $_SESSION["user_first_name"]; ?></h1>
-<div class="container">
 
+<div class="container">
+    <h1>Hello <?php echo $_SESSION["user_first_name"]; ?></h1>
     <div class="row">
-        <div class="col-md-4">
-            <div class="mb-3 bg-primary">navigator</div>
+        <div class="col-md-4 mb-3">
+            <div class="text-center">Navigator</div>
+            <p class="m-0"><a href="/profiles/user/<?php echo $_SESSION["user_id"]; ?>">My profile</a></p>
+            <p class="m-0"><a href="/chats">Chat with friends</a></p>
+            <p class="m-0"><a href="/search">Search for friends</a></p>
+            <p class="m-0"><a href="/friends/friendrequest">Friend Requests</a></p>
+            <p class="m-0"><a>Notifications(N/A)</a></p>
+            <p class="m-0"><a href="">About Friend Connect</a></p>
         </div>
         <div class="col-md-8">
             <div class="row mb-3">
