@@ -16,7 +16,7 @@
             <p class="m-0"><a href="/search">Search for friends</a></p>
             <p class="m-0"><a href="/friends/friendrequest">Friend Requests</a></p>
             <p class="m-0"><a>Notifications(N/A)</a></p>
-            <p class="m-0"><a href="">About Friend Connect</a></p>
+            <p class="m-0"><a href="https://github.com/thejasonxie/Friend-Connect" target="_blank">About Friend Connect</a></p>
         </div>
         <div class="col-md-8">
             <div class="row mb-3">

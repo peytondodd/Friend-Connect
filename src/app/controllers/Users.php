@@ -10,11 +10,6 @@
       redirect("");
     }
 
-    public function recover() {
-      echo "hello";
-      $this->view("users/recover");
-    }
-
     public function register() {
       if (isLoggedIn()) {
         redirect("");
@@ -92,6 +87,8 @@
           // form validated -SUCCESS
           //echo "form validated";
           $_SESSION["registerData"] = $data;
+          // send registration details to user's email
+          $this->successMail($data);
           // Hash password
           $data["password"] = password_hash($data["password"], PASSWORD_DEFAULT);
 
@@ -141,6 +138,50 @@
       }
 
     }//register()
+
+    function successMail($data) {
+      $to = $data["register_email"];
+      $subject = "Your Friend Connect Account Details";
+      $message = "
+        <html>
+          <body>
+            <h1>Friend Connect</h1>
+            <p>Thank you for signing up!</p>
+            <p>Here is your account details.</p>
+            <br>
+            <table style='border-collapse: collapse; border: 1px solid black;'>
+              <tr>
+                <th style='border: 1px solid black;'> First Name </th>
+                <td style='border: 1px solid black;'>".$data["first_name"]."</td>
+              </tr>
+              <tr>
+                <th style='border: 1px solid black;'> Last Name </th>
+                <td style='border: 1px solid black;'>".$data["last_name"]."</td>
+              </tr>
+              <tr>
+                <th style='border: 1px solid black;'> Email </th>
+                <td style='border: 1px solid black;'>".$data["register_email"]."</td>
+              </tr>
+              <tr>
+                <th style='border: 1px solid black;'> Password </th>
+                <td style='border: 1px solid black;'>".$data["password"]."</td>
+              </tr>
+            </table>
+            <br>
+            <p>The GitHub for Friend Connect can be found here: <a href='https://github.com/thejasonxie/Friend-Connect'>https://github.com/thejasonxie/Friend-Connect</a></p>
+            <p>Friend Connect was developed by <a href='https://thejasonxie.com/' target='_blank'>Jason Xie</a></p>
+            <br>
+          </body>
+        </html>
+      ";
+      // $headers[] = 'MIME-Version: 1.0';
+      // $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+      // $headers[] = 'From: admin@thejasonxie.com';
+      $headers = "MIME-Version: 1.0" . "\r\n" .
+                "Content-type: text/html; charset=iso-8859-1" . "\r\n" .
+                "From: admin@thejasonxie.com";
+      mail($to, $subject, $message, $headers);
+    }
 
     public function success() {
       if (!isset($_SESSION["registerData"])) {
@@ -267,6 +308,14 @@
       redirect("");
     }
 
+    public function updateStatus() {
+      if (isset($_REQUEST["status"])) {
+        if (isset($_SESSION["user_id"])) {
+          $this->userModel->updateUserStatus($_REQUEST["status"]);
+        }
+        return;
+      }
+    }
 
 
   }

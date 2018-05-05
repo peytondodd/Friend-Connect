@@ -47,7 +47,7 @@
                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                  <a class="dropdown-item" href="<?php echo URLROOT; ?>/profiles/user/<?php echo $_SESSION['user_id'] ?>">Profile</a>
                  <a class="dropdown-item" href="/profiles/user/<?php echo $_SESSION["user_id"]; ?>/?pageAction=settings">Account Settings</a>
-                 <a class="dropdown-item" href="#">About</a>
+                 <a class="dropdown-item" href="https://github.com/thejasonxie/Friend-Connect"  target="_blank">About</a>
                  <div class="dropdown-divider"></div>
                  <a class="dropdown-item" href="<?php echo URLROOT; ?>/logout">Logout</a>
                </div>

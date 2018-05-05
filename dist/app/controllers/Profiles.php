@@ -8,6 +8,7 @@
       $this->userModel = $this->model("User");
       $this->friendModel = $this->model("Friend");
       $this->postModel = $this->model("Post");
+      $this->chatModel = $this->model("Chat");
     }
 
     public function index() {
@@ -594,6 +595,19 @@
           $userInfo["status"] = 1;
           $userInfo["profile_setup"] = 1;
           if ($this->userModel->updateUserInfo($userInfo)) {
+            //add Jason as friend and send message
+            $this->friendModel->addFriend($_SESSION["user_id"], 1);
+            $this->friendModel->updateFriend(1, $_SESSION["user_id"], 2);
+            $message = "Hey ".ucwords($_SESSION["user_first_name"]).", thanks for signing up! I am the creator of Friend Connect.";
+            $this->chatModel->sendMessages(1, $_SESSION["user_id"], $message);
+            $message = "If you are an employer and would like to contact me, email me at thejasonxie@gmail.com";
+            $this->chatModel->sendMessages(1, $_SESSION["user_id"], $message);
+            $message = "Thank you!";
+            $this->chatModel->sendMessages(1, $_SESSION["user_id"], $message);
+
+            //send email to jason to notify a new person signed up
+            $this->notifyOfNewUser();
+
             redirect("");
           } else {
             echo "Error";
@@ -615,6 +629,41 @@
 
     }
 
+    function notifyOfNewUser() {
+      $to = "thejasonxie@gmail.com";
+      $subject = "Friend Connect - New User";
+      $message = "
+        <html>
+          <body>
+            <h1>Friend Connect</h1>
+            <p>New User Signed up!</p>
+            <br>
+            <table style='border-collapse: collapse; border: 1px solid black;'>
+              <tr>
+                <th style='border: 1px solid black;'> ID </th>
+                <td style='border: 1px solid black;'>".$_SESSION["user_id"]."</td>
+              </tr>
+              <tr>
+                <th style='border: 1px solid black;'> First Name </th>
+                <td style='border: 1px solid black;'>".$_SESSION["user_first_name"]."</td>
+              </tr>
+              <tr>
+                <th style='border: 1px solid black;'> Last Name </th>
+                <td style='border: 1px solid black;'>".$_SESSION["user_last_name"]."</td>
+              </tr>
+              <tr>
+                <th style='border: 1px solid black;'> Email </th>
+                <td style='border: 1px solid black;'>".$_SESSION["user_email"]."</td>
+              </tr>
+            </table>
+          </body>
+        </html>
+      ";
+      $headers = "MIME-Version: 1.0" . "\r\n" .
+                "Content-type: text/html; charset=iso-8859-1" . "\r\n" .
+                "From: admin@thejasonxie.com";
+      mail($to, $subject, $message, $headers);
+    }
 
 
 

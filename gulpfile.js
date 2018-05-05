@@ -41,7 +41,8 @@ gulp.task("scripts", function() {
     "modules/friendBtn.js",
     "modules/viewPostContainer.js",
     "modules/search.js",
-    "modules/chatBox.js"
+    "modules/chatBox.js",
+    "base/statusController.js"
   ], {cwd: "src/public/js/"})
     .pipe(concat("index.js"))
     .pipe(gulp.dest("dist/public/js"));

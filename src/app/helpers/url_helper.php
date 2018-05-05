@@ -7,8 +7,8 @@
         redirect("register");
       } else if ($url[1] == "login") {
         redirect("login");
-      } else if ($url[1] == "recover") {
-        redirect("recover");
+      } else if ($url[1] == "updateStatus") {
+        redirect("updateStatus");
       } else {
         $url[0] = "Index";
       }
@@ -32,11 +32,12 @@
       $url[1] = "logout";
       return $url;
     }
-    if ($url[0] == "recover") {
+    if ($url[0] == "updateStatus") {
       $url[0] = "users";
-      $url[1] = "recover";
+      $url[1] = "updateStatus";
       return $url;
     }
+    
     return $url;
   }
 

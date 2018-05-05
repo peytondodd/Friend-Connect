@@ -31,7 +31,6 @@
           <?php echo isset($data['password_err']) ? $data['password_err'] : ""; ?>
         </div>
       </div>
-        <a href="#">Forgot your password?</a>
         <p>Need an account? <a href="/register">Register!</a></p>
       <input class="btn btn-success" type="submit" name="login" value="Log In">
     </form>
