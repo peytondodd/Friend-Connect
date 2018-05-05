@@ -149,7 +149,7 @@ var profileSetupPage = (function() {
 
     //resize background mobile
     if (targetPage == page2) {
-      console.log(window.innerHeight);
+      // console.log(window.innerHeight);
       // if (window.innerWidth <= 584) {
       if (window.innerHeight <= 825) {
         profileSetupPage.style.height = "825px";

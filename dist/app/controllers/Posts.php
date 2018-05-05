@@ -464,8 +464,8 @@ class Posts extends Controller {
       //Poll counter - refresh every 40 seconds
       usleep(500000); //.5 seconds
       $pollCounter++;
-      //if ($pollCounter > 80) { //40 sec
-      if ($pollCounter > 20) { //40 sec
+      if ($pollCounter > 80) { //40 sec
+      // if ($pollCounter > 20) { //10 sec
         echo "refresh poll";
         return;
       }

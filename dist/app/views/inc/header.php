@@ -18,6 +18,7 @@
     <title><?php echo SITENAME; ?></title>
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/main.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/png" href="/images/friend-connect-logo-black.png">
   </head>
   <body <?php echo isset($inSetup) && $inSetup == 1  ? "style=overflow-x:hidden" : "";?>>
     <?php isset($postLogIn) && $postLogIn == 1 ? require APPROOT . "/views/inc/navbar.php" : "";?>

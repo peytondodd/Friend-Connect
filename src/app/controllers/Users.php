@@ -179,7 +179,7 @@
       // $headers[] = 'From: admin@thejasonxie.com';
       $headers = "MIME-Version: 1.0" . "\r\n" .
                 "Content-type: text/html; charset=iso-8859-1" . "\r\n" .
-                "From: admin@thejasonxie.com";
+                "From: Friend Connect <friendconnect@thejasonxie.com>";
       mail($to, $subject, $message, $headers);
     }
 

@@ -8,7 +8,7 @@ var friendrequest = (function() {
         friendrequestcontainer.addEventListener("click", friendRequestDir);
 
         function friendRequestDir(event) {
-            console.log(event.target);
+            // console.log(event.target);
             if (event.target.innerText == "Accept") {
                 acceptFriend(event);
             } else if (event.target.innerText == "Decline") {

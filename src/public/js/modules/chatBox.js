@@ -32,7 +32,7 @@ var chatBox = (function() {
         }
 
         function convoListDir(event) {
-            console.log(event.target);
+            // console.log(event.target);
             if (event.target.className == "convoList__listBox" || event.target.className == "convoList__iconContainer" || 
             event.target.className == "convoList__iconBox" || event.target.className == "convoList__icon" || 
             event.target.className == "convoList__online" || event.target.className == "convoList__infoContainer" || 
@@ -59,12 +59,12 @@ var chatBox = (function() {
 
         function conversationClick(event) {
             var convoId = findConversationId(event);
-            console.log(convoId);
+            // console.log(convoId);
             ajaxCall("GET", "/chats/getConversation?convoId="+convoId, true)
                 .then(conversationClickSuccess, conversationClickFail);
 
             function conversationClickSuccess(data) {
-                console.log(data);
+                // console.log(data);
                 var conversation = JSON.parse(data);
                 //update convoViewData
                 convoViewData = conversation;
@@ -410,7 +410,7 @@ var chatBox = (function() {
         }
 
         function newMessageUpdate(data) {
-            console.log(data);
+            // console.log(data);
             //convo List data update
             convoListData.forEach(function(item,index) {
                 if (item.id == data[1][0].id) {
@@ -460,7 +460,7 @@ var chatBox = (function() {
                 for (var i = 0; i < data[1][1].length; i++) {
                     convoViewData[1].push(data[1][1][i]);
                 }
-                console.log(convoViewData);
+                // console.log(convoViewData);
             }
             //convo View DOM update
             var domConvoViewId = chatBox.querySelector(".convoView").id;
@@ -491,7 +491,7 @@ var chatBox = (function() {
                     convoView.querySelector(".convoView__display").scrollTop = 
                         convoView.querySelector(".convoView__display").scrollHeight;
                 }
-                console.log(convoView);
+                // console.log(convoView);
             }
 
         }
@@ -528,7 +528,7 @@ var chatBox = (function() {
                 for (var i = 0; i < data[1][1].length; i++) {
                     convoViewData[1].push(data[1][1][i]);
                 }
-                console.log(convoViewData);
+                // console.log(convoViewData);
             }
             //convo View DOM update
             var domConvoViewId = chatBox.querySelector(".convoView").id;
@@ -559,7 +559,7 @@ var chatBox = (function() {
                     convoView.querySelector(".convoView__display").scrollTop = 
                         convoView.querySelector(".convoView__display").scrollHeight;
                 }
-                console.log(convoView);
+                // console.log(convoView);
             }
         
         }

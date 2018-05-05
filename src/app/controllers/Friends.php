@@ -145,7 +145,7 @@ class Friends extends Controller {
     if (isset($_REQUEST["oldFriendStatus"]) && isset($_REQUEST["viewFriendId"]) &&
     isset($_REQUEST["timestamp"])) {
       $loopCounter = 0;
-      $timeSpentPolling = 10; // 10-11 seconds
+      $timeSpentPolling = 40; // 40 seconds
       $oldStatus = $_REQUEST["oldFriendStatus"];
       $friendId = $_REQUEST["viewFriendId"];
       $oldTimestamp = $_REQUEST["timestamp"];

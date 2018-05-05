@@ -188,7 +188,7 @@ class Chats extends Controller {
         }
 
         //end poll
-        if ($pollTime > 20) {
+        if ($pollTime > 40) { //40 seconds
           $endloop = 1;
           return;
         }

@@ -212,7 +212,7 @@ var friendBtn = (function() {
         
         function liveStatusSuccess(data) {
             if (data != "") {
-                console.log(data);
+                // console.log(data);
                 data = JSON.parse(data);
             
                 var currentStatus = friendBtnBox.querySelector("button[name='friendBtn-Status']").innerText;

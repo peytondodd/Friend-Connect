@@ -55,18 +55,18 @@ var search = (function() {
         }
 
         function searchKeyUp(event) {
-            console.log(event.keyCode);
+            // console.log(event.keyCode);
             if (event.keyCode != 37 && event.keyCode != 38 && 
                 event.keyCode != 39 && event.keyCode != 40 &&
                 event.keyCode != 13) {
-                console.log("hi");
+                // console.log("hi");
                 // AJAX REQUEST
                 realTimeSearch = event.target.value;
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         //input.innerHTML = this.responseText;
-                        console.log(this.responseText);
+                        // console.log(this.responseText);
                         var searchData = JSON.parse(this.responseText);
                         searchDropDown(searchData , search.value);
                     }

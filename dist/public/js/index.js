@@ -506,7 +506,7 @@ var profileSetupPage = (function() {
 
     //resize background mobile
     if (targetPage == page2) {
-      console.log(window.innerHeight);
+      // console.log(window.innerHeight);
       // if (window.innerWidth <= 584) {
       if (window.innerHeight <= 825) {
         profileSetupPage.style.height = "825px";
@@ -1158,7 +1158,7 @@ var friendrequest = (function() {
         friendrequestcontainer.addEventListener("click", friendRequestDir);
 
         function friendRequestDir(event) {
-            console.log(event.target);
+            // console.log(event.target);
             if (event.target.innerText == "Accept") {
                 acceptFriend(event);
             } else if (event.target.innerText == "Decline") {
@@ -1581,7 +1581,7 @@ var friendBtn = (function() {
         
         function liveStatusSuccess(data) {
             if (data != "") {
-                console.log(data);
+                // console.log(data);
                 data = JSON.parse(data);
             
                 var currentStatus = friendBtnBox.querySelector("button[name='friendBtn-Status']").innerText;
@@ -1735,7 +1735,7 @@ var viewPostContainer = (function() {
     }
 
     function findPostComments (postId) {
-      console.log(viewPost);
+      // console.log(viewPost);
       if (viewPost) {
         if (postId == "ALL") {
           var comments = [];
@@ -1796,10 +1796,10 @@ var viewPostContainer = (function() {
       }
       if (rowClassNames.indexOf("row mx-0 makeCommentBox") != -1 ||
       rowClassNames.indexOf("row mx-0 viewCommentBox") != -1) {
-        console.log("bad");
+        // console.log("bad");
         return;
       } else {
-        console.log("good");
+        // console.log("good");
       }
 
       var allComments = findPostComments(postId);
@@ -1852,21 +1852,21 @@ var viewPostContainer = (function() {
         rowClassNames.push(postBox.children[i].className);
       }
       if (rowClassNames.indexOf("row mx-0 viewCommentBox") != -1) {
-        console.log("view Comment Box");
+        // console.log("view Comment Box");
         for (var i = 0; i < postBox.children.length; i++) {
           if (postBox.children[i].className == "row mx-0 viewCommentBox") {
             postBox.removeChild(postBox.children[i]);
           }
         }
       } if (rowClassNames.indexOf("row mx-0 makeCommentBox") != -1) {
-        console.log("make Comment Box");
+        // console.log("make Comment Box");
         for (var i = 0; i < postBox.children.length; i++) {
           if (postBox.children[i].className == "row mx-0 makeCommentBox") {
             postBox.removeChild(postBox.children[i]);
           }
         }
       } if (rowClassNames.indexOf("text-center cancelComment") != -1) {
-        console.log("cancel comment");
+        // console.log("cancel comment");
         for (var i = 0; i < postBox.children.length; i++) {
           if (postBox.children[i].className == "text-center cancelComment") {
             postBox.removeChild(postBox.children[i]);
@@ -1924,13 +1924,13 @@ var viewPostContainer = (function() {
       if (commentsLeft - commentLimit > 0) {
         var commentBox = commentLoader(allComments, commentsShown, commentsShown + commentLimit);
       } else {
-        console.log(commentsShown);
-        console.log(commentsShown + commentsLeft);
+        // console.log(commentsShown);
+        // console.log(commentsShown + commentsLeft);
         var commentBox = commentLoader(allComments, commentsShown, commentsShown + commentsLeft);
       }
 
       //add new comments
-      console.log(commentBox);
+      // console.log(commentBox);
       for (var i = commentBox.children.length-1; i >= 0; i--) {
         event.target.parentElement.insertBefore(commentBox.children[i], event.target.parentElement.children[2]);
       }
@@ -1955,8 +1955,8 @@ var viewPostContainer = (function() {
         var commentId = commentClass.split("-")[1];
         var commentParent = comment.parentElement;
         var postId = commentParent.parentElement.parentElement.className.split("-")[1];
-        console.log(postId);
-        console.log(viewPost);
+        // console.log(postId);
+        // console.log(viewPost);
 
         //remove dom element
         for (var i = 0; i < commentParent.children.length; i++) {
@@ -1970,7 +1970,7 @@ var viewPostContainer = (function() {
           if (value.id == postId) {
             for (var i = 0; i < value.comments.count; i++) {
               if (value.comments.list[i]) {
-                console.log("hello");
+                // console.log("hello");
                 if (value.comments.list[i].id == commentId) {
                   value.comments.list.splice(i, 1);
                   //console.log(value.comments);
@@ -2010,7 +2010,7 @@ var viewPostContainer = (function() {
         }
       }
       //console.log(order);
-      console.log(allComments);
+      // console.log(allComments);
       //comments from users
       for (var i = 0; i < order.length; i++) {
         if (allComments[order[i]]) {
@@ -2238,15 +2238,15 @@ var viewPostContainer = (function() {
       for (var i = 0; i < tempposts.length; i++) { //convert nodelist to array
         posts.push(tempposts[i]);
       }
-      console.log(posts);
+      // console.log(posts);
       //photos page post
       var photoDisplayContainer = document.querySelector(".profilePage__photosPage__displayContainer");
       if (photoDisplayContainer) {
         var singlePost = photoDisplayContainer.querySelector(".viewPost");
         posts.push(singlePost);
       }
-      console.log(photoDisplayContainer);
-      console.log(posts);
+      // console.log(photoDisplayContainer);
+      // console.log(posts);
       //console.log(posts);
       for (var i = 0; i < posts.length; i++) {
         //console.log(posts[i].children[0].children);
@@ -2256,7 +2256,7 @@ var viewPostContainer = (function() {
           var likes = posts[i].children[0];
         }
         if (posts[i].classList[1] == "postID-"+postId) {
-          console.log(likes.children);
+          // console.log(likes.children);
           if (likes.children.length > 3) {
             //console.log(likes.children[3]);
             if (likes.children[3].children[0].className == "col viewPost__showLikes") {
@@ -2265,15 +2265,15 @@ var viewPostContainer = (function() {
                 if (likeCount == 1){
                   likes.children[3].children[0].children[0].innerHTML = likeCount;
                   likes.children[3].children[0].children[1].innerHTML = " person liked this";
-                  console.log("good");
+                  // console.log("good");
                 } else {
                   likes.children[3].children[0].children[0].innerHTML = likeCount;
                   likes.children[3].children[0].children[1].innerHTML = " people liked this";
-                  console.log("poopie");
+                  // console.log("poopie");
                 }
               } else {
                 likes.removeChild(likes.children[3]);
-                console.log("bad");
+                // console.log("bad");
               }
             } else {
               createNewLikeCounter(likes, likeCount);
@@ -2287,7 +2287,7 @@ var viewPostContainer = (function() {
 
     function createNewLikeCounter(likes, likeCount) { //likes = postBox
       if (likeCount != 0) {
-        console.log("kooya");
+        // console.log("kooya");
         //create new row for like counter
         var newCounter = document.createElement("div");
         newCounter.className = "row";
@@ -2299,10 +2299,10 @@ var viewPostContainer = (function() {
             <span> person liked this</span>
         </div>`;
         if (likes.children.length > 3) {
-          console.log("hiya");
+          // console.log("hiya");
           likes.insertBefore(newCounter, likes.children[3]);
         } else {
-          console.log("booya");
+          // console.log("booya");
           likes.appendChild(newCounter);
         }
       }
@@ -2399,7 +2399,7 @@ var viewPostContainer = (function() {
     }
 
     function deletedCommentFromDatabase(commentList) {
-      console.log(commentList);
+      // console.log(commentList);
       if (commentList) {
         if (commentList[0] == "Last Comment") {
           var postId = commentList[1];
@@ -2424,7 +2424,7 @@ var viewPostContainer = (function() {
               }
             }
 
-            console.log(found);
+            // console.log(found);
             if (found[0] >= 0) {
               // remove from viewPost
               value.comments.list.splice(found[0], 1);
@@ -2453,7 +2453,7 @@ var viewPostContainer = (function() {
 
                 if (domPostId == found[1].post_id) {
                   var viewCommentBox = allPosts[i].querySelectorAll(".viewCommentBox");
-                  console.log(viewCommentBox);
+                  // console.log(viewCommentBox);
                   if (viewCommentBox[0]) { //view shown
                     // console.log(viewCommentBox);
                     for (var j = 0; j < viewCommentBox[0].children.length; j++) {
@@ -2524,13 +2524,13 @@ var viewPostContainer = (function() {
               } else {
                 found.push(index);
               }
-              console.log(value);
+              // console.log(value);
               found.push(value);
             }
           }
         }
       });
-      console.log(found);
+      // console.log(found);
       if (found.length > 2) {
         for (var i = 1; i < found.length; i += 2) {
           for (var j = 0; j < viewPost.length; j++) {
@@ -2541,7 +2541,7 @@ var viewPostContainer = (function() {
           //console.log(viewPost.splice(found[i], 1));
           //console.log("DELETE = "+ i);
         }
-        console.log(viewPost.length);
+        // console.log(viewPost.length);
       } else if (found[0]) {
         //update viewPost
         if (found[0] == "zero") {
@@ -2551,7 +2551,7 @@ var viewPostContainer = (function() {
         }
 
         //remove from dom
-        console.log("hi");
+        // console.log("hi");
         var tempPosts = viewPostBox.querySelectorAll(".viewPost");
         var allPosts = [];
         for (var i = 0; i < tempPosts.length; i++) { //convert nodeList to array
@@ -2567,7 +2567,7 @@ var viewPostContainer = (function() {
         }
         var postIndex;
         for (var i = 0; i < allPosts.length; i++) {
-          console.log(allPosts[i]);
+          // console.log(allPosts[i]);
           var postId = allPosts[i].className.split("-")[1];
           if (found[i] == "zero") {
             //postIndex = i;
@@ -2720,7 +2720,7 @@ var viewPostContainer = (function() {
         if (photos == 1) { // add to DOM
           var photoDisplayContainer = document.querySelector(".profilePage__photosPage__displayContainer");
           photoDisplayContainer.appendChild(newViewPost);
-          console.log(photoDisplayContainer);
+          // console.log(photoDisplayContainer);
         } else {
           viewPostBox.insertBefore(newViewPost, viewPostBox.children[0]);
         }
@@ -2775,7 +2775,7 @@ var viewPostContainer = (function() {
         getPostInfo.onreadystatechange = function() {
           if (this.readyState == 4) {
             if (this.status == 200) {
-               console.log(this.responseText);
+              //  console.log(this.responseText);
               //console.log(JSON.parse(this.responseText));
               resolve(this.responseText);
             } else {
@@ -2941,18 +2941,18 @@ var search = (function() {
         }
 
         function searchKeyUp(event) {
-            console.log(event.keyCode);
+            // console.log(event.keyCode);
             if (event.keyCode != 37 && event.keyCode != 38 && 
                 event.keyCode != 39 && event.keyCode != 40 &&
                 event.keyCode != 13) {
-                console.log("hi");
+                // console.log("hi");
                 // AJAX REQUEST
                 realTimeSearch = event.target.value;
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         //input.innerHTML = this.responseText;
-                        console.log(this.responseText);
+                        // console.log(this.responseText);
                         var searchData = JSON.parse(this.responseText);
                         searchDropDown(searchData , search.value);
                     }
@@ -3243,7 +3243,7 @@ var chatBox = (function() {
         }
 
         function convoListDir(event) {
-            console.log(event.target);
+            // console.log(event.target);
             if (event.target.className == "convoList__listBox" || event.target.className == "convoList__iconContainer" || 
             event.target.className == "convoList__iconBox" || event.target.className == "convoList__icon" || 
             event.target.className == "convoList__online" || event.target.className == "convoList__infoContainer" || 
@@ -3270,12 +3270,12 @@ var chatBox = (function() {
 
         function conversationClick(event) {
             var convoId = findConversationId(event);
-            console.log(convoId);
+            // console.log(convoId);
             ajaxCall("GET", "/chats/getConversation?convoId="+convoId, true)
                 .then(conversationClickSuccess, conversationClickFail);
 
             function conversationClickSuccess(data) {
-                console.log(data);
+                // console.log(data);
                 var conversation = JSON.parse(data);
                 //update convoViewData
                 convoViewData = conversation;
@@ -3621,7 +3621,7 @@ var chatBox = (function() {
         }
 
         function newMessageUpdate(data) {
-            console.log(data);
+            // console.log(data);
             //convo List data update
             convoListData.forEach(function(item,index) {
                 if (item.id == data[1][0].id) {
@@ -3671,7 +3671,7 @@ var chatBox = (function() {
                 for (var i = 0; i < data[1][1].length; i++) {
                     convoViewData[1].push(data[1][1][i]);
                 }
-                console.log(convoViewData);
+                // console.log(convoViewData);
             }
             //convo View DOM update
             var domConvoViewId = chatBox.querySelector(".convoView").id;
@@ -3702,7 +3702,7 @@ var chatBox = (function() {
                     convoView.querySelector(".convoView__display").scrollTop = 
                         convoView.querySelector(".convoView__display").scrollHeight;
                 }
-                console.log(convoView);
+                // console.log(convoView);
             }
 
         }
@@ -3739,7 +3739,7 @@ var chatBox = (function() {
                 for (var i = 0; i < data[1][1].length; i++) {
                     convoViewData[1].push(data[1][1][i]);
                 }
-                console.log(convoViewData);
+                // console.log(convoViewData);
             }
             //convo View DOM update
             var domConvoViewId = chatBox.querySelector(".convoView").id;
@@ -3770,7 +3770,7 @@ var chatBox = (function() {
                     convoView.querySelector(".convoView__display").scrollTop = 
                         convoView.querySelector(".convoView__display").scrollHeight;
                 }
-                console.log(convoView);
+                // console.log(convoView);
             }
         
         }
@@ -3862,7 +3862,7 @@ var statusController = (function() {
         ajaxCall("GET", "/updateStatus?status=0", true)
             .then(offlineSuccess, offlineFail);
         function offlineSuccess() {
-            console.log("OFFLINE");
+            // console.log("OFFLINE");
         }
         function offlineFail() {
 
@@ -3873,7 +3873,7 @@ var statusController = (function() {
         ajaxCall("GET", "/updateStatus?status=1", true)
             .then(onlineSuccess, onlineFail);
         function onlineSuccess() {
-            console.log("ONLINE");
+            // console.log("ONLINE");
         }
         function onlineFail() {
 

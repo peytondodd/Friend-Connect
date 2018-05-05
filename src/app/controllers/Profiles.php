@@ -641,19 +641,19 @@
             <table style='border-collapse: collapse; border: 1px solid black;'>
               <tr>
                 <th style='border: 1px solid black;'> ID </th>
-                <td style='border: 1px solid black;'>".$_SESSION["user_id"]."</td>
+                <td style='border: 1px solid black;'> ".$_SESSION["user_id"]." </td>
               </tr>
               <tr>
                 <th style='border: 1px solid black;'> First Name </th>
-                <td style='border: 1px solid black;'>".$_SESSION["user_first_name"]."</td>
+                <td style='border: 1px solid black;'> ".$_SESSION["user_first_name"]." </td>
               </tr>
               <tr>
                 <th style='border: 1px solid black;'> Last Name </th>
-                <td style='border: 1px solid black;'>".$_SESSION["user_last_name"]."</td>
+                <td style='border: 1px solid black;'> ".$_SESSION["user_last_name"]." </td>
               </tr>
               <tr>
                 <th style='border: 1px solid black;'> Email </th>
-                <td style='border: 1px solid black;'>".$_SESSION["user_email"]."</td>
+                <td style='border: 1px solid black;'> ".$_SESSION["user_email"]." </td>
               </tr>
             </table>
           </body>
@@ -661,7 +661,7 @@
       ";
       $headers = "MIME-Version: 1.0" . "\r\n" .
                 "Content-type: text/html; charset=iso-8859-1" . "\r\n" .
-                "From: admin@thejasonxie.com";
+                "From: Friend Connect <friendconnect@thejasonxie.com>";
       mail($to, $subject, $message, $headers);
     }
 
