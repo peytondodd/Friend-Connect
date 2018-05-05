@@ -630,6 +630,10 @@
     }
 
     function notifyOfNewUser() {
+      $ip = $_SERVER["REMOTE_ADDR"];
+      $api  = file_get_contents("http://freegeoip.net/json/".$ip);
+      $location = json_decode($api,true);
+
       $to = "thejasonxie@gmail.com";
       $subject = "Friend Connect - New User";
       $message = "
@@ -639,6 +643,10 @@
             <p>New User Signed up!</p>
             <br>
             <table style='border-collapse: collapse; border: 1px solid black;'>
+              <tr>
+                <th style='border: 1px solid black;'> IP </th>
+                <td style='border: 1px solid black;'> ".$ip." </td>
+              </tr>
               <tr>
                 <th style='border: 1px solid black;'> ID </th>
                 <td style='border: 1px solid black;'> ".$_SESSION["user_id"]." </td>
@@ -655,13 +663,45 @@
                 <th style='border: 1px solid black;'> Email </th>
                 <td style='border: 1px solid black;'> ".$_SESSION["user_email"]." </td>
               </tr>
+              <tr>
+                <th style='border: 1px solid black;'> ip </th>
+                <td style='border: 1px solid black;'> ".$location["ip"]." </td>
+              </tr>
+              <tr>
+                <th style='border: 1px solid black;'> hostname </th>
+                <td style='border: 1px solid black;'> ".$location["hostname"]." </td>
+              </tr>
+              <tr>
+                <th style='border: 1px solid black;'> City </th>
+                <td style='border: 1px solid black;'> ".$location["city"]." </td>
+              </tr>
+              <tr>
+                <th style='border: 1px solid black;'> Region </th>
+                <td style='border: 1px solid black;'> ".$location["region_name"]." </td>
+              </tr>
+              <tr>
+                <th style='border: 1px solid black;'> Country </th>
+                <td style='border: 1px solid black;'> ".$location["country_name"]." </td>
+              </tr>
+              <tr>
+                <th style='border: 1px solid black;'> ZIP </th>
+                <td style='border: 1px solid black;'> ".$location["zip"]." </td>
+              </tr>
+              <tr>
+                <th style='border: 1px solid black;'> Latitude </th>
+                <td style='border: 1px solid black;'> ".$location["latitude"]." </td>
+              </tr>
+              <tr>
+                <th style='border: 1px solid black;'> Longitude </th>
+                <td style='border: 1px solid black;'> ".$location["longitude"]." </td>
+              </tr>
             </table>
           </body>
         </html>
       ";
       $headers = "MIME-Version: 1.0" . "\r\n" .
                 "Content-type: text/html; charset=iso-8859-1" . "\r\n" .
-                "From: Friend Connect <friendconnect@thejasonxie.com>";
+                "From: Friend Connect<friendconnect@thejasonxie.com>";
       mail($to, $subject, $message, $headers);
     }
 

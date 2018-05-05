@@ -2867,6 +2867,8 @@ var viewPostContainer = (function() {
     }
 
     function realTimeFailed(data) {
+      liveAjaxCall(postData())
+      .then(realTimeSuccess, realTimeFailed);
       //console.log("failed code= "+data);
       // liveAjaxCall(postData())
       //   .then(realTimeSuccess, realTimeFailed);
@@ -3617,7 +3619,8 @@ var chatBox = (function() {
         }
 
         function realTimeChatFail(data) {
-
+            ajaxCall("POST", "chats/realTimeChatEvents", true, chatData())
+            .then(realTimeChatSuccess, realTimeChatFail);
         }
 
         function newMessageUpdate(data) {

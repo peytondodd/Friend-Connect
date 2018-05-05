@@ -1235,6 +1235,8 @@ var viewPostContainer = (function() {
     }
 
     function realTimeFailed(data) {
+      liveAjaxCall(postData())
+      .then(realTimeSuccess, realTimeFailed);
       //console.log("failed code= "+data);
       // liveAjaxCall(postData())
       //   .then(realTimeSuccess, realTimeFailed);
